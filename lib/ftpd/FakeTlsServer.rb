@@ -30,7 +30,8 @@ class FakeTlsServer < FakeServer
   once :ssl_context
 
   def certfile_path
-    File.join(File.dirname(__FILE__), 'insecure-test-cert.pem')
+    File.expand_path('../../insecure-test-cert.pem',
+                     File.dirname(__FILE__))
   end
 
   def add_tls_methods_to_socket(socket)
