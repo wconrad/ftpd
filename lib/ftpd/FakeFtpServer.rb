@@ -135,6 +135,7 @@ class FakeFtpServer < FakeTlsServer
     end
 
     def cmd_pass(argument)
+      syntax_error unless argument
       bad_sequence unless @state == :password
       password = argument
       if @user != @expected_user || password != @expected_password
