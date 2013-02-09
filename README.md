@@ -14,6 +14,12 @@ for prime time yet.  It needs pluggable authentication and file system
 drivers, refactoring, and the removal of bits of the Databill source
 tree which are temporarily included.
 
+== LIMITATIONS
+
+TLS is only supported in passive mode, not active.  Either the FTPS
+client used by the test doesn't work in active mode, or this server
+doesn't work in FTPS active mode (or both).
+
 == WHOAMI
 
 Wayne Conrad <wconrad@yagni.com>
