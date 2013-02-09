@@ -314,6 +314,7 @@ class FakeFtpServer < FakeTlsServer
     end
 
     def cmd_noop(argument)
+      syntax_error if argument
       reply "200 Nothing done"
     end
 
