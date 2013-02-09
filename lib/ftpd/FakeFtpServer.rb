@@ -201,6 +201,7 @@ class FakeFtpServer < FakeTlsServer
       error "501 Path required" unless path
       target = target_path(path)
       ensure_path_is_in_data_dir(target)
+      ensure_path_exists target
       File.unlink(target)
       reply "250 DELE command successful"
     end
@@ -458,6 +459,12 @@ class FakeFtpServer < FakeTlsServer
     def ensure_path_is_in_data_dir(path)
       unless child_path_of?(@data_path, path)
         error "550 Access denied"
+      end
+    end
+
+    def ensure_path_exists(path)
+      unless File.exists?(path)
+        error '450 No such file or directory'
       end
     end
 
