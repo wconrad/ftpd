@@ -124,6 +124,7 @@ class FakeFtpServer < FakeTlsServer
     ]
 
     def cmd_user(argument)
+      syntax_error unless argument
       bad_sequence unless @state == :user
       @user = argument
       @state = :password
