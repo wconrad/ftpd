@@ -398,7 +398,7 @@ class FakeFtpServer < FakeTlsServer
     end
 
     def pwd
-      reply "250 OK. Current directory is #{sanitized_cwd}"
+      reply %Q(257 "#{sanitized_cwd}" is current directory)
     end
 
     def relative_to_data_path(path)
