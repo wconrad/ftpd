@@ -26,18 +26,15 @@ class Example
   HOST = 'localhost'
 
   def create_files
-    [
-      'README',
-      'outgoing/getme',
-    ].each do |path|
-      base_name = File.basename(path)
-      dir_name = File.dirname(path)
-      dir_path = File.join(@data_dir.path, dir_name)
-      file_path = File.join(dir_path, base_name)
-      FileUtils.mkdir_p(dir_path)
-      File.open(file_path, 'w') do |file|
-        file.puts "Contents of #{path}"
-      end
+    create_file 'README',
+    "Temporary directory created by ftpd sample program\n"
+  end
+
+  def create_file(path, contents)
+    full_path = File.expand_path(path, @data_dir.path)
+    FileUtils.mkdir_p File.dirname(full_path)
+    File.open(full_path, 'w') do |file|
+      file.write contents
     end
   end
 
