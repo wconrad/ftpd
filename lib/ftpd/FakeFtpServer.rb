@@ -511,7 +511,7 @@ class FakeFtpServer < FakeTlsServer
 
     def transmit_file(contents, data_type = @data_type)
       open_data_connection do |data_socket|
-        contents = native_to_ascii(contents) if data_type == 'A'
+        contents = unix_to_nvt_ascii(contents) if data_type == 'A'
         data_socket.write(contents)
         debug("Sent #{contents.size} bytes")
         reply "226 Transfer complete"
@@ -521,17 +521,18 @@ class FakeFtpServer < FakeTlsServer
     def receive_file(path)
       open_data_connection do |data_socket|
         contents = data_socket.read
-        contents = ascii_to_native(contents) if @data_type == 'A'
+        contents = nvt_ascii_to_unix(contents) if @data_type == 'A'
         debug("Received #{contents.size} bytes")
         contents
       end
     end
 
-    def native_to_ascii(s)
+    def unix_to_nvt_ascii(s)
+      return s if s =~ /\r\n/
       s.gsub(/\n/, "\r\n")
     end
 
-    def ascii_to_native(s)
+    def nvt_ascii_to_unix(s)
       s.gsub(/\r\n/, "\n")
     end
 
