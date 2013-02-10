@@ -21,6 +21,21 @@ TLS is only supported in passive mode, not active.  Either the FTPS
 client used by the test doesn't work in active mode, or this server
 doesn't work in FTPS active mode (or both).
 
+## DEVELOPMENT
+
+### TESTS
+
+To run the cucumber tests:
+
+    $ rake features
+
+To run the stand-alone example:
+
+    $ examples/example.rb
+
+The example prints its port, username and password to the console.
+You can connect to the stand-alone example with any FTP client.
+
 ## REFERENCES
 
 (This list of references comes from the README of the em-ftpd gem,
