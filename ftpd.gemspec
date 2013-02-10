@@ -5,12 +5,12 @@
 
 Gem::Specification.new do |s|
   s.name = "ftpd"
-  s.version = "0.0.0.pre1"
+  s.version = "0.0.0.pre2"
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Wayne Conrad"]
   s.date = "2013-02-10"
-  s.description = "ftpd is a pure Ruby FTP server library.  It supports implicit and explicit TLS, and can be used by a text fixture or FTP daemon."
+  s.description = "ftpd is a pure Ruby FTP server library.  It supports implicit and explicit TLS, suitlble for use by a program such as a test fixture or FTP daemon."
   s.email = "wconrad@yagni.com"
   s.extra_rdoc_files = [
     "LICENSE.md",
@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
     "README.md",
     "Rakefile",
     "VERSION",
+    "examples/example.rb",
     "features/command_errors.feature",
     "features/delete.feature",
     "features/directory_navigation.feature",
@@ -70,12 +71,10 @@ Gem::Specification.new do |s|
     "ftpd.gemspec",
     "insecure-test-cert.pem",
     "lib/ftpd.rb",
-    "lib/ftpd/FakeFtpServer.rb",
-    "lib/ftpd/FakeServer.rb",
-    "lib/ftpd/FakeTlsServer.rb",
-    "lib/ftpd/ObjectUtil.rb",
-    "lib/ftpd/TempDir.rb",
-    "lib/ftpd/q.rb",
+    "lib/ftpd/ftp_server.rb",
+    "lib/ftpd/server.rb",
+    "lib/ftpd/temp_dir.rb",
+    "lib/ftpd/tls_server.rb",
     "rake_tasks/cucumber.rake",
     "rake_tasks/jeweler.rake"
   ]
