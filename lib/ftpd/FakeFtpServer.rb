@@ -309,6 +309,7 @@ class FakeFtpServer < FakeTlsServer
     end
 
     def cmd_stru(argument)
+      syntax_error unless argument
       check_logged_in
       name, implemented = FILE_STRUCTURES[argument]
       error "504 Invalid structure code" unless name
