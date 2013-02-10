@@ -49,6 +49,7 @@ class Example
     puts "User: #{@server.user}"
     puts "Pass: #{@server.password}"
     puts "Directory: #{@data_dir.path}"
+    puts "URI: ftp://#{HOST}:#{@server.port}"
   end
 
   def create_connection_script
