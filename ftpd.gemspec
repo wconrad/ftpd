@@ -67,6 +67,7 @@ Gem::Specification.new do |s|
     "features/support/test_server.rb",
     "features/syntax_errors.feature",
     "features/type.feature",
+    "ftpd.gemspec",
     "insecure-test-cert.pem",
     "lib/ftpd.rb",
     "lib/ftpd/FakeFtpServer.rb",
