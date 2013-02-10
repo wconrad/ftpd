@@ -1,13 +1,17 @@
 require 'openssl'
 require File.expand_path('FakeServer', File.dirname(__FILE__))
-require File.expand_path('ObjectUtil', File.dirname(__FILE__))
 
 class FakeTlsServer < FakeServer
+
+  def initialize
+    @ssl_context = make_ssl_context
+    super
+  end
 
   private
 
   def make_server_socket
-    ssl_server_socket = OpenSSL::SSL::SSLServer.new(super, ssl_context);
+    ssl_server_socket = OpenSSL::SSL::SSLServer.new(super, @ssl_context);
     ssl_server_socket.start_immediately = false
     ssl_server_socket
   end
@@ -18,7 +22,7 @@ class FakeTlsServer < FakeServer
     socket
   end
 
-  def ssl_context
+  def make_ssl_context
     context = OpenSSL::SSL::SSLContext.new
     File.open(certfile_path) do |certfile|
       context.cert = OpenSSL::X509::Certificate.new(certfile)
@@ -27,7 +31,6 @@ class FakeTlsServer < FakeServer
     end
     context
   end
-  once :ssl_context
 
   def certfile_path
     File.expand_path('../../insecure-test-cert.pem',
@@ -35,7 +38,7 @@ class FakeTlsServer < FakeServer
   end
 
   def add_tls_methods_to_socket(socket)
-    context = ssl_context
+    context = @ssl_context
     class << socket
       def ssl_context
         context

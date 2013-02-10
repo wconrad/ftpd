@@ -1,4 +1,3 @@
-require 'ftpd/ObjectUtil'
 require 'ftpd/TempDir'
 require 'ftpd/FakeServer'
 require 'ftpd/FakeTlsServer'
