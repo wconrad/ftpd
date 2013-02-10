@@ -1,4 +1,4 @@
-require 'ftpd/TempDir'
-require 'ftpd/FakeServer'
-require 'ftpd/FakeTlsServer'
-require 'ftpd/FakeFtpServer'
+require 'ftpd/ftp_server'
+require 'ftpd/server'
+require 'ftpd/temp_dir'
+require 'ftpd/tls_server'

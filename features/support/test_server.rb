@@ -8,7 +8,7 @@ class TestServer
 
   def initialize
     @temp_dir = Dir.mktmpdir
-    @server = FakeFtpServer.new(@temp_dir)
+    @server = Ftpd::FtpServer.new(@temp_dir)
     @templates = TestFileTemplates.new
   end
 
