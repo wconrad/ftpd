@@ -148,6 +148,7 @@ class FakeFtpServer < FakeTlsServer
     end
 
     def cmd_quit(argument)
+      syntax_error if argument
       check_logged_in
       reply "221 Byebye"
       @state = :user
