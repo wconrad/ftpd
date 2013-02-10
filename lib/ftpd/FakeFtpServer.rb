@@ -5,7 +5,6 @@ require 'openssl'
 require 'pathname'
 require File.expand_path('FakeTlsServer', File.dirname(__FILE__))
 require File.expand_path('TempDir', File.dirname(__FILE__))
-require File.expand_path('q', File.dirname(__FILE__))
 
 class FakeFtpServer < FakeTlsServer
 
