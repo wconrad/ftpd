@@ -12,6 +12,11 @@ class TestClient
     @templates = TestFileTemplates.new
   end
 
+  def close
+    @ftp.close
+    @temp_dir.rm
+  end
+
   def_delegators :@ftp,
   :chdir,
   :connect,

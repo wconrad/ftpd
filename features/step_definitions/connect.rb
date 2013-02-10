@@ -6,6 +6,10 @@ When /^the client connects( with TLS)?$/ do |with_tls|
   @client.connect(@server.host, @server.port)
 end
 
+After do
+  @client.close if @client
+end
+
 Then /^the connection is closed$/ do
   @client.should be_closed
 end
