@@ -53,7 +53,7 @@ class Example
   end
 
   def create_connection_script
-    command_path = '/tmp/connect_to_fake_ftp_server.sh'
+    command_path = '/tmp/connect-to-example-ftp-server.sh'
     File.open(command_path, 'w') do |file|
       file.puts "#!/bin/bash"
       file.puts "ftp $FTP_ARGS #{HOST} #{@server.port}"
