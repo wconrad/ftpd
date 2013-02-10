@@ -434,7 +434,6 @@ class FakeFtpServer < FakeTlsServer
       'N'=>['Non-print', true],
       'T'=>['Telnet format effectors', false],
       'C'=>['Carriage Control (ASA)', false],
-      'L'=>['Local byte size', false],
     }
 
     DATA_TYPES = {
