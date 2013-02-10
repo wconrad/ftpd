@@ -299,6 +299,7 @@ class FakeFtpServer < FakeTlsServer
     end
 
     def cmd_mode(argument)
+      syntax_error unless argument
       check_logged_in
       name, implemented = TRANSMISSION_MODES[argument]
       error "504 Invalid mode code" unless name
