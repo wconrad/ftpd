@@ -7,7 +7,7 @@ class TestClient
   include FileUtils
 
   def initialize(opts = {})
-    @temp_dir = Dir.mktmpdir
+    @temp_dir = Ftpd::TempDir.new
     @ftp = make_ftp(opts)
     @templates = TestFileTemplates.new
   end
@@ -61,7 +61,7 @@ class TestClient
   end
 
   def temp_path(path)
-    File.expand_path(path, @temp_dir)
+    File.expand_path(path, @temp_dir.path)
   end
 
   def make_ftp(opts)
