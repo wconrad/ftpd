@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "ftpd"
-  s.version = "0.0.0.pre2"
+  s.version = "0.0.1.pre"
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Wayne Conrad"]
-  s.date = "2013-02-10"
+  s.date = "2013-02-11"
   s.description = "ftpd is a pure Ruby FTP server library.  It supports implicit and explicit TLS, suitlble for use by a program such as a test fixture or FTP daemon."
   s.email = "wconrad@yagni.com"
   s.extra_rdoc_files = [
@@ -25,6 +25,7 @@ Gem::Specification.new do |s|
     "VERSION",
     "examples/example.rb",
     "features/command_errors.feature",
+    "features/concurrent_sessions.feature",
     "features/delete.feature",
     "features/directory_navigation.feature",
     "features/file_structure.feature",
@@ -37,6 +38,7 @@ Gem::Specification.new do |s|
     "features/port.feature",
     "features/put.feature",
     "features/quit.feature",
+    "features/step_definitions/client.rb",
     "features/step_definitions/client_and_server_files.rb",
     "features/step_definitions/client_files.rb",
     "features/step_definitions/command.rb",
