@@ -32,7 +32,7 @@ class TestClient
   :quit
 
   def raw(*command)
-    @ftp.sendcmd *command.compact.join(' ')
+    @ftp.sendcmd command.compact.join(' ')
   end
 
   def get(mode, remote_path)
