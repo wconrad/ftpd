@@ -12,8 +12,8 @@ class TestServer
     @templates = TestFileTemplates.new
   end
 
-  def close
-    @server.close
+  def stop
+    @server.stop
   end
 
   def host

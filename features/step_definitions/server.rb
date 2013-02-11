@@ -3,5 +3,5 @@ Given /^the server is started$/ do
 end
 
 After do
-  @server.close if @server
+  @server.stop if @server
 end

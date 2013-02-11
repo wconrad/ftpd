@@ -12,7 +12,7 @@ module Ftpd
       @server_socket.addr[1]
     end
 
-    def close
+    def stop
       # An apparent race condition causes this to sometimes not stop the
       # thread.  When this happens, the thread remains blocked in the
       # accept method; I hypothesize that this happens whenever the
