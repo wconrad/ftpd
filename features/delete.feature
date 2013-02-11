@@ -9,8 +9,6 @@ Feature: Delete
     And the server has file "foo"
     When the client successfully deletes "foo"
     Then the server should not have file "foo"
-    And the client lists the directory
-    And the file list should not contain "foo"
 
   Scenario: Missing path
     Given a successful login
