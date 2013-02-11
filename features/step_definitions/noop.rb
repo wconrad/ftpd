@@ -1,13 +1,15 @@
-When /^the client successfully does nothing( with a parameter)?$/ do |with_param|
+When /^the( \w+)? client successfully does nothing( with a parameter)?$/ do
+|client_name, with_param|
   if with_param
-    @client.raw 'NOOP', 'foo'
+    client(client_name).raw 'NOOP', 'foo'
   else
-    @client.noop
+    client(client_name).noop
   end
 end
 
-When /^the client does nothing( with a parameter)?$/ do |with_param|
+When /^the( \w+)? client does nothing( with a parameter)?$/ do
+|client_name, with_param|
   capture_error do
-    step "the client successfully does nothing#{with_param}"
+    step "the#{client_name} client successfully does nothing#{with_param}"
   end
 end

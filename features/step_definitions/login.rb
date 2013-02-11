@@ -3,9 +3,9 @@ def logged_in?
   @error.nil?
 end
 
-def login(user, password)
+def login(user, password, client_name = nil)
   capture_error do
-    @client.login user, password
+    client.login user, password
   end
 end
 
@@ -19,14 +19,19 @@ Given /^a successful login( with TLS)?$/ do |with_tls|
   step 'the client logs in'
 end
 
+Given /^the( \w+)? client connects and logs in$/ do |client_name|
+  step "the#{client_name} client connects"
+  step "the#{client_name} client logs in"
+end
+
 Given /^a failed login$/ do
   step 'the server is started'
   step 'the client connects'
   step 'the client logs in with a bad password'
 end
 
-When /^the client logs in$/ do
-  login @server.user, @server.password
+When /^the( \w+)? client logs in$/ do |client_name|
+  login @server.user, @server.password, client_name
 end
 
 When /^the client logs in with a bad password$/ do

@@ -39,14 +39,20 @@ module Ftpd
               sleep(0.2)
               retry
             end
-            begin
-              session(socket)
-            ensure
-              socket.close
-            end
+            start_session_thread socket
           rescue IOError
             break
           end
+        end
+      end
+    end
+
+    def start_session_thread(socket)
+      Thread.new do
+        begin
+          session(socket)
+        ensure
+          socket.close
         end
       end
     end
