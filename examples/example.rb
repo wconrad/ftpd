@@ -18,6 +18,7 @@ class Example
   end
 
   def run
+    @server.start
     wait_until_stopped
   end
 

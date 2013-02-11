@@ -10,6 +10,7 @@ class TestServer
     @temp_dir = Ftpd::TempDir.make
     @server = Ftpd::FtpServer.new(@temp_dir)
     @templates = TestFileTemplates.new
+    @server.start 
   end
 
   def stop
