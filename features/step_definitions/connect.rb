@@ -9,11 +9,3 @@ end
 After do
   @client.close if @client
 end
-
-Then /^the connection is closed$/ do
-  @client.should be_closed
-end
-
-Then /^the connection is open$/ do
-  @client.should be_open
-end
