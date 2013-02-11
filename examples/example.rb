@@ -9,7 +9,7 @@ require 'ftpd'
 class Example
 
   def initialize
-    @data_dir = TempDir.make
+    @data_dir = Ftpd::TempDir.make
     create_files
     @server = Ftpd::FtpServer.new(@data_dir)
     set_credentials

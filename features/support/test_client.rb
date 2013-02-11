@@ -7,7 +7,7 @@ class TestClient
   include FileUtils
 
   def initialize(opts = {})
-    @temp_dir = TempDir.make
+    @temp_dir = Ftpd::TempDir.make
     @ftp = make_ftp(opts)
     @templates = TestFileTemplates.new
   end
