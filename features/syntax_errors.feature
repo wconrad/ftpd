@@ -1,4 +1,4 @@
-Feature: Miscellaneous Errors
+Feature: Syntax Errors
 
   As a client
   I want good error messages
