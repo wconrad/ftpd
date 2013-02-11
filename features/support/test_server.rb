@@ -7,14 +7,13 @@ class TestServer
   include FileUtils
 
   def initialize
-    @temp_dir = Ftpd::TempDir.new
-    @server = Ftpd::FtpServer.new(@temp_dir.path)
+    @temp_dir = TempDir.make
+    @server = Ftpd::FtpServer.new(@temp_dir)
     @templates = TestFileTemplates.new
   end
 
   def close
     @server.close
-    @temp_dir.rm
   end
 
   def host
@@ -46,7 +45,7 @@ class TestServer
   private
 
   def temp_path(path)
-    File.expand_path(path, @temp_dir.path)
+    File.expand_path(path, @temp_dir)
   end
 
 end

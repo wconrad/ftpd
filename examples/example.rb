@@ -9,9 +9,9 @@ require 'ftpd'
 class Example
 
   def initialize
-    @data_dir = Ftpd::TempDir.new
+    @data_dir = TempDir.make
     create_files
-    @server = Ftpd::FtpServer.new(@data_dir.path)
+    @server = Ftpd::FtpServer.new(@data_dir)
     set_credentials
     display_connection_info
     create_connection_script
@@ -31,7 +31,7 @@ class Example
   end
 
   def create_file(path, contents)
-    full_path = File.expand_path(path, @data_dir.path)
+    full_path = File.expand_path(path, @data_dir)
     FileUtils.mkdir_p File.dirname(full_path)
     File.open(full_path, 'w') do |file|
       file.write contents
@@ -48,7 +48,7 @@ class Example
     puts "Port: #{@server.port}"
     puts "User: #{@server.user}"
     puts "Pass: #{@server.password}"
-    puts "Directory: #{@data_dir.path}"
+    puts "Directory: #{@data_dir}"
     puts "URI: ftp://#{HOST}:#{@server.port}"
   end
 

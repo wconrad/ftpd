@@ -7,14 +7,13 @@ class TestClient
   include FileUtils
 
   def initialize(opts = {})
-    @temp_dir = Ftpd::TempDir.new
+    @temp_dir = TempDir.make
     @ftp = make_ftp(opts)
     @templates = TestFileTemplates.new
   end
 
   def close
     @ftp.close
-    @temp_dir.rm
   end
 
   def_delegators :@ftp,
@@ -66,7 +65,7 @@ class TestClient
   end
 
   def temp_path(path)
-    File.expand_path(path, @temp_dir.path)
+    File.expand_path(path, @temp_dir)
   end
 
   def make_ftp(opts)
