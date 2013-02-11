@@ -3,8 +3,8 @@
 require 'fileutils'
 require 'openssl'
 require 'pathname'
-require File.expand_path('tls_server', File.dirname(__FILE__))
-require File.expand_path('temp_dir', File.dirname(__FILE__))
+require 'ftpd/tls_server'
+require 'ftpd/temp_dir'
 
 module Ftpd
   class FtpServer < TlsServer

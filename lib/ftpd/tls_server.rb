@@ -1,5 +1,5 @@
 require 'openssl'
-require File.expand_path('server', File.dirname(__FILE__))
+require 'ftpd/server'
 
 module Ftpd
   class TlsServer < Server
