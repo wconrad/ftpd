@@ -48,6 +48,7 @@ module Ftpd
         @socket = args[:socket]
         @socket.encrypt if args[:implicit_tls]
         @data_path = @cwd = args[:data_path].realpath
+        @name_prefix = '/'
         @debug_path = args[:debug_path]
         @data_type = 'A'
         @mode = 'S'
@@ -353,6 +354,12 @@ module Ftpd
         ensure_path_is_in_data_dir(target)
         restore_cwd_on_error do
           @cwd = target
+          @name_prefix = 
+            if argument =~ %r"^/"
+              argument
+            else
+              File.expand_path(argument, @name_prefix)
+            end
           pwd
         end
       end
