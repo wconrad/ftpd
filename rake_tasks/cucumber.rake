@@ -1,8 +1,9 @@
 require 'cucumber/rake/task'
 
-Cucumber::Rake::Task.new(:features) do |t|
+Cucumber::Rake::Task.new 'test:features' do |t|
   t.fork = true
+  t.cucumber_opts = '--format progress'
 end
 
-task :cucumber => [:features]
-task :default => [:cucumber]
+task 'test:cucumber' => ['test:features']
+task 'cucumber' => ['test:features']

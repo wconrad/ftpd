@@ -25,16 +25,29 @@ doesn't work in FTPS active mode (or both).
 
 ### TESTS
 
-To run the cucumber tests:
+To run the cucumber (functional) tests:
 
-    $ rake features
+    $ rake test:features
+
+To run the rspec (unit) tests:
+
+    $ rake test:spec
+
+To run all tests:
+
+    $ rake test
+
+or just:
+
+    $ rake
 
 To run the stand-alone example:
 
     $ examples/example.rb
 
 The example prints its port, username and password to the console.
-You can connect to the stand-alone example with any FTP client.
+You can connect to the stand-alone example with any FTP client.  This
+is useful to testing how the server responds to a given FTP client.
 
 ## REFERENCES
 
