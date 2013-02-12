@@ -16,11 +16,6 @@ module Ftpd
     end
 
     def stop
-      # An apparent race condition causes this to sometimes not stop the
-      # thread.  When this happens, the thread remains blocked in the
-      # accept method; I hypothesize that this happens whenever the
-      # close happens first.  Once this bug is fixed, join on the
-      # thread.
       @server_socket.close
     end
 
