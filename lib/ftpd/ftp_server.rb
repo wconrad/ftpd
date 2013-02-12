@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'fileutils'
+require 'ftpd/error'
 require 'ftpd/missing_driver'
 require 'ftpd/temp_dir'
 require 'ftpd/tls_server'
@@ -42,6 +43,8 @@ module Ftpd
     private
 
     class Session
+
+      include Error
 
       def initialize(args)
         @driver = args[:driver]
@@ -425,10 +428,6 @@ module Ftpd
 
       def sanitized_cwd
         relative_to_data_path(@cwd)
-      end
-
-      def error(message)
-        raise CommandError, message
       end
 
       TRANSMISSION_MODES = {

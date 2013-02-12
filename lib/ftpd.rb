@@ -1,3 +1,4 @@
+require 'ftpd/error'
 require 'ftpd/exceptions'
 require 'ftpd/ftp_server'
 require 'ftpd/missing_driver'
