@@ -1,25 +1,28 @@
 #!/usr/bin/env ruby
 
 require 'fileutils'
+require 'ftpd/incapable_driver'
+require 'ftpd/temp_dir'
+require 'ftpd/tls_server'
 require 'openssl'
 require 'pathname'
-require 'ftpd/tls_server'
-require 'ftpd/temp_dir'
 
 module Ftpd
   class FtpServer < TlsServer
 
-    attr_accessor :user
-    attr_accessor :password
     attr_accessor :debug_path
-    attr_accessor :response_delay
+    attr_accessor :driver
     attr_accessor :implicit_tls
+    attr_accessor :password
+    attr_accessor :response_delay
+    attr_accessor :user
 
     def initialize(data_path)
       super()
       self.user = 'user'
       self.password = 'password'
       self.debug_path = '/dev/stdout'
+      @driver = IncapableDriver.new
       @data_path = Pathname.new(data_path)
       @response_delay = 0
       @implicit_tls = false
@@ -27,6 +30,7 @@ module Ftpd
 
     def session(socket)
       Session.new(:socket => socket,
+                  :driver => @driver,
                   :user => user,
                   :password => password,
                   :data_path => @data_path,
@@ -40,10 +44,9 @@ module Ftpd
     class Session
 
       def initialize(args)
+        @driver = args[:driver]
         @socket = args[:socket]
         @socket.encrypt if args[:implicit_tls]
-        @expected_user = args[:user]
-        @expected_password = args[:password]
         @data_path = @cwd = args[:data_path].realpath
         @debug_path = args[:debug_path]
         @data_type = 'A'
@@ -139,7 +142,7 @@ module Ftpd
         syntax_error unless argument
         bad_sequence unless @state == :password
         password = argument
-        if @user != @expected_user || password != @expected_password
+        unless @driver.authenticate(@user, password)
           @state = :user
           error "530 Login incorrect"
         end

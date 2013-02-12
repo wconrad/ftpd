@@ -2,6 +2,19 @@ require 'fileutils'
 require 'forwardable'
 
 class TestServer
+  class TestServerDriver
+
+    USER = 'user'
+    PASSWORD = 'password'
+
+    def authenticate(user, password)
+      user == USER && password == PASSWORD
+    end
+
+  end
+end
+
+class TestServer
 
   extend Forwardable
   include FileUtils
@@ -10,6 +23,7 @@ class TestServer
     @temp_dir = Ftpd::TempDir.make
     @server = Ftpd::FtpServer.new(@temp_dir)
     @templates = TestFileTemplates.new
+    @server.driver = TestServerDriver.new
     @server.start 
   end
 
@@ -39,9 +53,15 @@ class TestServer
     File.open(full_path, 'rb', &:read)
   end
 
-  def_delegator :@server, :password
+  def user
+    TestServerDriver::USER
+  end
+
+  def password
+    TestServerDriver::PASSWORD
+  end
+
   def_delegator :@server, :port
-  def_delegator :@server, :user
 
   private
 
