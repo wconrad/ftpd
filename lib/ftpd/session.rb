@@ -1,8 +1,6 @@
 #!/usr/bin/env ruby
 
 require 'ftpd/error'
-require 'openssl'
-require 'pathname'
 
 module Ftpd
   class Session

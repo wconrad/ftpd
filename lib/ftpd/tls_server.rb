@@ -1,6 +1,3 @@
-require 'openssl'
-require 'ftpd/server'
-
 module Ftpd
   class TlsServer < Server
 

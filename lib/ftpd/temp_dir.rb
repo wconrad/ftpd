@@ -1,6 +1,3 @@
-require 'fileutils'
-require 'tmpdir'
-
 module Ftpd
   module TempDir
 

@@ -1,5 +1,3 @@
-require 'ftpd/exceptions'
-
 module Ftpd
   class MissingDriver
 

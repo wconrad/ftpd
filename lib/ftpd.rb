@@ -1,8 +1,18 @@
-require 'ftpd/error'
-require 'ftpd/exceptions'
-require 'ftpd/ftp_server'
-require 'ftpd/missing_driver'
+require 'fileutils'
 require 'ftpd/server'
-require 'ftpd/session'
-require 'ftpd/temp_dir'
-require 'ftpd/tls_server'
+require 'openssl'
+require 'pathname'
+require 'socket'
+require 'tmpdir'
+
+module Ftpd
+  autoload :Error,         'ftpd/error'
+  autoload :FtpServer,     'ftpd/ftp_server'
+  autoload :MissingDriver, 'ftpd/missing_driver'
+  autoload :Server,        'ftpd/server'
+  autoload :Session,       'ftpd/session'
+  autoload :TempDir,       'ftpd/temp_dir'
+  autoload :TlsServer,     'ftpd/tls_server'
+end
+
+require 'ftpd/exceptions'

@@ -1,10 +1,5 @@
 #!/usr/bin/env ruby
 
-require 'ftpd/missing_driver'
-require 'ftpd/session'
-require 'ftpd/tls_server'
-require 'pathname'
-
 module Ftpd
   class FtpServer < TlsServer
 
