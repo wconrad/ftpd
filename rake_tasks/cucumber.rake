@@ -5,3 +5,4 @@ Cucumber::Rake::Task.new(:features) do |t|
 end
 
 task :cucumber => [:features]
+task :default => [:cucumber]

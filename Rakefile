@@ -3,6 +3,4 @@ require 'rubygems'
 require 'bundler'
 
 $:.unshift(File.dirname(__FILE__) + '/lib')
-Dir['rake_tasks/**/*.rake'].each { |path| load path }
-
-task :default => [:cucumber]
+Dir['rake_tasks/**/*.rake'].sort.each { |path| load path }
