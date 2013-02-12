@@ -4,11 +4,25 @@ require 'forwardable'
 class TestServer
   class TestServerDriver
 
+    def initialize(temp_dir)
+      @temp_dir = temp_dir
+    end
+
     USER = 'user'
     PASSWORD = 'password'
 
     def authenticate(user, password)
       user == USER && password == PASSWORD
+    end
+
+    def path_exists?(ftp_path)
+      File.exists?(expand_ftp_path(ftp_path))
+    end
+
+    private
+
+    def expand_ftp_path(ftp_path)
+      File.join(@temp_dir, ftp_path)
     end
 
   end
@@ -23,7 +37,7 @@ class TestServer
     @temp_dir = Ftpd::TempDir.make
     @server = Ftpd::FtpServer.new(@temp_dir)
     @templates = TestFileTemplates.new
-    @server.driver = TestServerDriver.new
+    @server.driver = TestServerDriver.new(@temp_dir)
     @server.start 
   end
 

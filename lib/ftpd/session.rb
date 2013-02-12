@@ -321,6 +321,9 @@ module Ftpd
           else
             File.expand_path(argument, @name_prefix)
           end
+        unless @driver.path_exists?(@name_prefix)
+          error '550 No such file or directory'
+        end
         pwd
       end
     end
