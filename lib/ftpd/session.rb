@@ -325,6 +325,9 @@ module Ftpd
         unless @file_system.exists?(@name_prefix)
           error '550 No such file or directory'
         end
+        unless @file_system.directory?(@name_prefix)
+          error '550 Not a directory'
+        end
         pwd
       end
     end

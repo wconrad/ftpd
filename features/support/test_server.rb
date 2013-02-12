@@ -33,6 +33,10 @@ class TestServer
       File.exists?(expand_ftp_path(ftp_path))
     end
 
+    def directory?(ftp_path)
+      File.directory?(expand_ftp_path(ftp_path))
+    end
+
     private
 
     def expand_ftp_path(ftp_path)

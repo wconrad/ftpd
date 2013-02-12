@@ -13,10 +13,15 @@ Feature: Change Directory
   Scenario: Change to parent
     Given a successful login
     And the server has file "subdir/bar"
-    And the server has file "baz"
     And the client successfully cd's to "subdir"
     When the client successfully cd's up
     Then the current directory should be "/"
+
+  Scenario: Change to file
+    Given a successful login
+    And the server has file "baz"
+    When the client cd's to "baz"
+    Then the server returns a not a directory error
 
   Scenario: No such directory
     Given a successful login

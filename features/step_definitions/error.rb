@@ -17,6 +17,10 @@ Then /^the server returns a no such file error$/ do
   step 'the server returns a "550 No such file or directory" error'
 end
 
+Then /^the server returns a not a directory error$/ do
+  step 'the server returns a "550 Not a directory" error'
+end
+
 Then /^the server returns a login incorrect error$/ do
   step 'the server returns a "530 Login incorrect" error'
 end
