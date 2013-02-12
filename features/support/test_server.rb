@@ -16,31 +16,7 @@ class TestServer
     end
 
     def file_system(user)
-      TestServerFileSystem.new(@temp_dir)
-    end
-
-  end
-end
-
-class TestServer
-  class TestServerFileSystem
-
-    def initialize(temp_dir)
-      @temp_dir = temp_dir
-    end
-
-    def exists?(ftp_path)
-      File.exists?(expand_ftp_path(ftp_path))
-    end
-
-    def directory?(ftp_path)
-      File.directory?(expand_ftp_path(ftp_path))
-    end
-
-    private
-
-    def expand_ftp_path(ftp_path)
-      File.join(@temp_dir, ftp_path)
+      Ftpd::DiskFileSystem.new(@temp_dir)
     end
 
   end

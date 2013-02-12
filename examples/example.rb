@@ -12,13 +12,18 @@ module Example
     attr_reader :expected_user
     attr_reader :expected_password
 
-    def initialize
+    def initialize(data_dir)
+      @data_dir = data_dir
       @expected_user = ENV['LOGNAME']
       @expected_password = ''
     end
 
     def authenticate(user, password)
       user == @expected_user && password == @expected_password
+    end
+
+    def file_system(user)
+      Ftpd::DiskFileSystem.new(@data_dir)
     end
 
   end
@@ -31,7 +36,7 @@ module Example
       @data_dir = Ftpd::TempDir.make
       create_files
       @server = Ftpd::FtpServer.new(@data_dir)
-      @driver = Driver.new
+      @driver = Driver.new(@data_dir)
       @server.driver = @driver
       display_connection_info
       create_connection_script
