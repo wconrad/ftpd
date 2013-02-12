@@ -75,7 +75,7 @@ module Ftpd
                 error "502 Command not implemented: #{command}"
               end
               send(method, argument)
-            rescue Error => e
+            rescue CommandError => e
               reply e.message
             rescue Errno::ECONNRESET, Errno::EPIPE
             end
@@ -84,9 +84,6 @@ module Ftpd
       end
 
       private
-
-      class Error < StandardError
-      end
 
       VALID_COMMANDS = [
         "abor",
@@ -376,10 +373,10 @@ module Ftpd
 
       def cmd_auth(security_scheme)
         if @socket.encrypted?
-          raise Error, "503 AUTH already done"
+          error "503 AUTH already done"
         end
         unless security_scheme =~ /^TLS(-C)?$/i
-          raise Error, "500 Security scheme not implemented: #{security_scheme}"
+          error "500 Security scheme not implemented: #{security_scheme}"
         end
         reply "234 AUTH #{security_scheme} OK."
         @socket.encrypt
@@ -389,10 +386,10 @@ module Ftpd
         syntax_error unless buffer_size =~ /^\d+$/
         buffer_size = buffer_size.to_i
         unless @socket.encrypted?
-          raise Error, "503 PBSZ must be preceded by AUTH"
+          error "503 PBSZ must be preceded by AUTH"
         end
         unless buffer_size == 0
-          raise Error, "501 PBSZ=0"
+          error "501 PBSZ=0"
         end
         reply "200 PBSZ=0"
         @protection_buffer_size_set = true
@@ -401,14 +398,14 @@ module Ftpd
       def cmd_prot(level_arg)
         level_code = level_arg.upcase
         unless @protection_buffer_size_set
-          raise Error, "503 PROT must be preceded by PBSZ"
+          error "503 PROT must be preceded by PBSZ"
         end
         level = DATA_CHANNEL_PROTECTION_LEVELS[level_code]
         unless level
-          raise Error, "504 Unknown protection level"
+          error "504 Unknown protection level"
         end
         unless level == :private
-          raise Error, "536 Unsupported protection level #{level}"
+          error "536 Unsupported protection level #{level}"
         end
         @data_channel_protection_level = level
         reply "200 Data protection level #{level_code}"
@@ -431,7 +428,7 @@ module Ftpd
       end
 
       def error(message)
-        raise Error, message
+        raise CommandError, message
       end
 
       TRANSMISSION_MODES = {

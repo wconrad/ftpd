@@ -4,4 +4,6 @@ module Ftpd
 
   class MissingDriverError < FtpServerError ; end
 
+  class CommandError < FtpServerError ; end
+
 end
