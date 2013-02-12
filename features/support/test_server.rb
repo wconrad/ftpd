@@ -15,7 +15,21 @@ class TestServer
       user == USER && password == PASSWORD
     end
 
-    def path_exists?(ftp_path)
+    def file_system(user)
+      TestServerFileSystem.new(@temp_dir)
+    end
+
+  end
+end
+
+class TestServer
+  class TestServerFileSystem
+
+    def initialize(temp_dir)
+      @temp_dir = temp_dir
+    end
+
+    def exists?(ftp_path)
       File.exists?(expand_ftp_path(ftp_path))
     end
 

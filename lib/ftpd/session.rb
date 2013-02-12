@@ -109,6 +109,7 @@ module Ftpd
         error "530 Login incorrect"
       end
       reply "230 Logged in"
+      @file_system = @driver.file_system(@user)
       @state = :logged_in
     end
 
@@ -321,7 +322,7 @@ module Ftpd
           else
             File.expand_path(argument, @name_prefix)
           end
-        unless @driver.path_exists?(@name_prefix)
+        unless @file_system.exists?(@name_prefix)
           error '550 No such file or directory'
         end
         pwd
