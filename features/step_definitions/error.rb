@@ -10,7 +10,7 @@ Then /^the server returns no error$/ do
 end
 
 Then /^the server returns a "(.*?)" error$/ do |error_message|
-  @error.should include error_message
+  (@error || '').should include error_message
 end
 
 Then /^the server returns a no such file error$/ do
@@ -19,7 +19,6 @@ end
 
 Then /^the server returns a login incorrect error$/ do
   step 'the server returns a "530 Login incorrect" error'
-
 end
 
 Then /^the server returns a not logged in error$/ do
