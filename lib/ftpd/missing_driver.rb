@@ -1,7 +1,7 @@
 require 'ftpd/exceptions'
 
 module Ftpd
-  class IncapableDriver
+  class MissingDriver
 
     def method_missing(method, *args)
       raise MissingDriverError,

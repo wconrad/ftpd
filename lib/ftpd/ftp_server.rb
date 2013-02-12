@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'fileutils'
-require 'ftpd/incapable_driver'
+require 'ftpd/missing_driver'
 require 'ftpd/temp_dir'
 require 'ftpd/tls_server'
 require 'openssl'
@@ -22,7 +22,7 @@ module Ftpd
       self.user = 'user'
       self.password = 'password'
       self.debug_path = '/dev/stdout'
-      @driver = IncapableDriver.new
+      @driver = MissingDriver.new
       @data_path = Pathname.new(data_path)
       @response_delay = 0
       @implicit_tls = false
