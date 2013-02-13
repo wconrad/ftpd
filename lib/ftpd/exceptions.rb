@@ -8,6 +8,7 @@ module Ftpd
 
   ftp_server_error :CommandError
   ftp_server_error :DriverError
+  ftp_server_error :FileSystemError
   ftp_server_error :MissingDriverError
 
 end

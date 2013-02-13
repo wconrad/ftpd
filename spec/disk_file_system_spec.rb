@@ -14,13 +14,32 @@ module Ftpd
       Dir.mkdir data_path(path)
     end
 
+    def read_only path
+      File.chmod 0500, data_path(path)
+    end
+
+    def writable path
+      File.chmod 0700, data_path(path)
+    end
+
     def touch(path)
       FileUtils.touch data_path(path)
+    end
+
+    def exists?(path)
+      File.exists?(data_path(path))
     end
 
     before(:each) do
       mkdir 'dir'
       touch 'file'
+      mkdir 'unwritable_dir'
+      touch 'unwritable_dir/file'
+      read_only 'unwritable_dir'
+    end
+
+    after(:each) do
+      writable 'unwritable_dir'
     end
 
     describe '#accessible?' do
@@ -66,6 +85,25 @@ module Ftpd
       context '(file)' do
         specify do
           disk_file_system.directory?('dir').should be_true
+        end
+      end
+
+    end
+
+    describe '#delete' do
+
+      context '(normal)' do
+        specify do
+          disk_file_system.delete('file')
+          exists?('file').should be_false
+        end
+      end
+
+      context '(permission denied)' do
+        specify do
+          expect {
+            disk_file_system.delete('unwritable_dir/file')
+          }.to raise_error Ftpd::FileSystemError, /Permission denied/
         end
       end
 

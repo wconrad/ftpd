@@ -168,10 +168,11 @@ module Ftpd
       ensure_logged_in
       path = argument
       error "501 Path required" unless path
-      target = target_path(path)
       ensure_accessible path
       ensure_exists path
-      File.unlink(target)
+      handle_file_system_error do
+        @file_system.delete path
+      end
       reply "250 DELE command successful"
     end
 
@@ -465,6 +466,14 @@ module Ftpd
       begin
         yield
       rescue SystemCallError => e
+        error "550 #{e}"
+      end
+    end
+
+    def handle_file_system_error
+      begin
+        yield
+      rescue FileSystemError => e
         error "550 #{e}"
       end
     end

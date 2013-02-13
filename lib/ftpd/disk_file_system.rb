@@ -28,10 +28,26 @@ module Ftpd
       File.directory?(expand_ftp_path(ftp_path))
     end
 
+    # Remove a file.  Can raise FileSystemError.
+
+    def delete(ftp_path)
+      handle_system_error do
+        FileUtils.rm expand_ftp_path(ftp_path)
+      end
+    end
+
     private
 
     def expand_ftp_path(ftp_path)
       File.expand_path(File.join(@data_dir, ftp_path))
+    end
+
+    def handle_system_error
+      begin
+        yield
+      rescue SystemCallError => e
+        raise FileSystemError, e.message
+      end
     end
 
   end
