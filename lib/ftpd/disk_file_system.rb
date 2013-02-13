@@ -6,7 +6,8 @@ module Ftpd
     end
 
     def exists?(ftp_path)
-      File.exists?(expand_ftp_path(ftp_path))
+      accessible_path?(ftp_path) &&
+        File.exists?(expand_ftp_path(ftp_path))
     end
 
     def directory?(ftp_path)
@@ -15,8 +16,12 @@ module Ftpd
 
     private
 
+    def accessible_path?(ftp_path)
+      expand_ftp_path(ftp_path) =~ /^#{@data_dir}/
+    end
+
     def expand_ftp_path(ftp_path)
-      File.join(@data_dir, ftp_path)
+      File.expand_path(File.join(@data_dir, ftp_path))
     end
 
   end
