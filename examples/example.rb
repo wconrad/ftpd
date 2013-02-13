@@ -18,9 +18,13 @@ module Example
       @expected_password = ''
     end
 
+    # Return true if the user/password should be allowed to log in.
+
     def authenticate(user, password)
       user == @expected_user && password == @expected_password
     end
+
+    # Return the file system to use for a user.
 
     def file_system(user)
       Ftpd::DiskFileSystem.new(@data_dir)
