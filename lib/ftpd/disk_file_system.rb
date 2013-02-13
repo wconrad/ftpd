@@ -5,9 +5,12 @@ module Ftpd
       @data_dir = data_dir
     end
 
+    def accessible?(ftp_path)
+      expand_ftp_path(ftp_path).start_with?(@data_dir)
+    end
+
     def exists?(ftp_path)
-      accessible_path?(ftp_path) &&
-        File.exists?(expand_ftp_path(ftp_path))
+      File.exists?(expand_ftp_path(ftp_path))
     end
 
     def directory?(ftp_path)

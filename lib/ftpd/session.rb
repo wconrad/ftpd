@@ -313,15 +313,17 @@ module Ftpd
                else
                  @cwd + argument
                end
-      ensure_path_is_in_data_dir(target)
       restore_cwd_on_error do
         @cwd = target
         @name_prefix = 
           if argument =~ %r"^/"
             argument
           else
-            File.expand_path(argument, @name_prefix)
+            File.join(@name_prefix, argument)
           end
+        unless @file_system.accessible?(@name_prefix)
+          access_denied_error
+        end
         unless @file_system.exists?(@name_prefix)
           error '550 No such file or directory'
         end
@@ -437,7 +439,7 @@ module Ftpd
 
     def ensure_path_is_in_data_dir(path)
       unless child_path_of?(@data_path, path)
-        error "550 Access denied"
+        access_denied_error
       end
     end
 

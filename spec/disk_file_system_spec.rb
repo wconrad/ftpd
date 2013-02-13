@@ -3,19 +3,40 @@ require File.expand_path('spec_helper', File.dirname(__FILE__))
 module Ftpd
   describe DiskFileSystem do
 
-    let(:temp_dir) {Ftpd::TempDir.make}
-    let(:data_dir) {File.join(temp_dir, 'data_dir')}
+    let(:data_dir) {Ftpd::TempDir.make}
     let(:disk_file_system) {DiskFileSystem.new(data_dir)}
 
     def data_path(path)
       File.join(data_dir, path)
     end
 
+    def mkdir(path)
+      Dir.mkdir data_path(path)
+    end
+
+    def touch(path)
+      FileUtils.touch data_path(path)
+    end
+
     before(:each) do
-      Dir.mkdir data_dir
-      Dir.mkdir data_path('dir')
-      FileUtils.touch data_path('../outside')
-      FileUtils.touch data_path('file')
+      mkdir 'dir'
+      touch 'file'
+    end
+
+    describe '#accessible?' do
+
+      context '(within tree)' do
+        specify do
+          disk_file_system.accessible?('file').should be_true
+        end
+      end
+
+      context '(outside tree)' do
+        specify do
+          disk_file_system.accessible?('../outside').should be_false
+        end
+      end
+
     end
 
     describe '#exists?' do
@@ -29,12 +50,6 @@ module Ftpd
       context '(does not exist)' do
         specify do
           disk_file_system.exists?('missing').should be_false
-        end
-      end
-
-      context '(outside of directory)' do
-        specify do
-          disk_file_system.exists?('../outside').should be_false
         end
       end
 
