@@ -41,9 +41,9 @@ Feature: Get
     When the client successfully gets text "ascii_unix"
     Then the local file "ascii_unix" should match the remote file
 
-  Scenario: Path outside tree
+  Scenario: Access denied
     Given a successful login
-    When the client gets text "../foo"
+    When the client gets text "forbidden"
     Then the server returns an access denied error
 
   Scenario: Missing file

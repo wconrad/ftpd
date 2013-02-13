@@ -61,9 +61,9 @@ Feature: List
     And the file list should contain "foo"
     And the file list should contain "bar"
 
-  Scenario: Path outside tree
+  Scenario: Access denied
     Given a successful login
-    When the client lists the directory ".."
+    When the client lists the directory "forbidden"
     Then the server returns an access denied error
 
   Scenario: Missing file

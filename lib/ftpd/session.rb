@@ -115,7 +115,7 @@ module Ftpd
 
     def cmd_quit(argument)
       syntax_error if argument
-      check_logged_in
+      ensure_logged_in
       reply "221 Byebye"
       @state = :user
     end
@@ -125,7 +125,7 @@ module Ftpd
     end
 
     def cmd_port(argument)
-      check_logged_in
+      ensure_logged_in
       pieces = argument.split(/,/)
       syntax_error unless pieces.size == 6
       pieces.collect! do |s|
@@ -141,11 +141,11 @@ module Ftpd
 
     def cmd_stor(argument)
       close_data_server_socket_when_done do
-        check_logged_in
+        ensure_logged_in
         path = argument
         syntax_error unless path
         target = target_path(path)
-        ensure_path_is_in_data_dir(target)
+        ensure_accessible path
         contents = receive_file(path)
         write_file(target, contents)
         reply "226 Transfer complete"
@@ -154,22 +154,22 @@ module Ftpd
 
     def cmd_retr(argument)
       close_data_server_socket_when_done do
-        check_logged_in
+        ensure_logged_in
         path = argument
         syntax_error unless path
         target = target_path(path)
-        ensure_path_is_in_data_dir(target)
+        ensure_accessible path
         contents = read_file(target)
         transmit_file(contents)
       end
     end
 
     def cmd_dele(argument)
-      check_logged_in
+      ensure_logged_in
       path = argument
       error "501 Path required" unless path
       target = target_path(path)
-      ensure_path_is_in_data_dir(target)
+      ensure_accessible path
       ensure_path_exists target
       File.unlink(target)
       reply "250 DELE command successful"
@@ -185,7 +185,7 @@ module Ftpd
 
     def ls(path, option)
       close_data_server_socket_when_done do
-        check_logged_in
+        ensure_logged_in
         ls_dir, ls_path = get_ls_dir_and_path(path)
         list = get_file_list(ls_dir, ls_path, option)
         transmit_file(list, 'A')
@@ -194,9 +194,9 @@ module Ftpd
 
     def get_ls_dir_and_path(path)
       path = path || '.'
+      ensure_accessible path
       target = target_path(path)
       target = realpath(target)
-      ensure_path_is_in_data_dir(target)
       if target.to_s.index(@cwd.to_s) == 0
         ls_dir = @cwd
         ls_path = target.to_s[@cwd.to_s.length..-1]
@@ -240,7 +240,7 @@ module Ftpd
     end
 
     def cmd_type(argument)
-      check_logged_in
+      ensure_logged_in
       syntax_error unless argument =~ /^(\S)(?: (\S+))?$/
       type_code = $1
       format_code = $2
@@ -266,7 +266,7 @@ module Ftpd
 
     def cmd_mode(argument)
       syntax_error unless argument
-      check_logged_in
+      ensure_logged_in
       name, implemented = TRANSMISSION_MODES[argument]
       error "504 Invalid mode code" unless name
       error "504 Mode not implemented" unless implemented
@@ -276,7 +276,7 @@ module Ftpd
 
     def cmd_stru(argument)
       syntax_error unless argument
-      check_logged_in
+      ensure_logged_in
       name, implemented = FILE_STRUCTURES[argument]
       error "504 Invalid structure code" unless name
       error "504 Structure not implemented" unless implemented
@@ -290,7 +290,7 @@ module Ftpd
     end
 
     def cmd_pasv(argument)
-      check_logged_in
+      ensure_logged_in
       if @data_server
         reply "200 Already in passive mode"
       else
@@ -307,33 +307,57 @@ module Ftpd
     end
 
     def cmd_cwd(argument)
-      check_logged_in
+      ensure_logged_in
       target = if argument =~ %r"^/(.*)$"
                  @data_path + $1
                else
                  @cwd + argument
                end
-      @name_prefix = File.expand_path(argument, @name_prefix)
-      unless @file_system.accessible?(@name_prefix)
-        access_denied_error
-      end
-      unless @file_system.exists?(@name_prefix)
-        error '550 No such file or directory'
-      end
-      unless @file_system.directory?(@name_prefix)
-        error '550 Not a directory'
-      end
+      path = File.expand_path(argument, @name_prefix)
+      ensure_accessible path
+      ensure_exists path
+      ensure_directory path
+      @name_prefix = path
       @cwd = target
       pwd
     end
 
+    def ensure_logged_in
+      return if @state == :logged_in
+      error "530 Not logged in"
+    end
+
+    def ensure_path_exists(path)
+      unless File.exists?(path)
+        error '450 No such file or directory'
+      end
+    end
+
+    def ensure_accessible(path)
+      unless @file_system.accessible?(path)
+        access_denied_error
+      end
+    end
+
+    def ensure_exists(path)
+      unless @file_system.exists?(path)
+        error '550 No such file or directory'
+      end
+    end
+
+    def ensure_directory(path)
+      unless @file_system.directory?(path)
+        error '550 Not a directory'
+      end
+    end
+
     def cmd_cdup(argument)
-      check_logged_in
+      ensure_logged_in
       cmd_cwd('..')
     end
 
     def cmd_pwd(argument)
-      check_logged_in
+      ensure_logged_in
       pwd
     end
 
@@ -412,23 +436,6 @@ module Ftpd
       'E'=>:confidential,
       'P'=>:private
     }
-
-    def check_logged_in
-      return if @state == :logged_in
-      error "530 Not logged in"
-    end
-
-    def ensure_path_is_in_data_dir(path)
-      unless child_path_of?(@data_path, path)
-        access_denied_error
-      end
-    end
-
-    def ensure_path_exists(path)
-      unless File.exists?(path)
-        error '450 No such file or directory'
-      end
-    end
 
     def child_path_of?(parent, child)
       child.cleanpath.to_s.index(parent.cleanpath.to_s) == 0

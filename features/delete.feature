@@ -21,9 +21,9 @@ Feature: Delete
     When the client deletes "foo"
     Then the server returns a not found error
 
-  Scenario: Path outside tree
+  Scenario: Access denied
     Given a successful login
-    When the client deletes "../usr/bin"
+    When the client deletes "forbidden"
     Then the server returns an access denied error
 
   Scenario: Not logged in

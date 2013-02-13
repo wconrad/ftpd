@@ -41,10 +41,10 @@ Feature: Put
     When the client successfully puts text "ascii_unix"
     Then the remote file "ascii_unix" should match the local file
 
-  Scenario: Path outside tree
+  Scenario: Access denied
     Given a successful login
-    And the client has file "foo"
-    When the client puts text "../foo"
+    And the client has file "forbidden"
+    When the client puts text "forbidden"
     Then the server returns an access denied error
 
   Scenario: Missing directory
