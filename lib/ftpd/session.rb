@@ -170,7 +170,7 @@ module Ftpd
       error "501 Path required" unless path
       target = target_path(path)
       ensure_accessible path
-      ensure_path_exists target
+      ensure_exists path
       File.unlink(target)
       reply "250 DELE command successful"
     end
@@ -325,12 +325,6 @@ module Ftpd
     def ensure_logged_in
       return if @state == :logged_in
       error "530 Not logged in"
-    end
-
-    def ensure_path_exists(path)
-      unless File.exists?(path)
-        error '450 No such file or directory'
-      end
     end
 
     def ensure_accessible(path)

@@ -38,7 +38,7 @@ Then /^the server returns a path required error$/ do
 end
 
 Then /^the server returns a not found error$/ do
-  step 'the server returns a "450 No such file or directory" error'
+  step 'the server returns a "550 No such file or directory" error'
 end
 
 Then /^the server returns a syntax error$/ do
