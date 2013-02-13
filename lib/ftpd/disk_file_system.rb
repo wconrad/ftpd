@@ -5,6 +5,10 @@ module Ftpd
       @data_dir = data_dir
     end
 
+    # The server should never try to access a path outside of the
+    # directory (such as '../foo'), but if it does, we'll catch it
+    # here.
+
     def accessible?(ftp_path)
       expand_ftp_path(ftp_path).start_with?(@data_dir)
     end

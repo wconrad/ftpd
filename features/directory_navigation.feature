@@ -10,10 +10,15 @@ Feature: Change Directory
     When the client successfully cd's to "subdir"
     Then the current directory should be "/subdir"
 
-  Scenario: Change to parent
+  Scenario: Change to parent from subdir
     Given a successful login
     And the server has file "subdir/bar"
     And the client successfully cd's to "subdir"
+    When the client successfully cd's up
+    Then the current directory should be "/"
+
+  Scenario: Change to parent from root
+    Given a successful login
     When the client successfully cd's up
     Then the current directory should be "/"
 
@@ -28,9 +33,9 @@ Feature: Change Directory
     When the client cd's to "subdir"
     Then the server returns a no such file error
 
-  Scenario: Path outside tree
+  Scenario: Access denied
     Given a successful login
-    When the client cd's to "../usr/bin"
+    When the client cd's to "forbidden"
     Then the server returns an access denied error
 
   Scenario: Not logged in

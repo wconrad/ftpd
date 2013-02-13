@@ -313,25 +313,18 @@ module Ftpd
                else
                  @cwd + argument
                end
-      restore_cwd_on_error do
-        @cwd = target
-        @name_prefix = 
-          if argument =~ %r"^/"
-            argument
-          else
-            File.join(@name_prefix, argument)
-          end
-        unless @file_system.accessible?(@name_prefix)
-          access_denied_error
-        end
-        unless @file_system.exists?(@name_prefix)
-          error '550 No such file or directory'
-        end
-        unless @file_system.directory?(@name_prefix)
-          error '550 Not a directory'
-        end
-        pwd
+      @name_prefix = File.expand_path(argument, @name_prefix)
+      unless @file_system.accessible?(@name_prefix)
+        access_denied_error
       end
+      unless @file_system.exists?(@name_prefix)
+        error '550 No such file or directory'
+      end
+      unless @file_system.directory?(@name_prefix)
+        error '550 Not a directory'
+      end
+      @cwd = target
+      pwd
     end
 
     def cmd_cdup(argument)
@@ -385,19 +378,7 @@ module Ftpd
     end
 
     def pwd
-      reply %Q(257 "#{sanitized_cwd}" is current directory)
-    end
-
-    def relative_to_data_path(path)
-      data_path = realpath(@data_path).to_s
-      path = realpath(path).to_s
-      path = path.gsub(data_path, '')
-      path = '/' if path.empty?
-      path
-    end
-
-    def sanitized_cwd
-      relative_to_data_path(@cwd)
+      reply %Q(257 "#{@name_prefix}" is current directory)
     end
 
     TRANSMISSION_MODES = {
@@ -625,14 +606,6 @@ module Ftpd
 
     def debug?
       ENV['DEBUG'].to_i != 0
-    end
-
-    def restore_cwd_on_error
-      orig_cwd = @cwd
-      yield
-    rescue
-      @cwd = orig_cwd
-      raise
     end
 
   end

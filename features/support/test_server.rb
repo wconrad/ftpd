@@ -16,7 +16,18 @@ class TestServer
     end
 
     def file_system(user)
-      Ftpd::DiskFileSystem.new(@temp_dir)
+      TestServerFileSystem.new(@temp_dir)
+    end
+
+  end
+end
+
+class TestServer
+  class TestServerFileSystem < Ftpd::DiskFileSystem
+
+    def accessible?(ftp_path)
+      return false if ftp_path =~ /forbidden/
+      super
     end
 
   end
