@@ -474,7 +474,7 @@ module Ftpd
       begin
         yield
       rescue FileSystemError => e
-        error "550 #{e}"
+        error "450 #{e}"
       end
     end
 

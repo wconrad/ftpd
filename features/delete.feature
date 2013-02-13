@@ -26,6 +26,11 @@ Feature: Delete
     When the client deletes "forbidden"
     Then the server returns an access denied error
 
+  Scenario: File system error
+    Given a successful login
+    When the client deletes "unable"
+    Then the server returns an action not taken error
+
   Scenario: Not logged in
     Given a successful connection
     When the client deletes "foo"
