@@ -10,13 +10,13 @@ module Ftpd
     attr_accessor :response_delay
     attr_accessor :user
 
-    def initialize(data_path)
-      super()
+    def initialize(opts = {})
+      super
       self.user = 'user'
       self.password = 'password'
       self.debug_path = '/dev/stdout'
       @driver = MissingDriver.new
-      @data_path = Pathname.new(data_path)
+      @data_path = Pathname.new(opts[:data_path])
       @response_delay = 0
       @implicit_tls = false
     end

@@ -1,15 +1,15 @@
 module Ftpd
   class TlsServer < Server
 
-    def initialize
+    def initialize(opts = {})
       @ssl_context = make_ssl_context
       super
     end
 
     private
 
-    def make_server_socket
-      ssl_server_socket = OpenSSL::SSL::SSLServer.new(super, @ssl_context);
+    def make_server_socket(port)
+      ssl_server_socket = OpenSSL::SSL::SSLServer.new(super(port), @ssl_context);
       ssl_server_socket.start_immediately = false
       ssl_server_socket
     end

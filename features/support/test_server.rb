@@ -68,7 +68,8 @@ class TestServer
 
   def initialize
     @temp_dir = Ftpd::TempDir.make
-    @server = Ftpd::FtpServer.new(@temp_dir)
+    @server = Ftpd::FtpServer.new(:data_path => @temp_dir,
+                                  :port => 0)
     @templates = TestFileTemplates.new
     @server.driver = TestServerDriver.new(@temp_dir)
     @server.start 

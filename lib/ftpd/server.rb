@@ -1,8 +1,9 @@
 module Ftpd
   class Server
 
-    def initialize
-      @server_socket = make_server_socket
+    def initialize(opts = {})
+      port = opts[:port] || 22
+      @server_socket = make_server_socket(port)
     end
 
     def port
@@ -19,8 +20,8 @@ module Ftpd
 
     private
 
-    def make_server_socket
-      return TCPServer.new('localhost', 0)
+    def make_server_socket(port)
+      return TCPServer.new('localhost', port)
     end
 
     def make_server_thread
