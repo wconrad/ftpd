@@ -5,6 +5,10 @@ module Ftpd
 
     let(:data_dir) {Ftpd::TempDir.make}
     let(:disk_file_system) {DiskFileSystem.new(data_dir)}
+    let(:missing_file_error) do
+      [Ftpd::FileSystemError, /No such file or directory/]
+    end
+    let(:missing_path) {'missing_path'}
 
     def data_path(path)
       File.join(data_dir, path)
@@ -92,11 +96,30 @@ module Ftpd
         end
       end
 
-      context '(permission denied)' do
+      context '(file system error)' do
         specify do
           expect {
-            disk_file_system.delete('nosuchfile')
-          }.to raise_error Ftpd::FileSystemError, /No such file or directory/
+            disk_file_system.delete(missing_path)
+          }.to raise_error *missing_file_error
+        end
+      end
+
+    end
+
+    describe '#read' do
+
+      context '(normal)' do
+        let(:path) {'file'}
+        specify do
+          disk_file_system.read(path).should == contents(path)
+        end
+      end
+
+      context '(file system error)' do
+        specify do
+          expect {
+            disk_file_system.read(missing_path)
+          }.to raise_error *missing_file_error
         end
       end
 

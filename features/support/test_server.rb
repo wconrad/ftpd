@@ -23,6 +23,7 @@ class TestServer
 end
 
 class TestServer
+
   class TestServerFileSystem < Ftpd::DiskFileSystem
 
     def accessible?(ftp_path)
@@ -42,13 +43,22 @@ class TestServer
     end
 
     def delete(ftp_path)
-      if force_file_system_error?(ftp_path)
-        raise Ftpd::FileSystemError, 'Unable to do it'
-      end
+      force_file_system_error(ftp_path)
+      super
+    end
+
+    def read(ftp_path)
+      force_file_system_error(ftp_path)
       super
     end
 
     private
+
+    def force_file_system_error(ftp_path)
+      if force_file_system_error?(ftp_path)
+        raise Ftpd::FileSystemError, 'Unable to do it'
+      end
+    end
 
     def force_access_denied?(ftp_path)
       ftp_path =~ /forbidden/

@@ -109,7 +109,7 @@ module Ftpd
         error "530 Login incorrect"
       end
       reply "230 Logged in"
-      @file_system = @driver.file_system(@user)
+      set_file_system @driver.file_system(@user)
       @state = :logged_in
     end
 
@@ -157,10 +157,10 @@ module Ftpd
         ensure_logged_in
         path = argument
         syntax_error unless path
-        target = target_path(path)
         ensure_accessible path
-        contents = read_file(target)
-        transmit_file(contents)
+        ensure_exists path
+        contents = @file_system.read(path)
+        transmit_file contents
       end
     end
 
@@ -170,9 +170,7 @@ module Ftpd
       error "501 Path required" unless path
       ensure_accessible path
       ensure_exists path
-      handle_file_system_error do
-        @file_system.delete path
-      end
+      @file_system.delete path
       reply "250 DELE command successful"
     end
 
@@ -432,6 +430,10 @@ module Ftpd
       'P'=>:private
     }
 
+    def set_file_system(file_system)
+      @file_system = FileSystemErrorTranslator.new(file_system)
+    end
+
     def child_path_of?(parent, child)
       child.cleanpath.to_s.index(parent.cleanpath.to_s) == 0
     end
@@ -467,14 +469,6 @@ module Ftpd
         yield
       rescue SystemCallError => e
         error "550 #{e}"
-      end
-    end
-
-    def handle_file_system_error
-      begin
-        yield
-      rescue FileSystemError => e
-        error "450 #{e}"
       end
     end
 

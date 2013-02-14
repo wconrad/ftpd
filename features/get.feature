@@ -60,3 +60,8 @@ Feature: Get
     Given a successful login
     When the client gets with no path
     Then the server returns a syntax error
+
+  Scenario: File system error
+    Given a successful login
+    When the client gets text "unable"
+    Then the server returns an action not taken error

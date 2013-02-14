@@ -36,6 +36,14 @@ module Ftpd
       end
     end
 
+    # Read a file into memory.  Can raise FileSystemError.
+
+    def read(ftp_path)
+      handle_system_error do
+        File.open(expand_ftp_path(ftp_path), 'rb', &:read)
+      end
+    end
+
     private
 
     def expand_ftp_path(ftp_path)
@@ -44,7 +52,7 @@ module Ftpd
 
     def handle_system_error
       begin
-        yield
+        return yield
       rescue SystemCallError => e
         raise FileSystemError, e.message
       end
