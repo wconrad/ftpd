@@ -10,36 +10,29 @@ module Ftpd
       File.join(data_dir, path)
     end
 
-    def mkdir(path)
+    def directory(path)
       Dir.mkdir data_path(path)
     end
 
-    def read_only path
-      File.chmod 0500, data_path(path)
-    end
-
-    def writable path
-      File.chmod 0700, data_path(path)
-    end
-
-    def touch(path)
-      FileUtils.touch data_path(path)
+    def file(path)
+      File.open(data_path(path), 'w') do |file|
+        file.write contents(path)
+      end
     end
 
     def exists?(path)
       File.exists?(data_path(path))
     end
 
-    before(:each) do
-      mkdir 'dir'
-      touch 'file'
-      mkdir 'unwritable_dir'
-      touch 'unwritable_dir/file'
-      read_only 'unwritable_dir'
+    def contents(path)
+      "Contents of #{path}"
     end
 
-    after(:each) do
-      writable 'unwritable_dir'
+    before(:each) do
+      directory 'dir'
+      file 'file'
+      directory 'unwritable_dir'
+      file 'unwritable_dir/file'
     end
 
     describe '#accessible?' do
@@ -102,8 +95,8 @@ module Ftpd
       context '(permission denied)' do
         specify do
           expect {
-            disk_file_system.delete('unwritable_dir/file')
-          }.to raise_error Ftpd::FileSystemError, /Permission denied/
+            disk_file_system.delete('nosuchfile')
+          }.to raise_error Ftpd::FileSystemError, /No such file or directory/
         end
       end
 
