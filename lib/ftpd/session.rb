@@ -144,10 +144,10 @@ module Ftpd
         ensure_logged_in
         path = argument
         syntax_error unless path
-        target = target_path(path)
         ensure_accessible path
+        ensure_exists File.dirname(path)
         contents = receive_file(path)
-        write_file(target, contents)
+        @file_system.write path, contents
         reply "226 Transfer complete"
       end
     end
@@ -446,22 +446,6 @@ module Ftpd
                      [@cwd, path]
                    end
       base + path
-    end
-
-    def read_file(path)
-      handle_system_error do
-        File.open(path, 'rb') do |file|
-          file.read
-        end
-      end
-    end
-
-    def write_file(dest, contents)
-      handle_system_error do
-        File.open(dest, 'w') do |file|
-          file.write(contents)
-        end
-      end
     end
 
     def handle_system_error

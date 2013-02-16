@@ -8,35 +8,42 @@ module Ftpd
     let(:missing_file_error) do
       [Ftpd::FileSystemError, /No such file or directory/]
     end
+    let(:is_a_directory_error) do
+      [Ftpd::FileSystemError, /Is a directory/]
+    end
     let(:missing_path) {'missing_path'}
 
     def data_path(path)
       File.join(data_dir, path)
     end
 
-    def directory(path)
+    def make_directory(path)
       Dir.mkdir data_path(path)
     end
 
-    def file(path)
-      File.open(data_path(path), 'w') do |file|
-        file.write contents(path)
+    def write_file(path)
+      File.open(data_path(path), 'wb') do |file|
+        file.write canned_contents(path)
       end
+    end
+
+    def read_file(path)
+      File.open(data_path(path), 'rb', &:read)
     end
 
     def exists?(path)
       File.exists?(data_path(path))
     end
 
-    def contents(path)
+    def canned_contents(path)
       "Contents of #{path}"
     end
 
     before(:each) do
-      directory 'dir'
-      file 'file'
-      directory 'unwritable_dir'
-      file 'unwritable_dir/file'
+      make_directory 'dir'
+      write_file 'file'
+      make_directory 'unwritable_dir'
+      write_file 'unwritable_dir/file'
     end
 
     describe '#accessible?' do
@@ -111,7 +118,7 @@ module Ftpd
       context '(normal)' do
         let(:path) {'file'}
         specify do
-          disk_file_system.read(path).should == contents(path)
+          disk_file_system.read(path).should == canned_contents(path)
         end
       end
 
@@ -120,6 +127,28 @@ module Ftpd
           expect {
             disk_file_system.read(missing_path)
           }.to raise_error *missing_file_error
+        end
+      end
+
+    end
+
+    describe '#write' do
+
+      let(:contents) {'file contents'}
+
+      context '(normal)' do
+        let(:path) {'file_path'}
+        specify do
+          disk_file_system.write(path, contents)
+          read_file(path).should == contents
+        end
+      end
+
+      context '(file system error)' do
+        specify do
+          expect {
+            disk_file_system.write('dir', contents)
+          }.to raise_error *is_a_directory_error
         end
       end
 

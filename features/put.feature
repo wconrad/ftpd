@@ -63,3 +63,9 @@ Feature: Put
     Given a successful login
     When the client puts with no path
     Then the server returns a syntax error
+
+  Scenario: File system error
+    Given a successful login
+    And the client has file "unable"
+    When the client puts text "unable"
+    Then the server returns an action not taken error

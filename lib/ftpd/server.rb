@@ -46,6 +46,7 @@ module Ftpd
 
     def start_session_thread(socket)
       Thread.new do
+        Thread.abort_on_exception = true
         begin
           session(socket)
         ensure

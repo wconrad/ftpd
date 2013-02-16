@@ -52,6 +52,11 @@ class TestServer
       super
     end
 
+    def write(ftp_path, contents)
+      force_file_system_error(ftp_path)
+      super
+    end
+
     private
 
     def force_file_system_error(ftp_path)

@@ -44,6 +44,16 @@ module Ftpd
       end
     end
 
+    # Write a file to disk.  Can raise FileSystemError.
+
+    def write(ftp_path, contents)
+      handle_system_error do
+        File.open(expand_ftp_path(ftp_path), 'wb') do |file|
+          file.write contents
+        end
+      end
+    end
+
     private
 
     def expand_ftp_path(ftp_path)
