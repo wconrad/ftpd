@@ -11,7 +11,6 @@ module Ftpd
       @driver = args[:driver]
       @socket = args[:socket]
       @socket.encrypt if args[:implicit_tls]
-      @data_path = args[:data_path].realpath
       @name_prefix = '/'
       @debug_path = args[:debug_path]
       @data_type = 'A'

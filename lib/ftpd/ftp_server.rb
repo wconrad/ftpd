@@ -16,7 +16,6 @@ module Ftpd
       self.password = 'password'
       self.debug_path = '/dev/stdout'
       @driver = MissingDriver.new
-      @data_path = Pathname.new(opts[:data_path])
       @response_delay = 0
       @implicit_tls = false
     end
@@ -26,7 +25,6 @@ module Ftpd
                   :driver => @driver,
                   :user => user,
                   :password => password,
-                  :data_path => @data_path,
                   :debug_path => debug_path,
                   :response_delay => response_delay,
                   :implicit_tls => @implicit_tls).run
