@@ -82,11 +82,18 @@ class TestServer
   extend Forwardable
   include FileUtils
   include TestServerFiles
+  include Ftpd::InsecureCertificate
 
-  def initialize
+  def initialize(opts = {})
     @temp_dir = Ftpd::TempDir.make
+    certfile_path = if opts[:tls]
+                      insecure_certfile_path
+                    else
+                      nil
+                    end
     @server = Ftpd::FtpServer.new(:data_path => @temp_dir,
-                                  :port => 0)
+                                  :port => 0,
+                                  :certfile_path => certfile_path)
     @templates = TestFileTemplates.new
     @server.driver = TestServerDriver.new(@temp_dir)
     @server.start 

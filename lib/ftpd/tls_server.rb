@@ -2,37 +2,40 @@ module Ftpd
   class TlsServer < Server
 
     def initialize(opts = {})
-      @ssl_context = make_ssl_context
+      @certfile_path = opts[:certfile_path]
+      if tls_enabled?
+        @ssl_context = make_ssl_context
+      end
       super
     end
 
     private
 
-    def make_server_socket(port)
-      ssl_server_socket = OpenSSL::SSL::SSLServer.new(super(port), @ssl_context);
-      ssl_server_socket.start_immediately = false
-      ssl_server_socket
+    def make_server_socket(port) 
+      socket = super(port)
+      if tls_enabled?
+        socket = OpenSSL::SSL::SSLServer.new(socket, @ssl_context);
+        socket.start_immediately = false
+      end
+      socket
     end
 
     def accept
       socket = @server_socket.accept
-      add_tls_methods_to_socket(socket)
+      if tls_enabled?
+        add_tls_methods_to_socket(socket)
+      end
       socket
     end
 
     def make_ssl_context
       context = OpenSSL::SSL::SSLContext.new
-      File.open(certfile_path) do |certfile|
+      File.open(@certfile_path) do |certfile|
         context.cert = OpenSSL::X509::Certificate.new(certfile)
         certfile.rewind
         context.key = OpenSSL::PKey::RSA.new(certfile)
       end
       context
-    end
-
-    def certfile_path
-      File.expand_path('../../insecure-test-cert.pem',
-                       File.dirname(__FILE__))
     end
 
     def add_tls_methods_to_socket(socket)
@@ -48,6 +51,12 @@ module Ftpd
           accept
         end
       end
+    end
+
+    private
+
+    def tls_enabled?
+      @certfile_path
     end
 
   end

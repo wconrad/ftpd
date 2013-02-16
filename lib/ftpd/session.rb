@@ -10,7 +10,9 @@ module Ftpd
     def initialize(args)
       @driver = args[:driver]
       @socket = args[:socket]
-      @socket.encrypt if args[:implicit_tls]
+      if tls_enabled? && args[:implicit_tls]
+        @socket.encrypt
+      end
       @name_prefix = '/'
       @debug_path = args[:debug_path]
       @data_type = 'A'
@@ -41,7 +43,6 @@ module Ftpd
           rescue CommandError => e
             reply e.message
           rescue Errno::ECONNRESET, Errno::EPIPE
-            asdf
           end
         end
       end
@@ -307,6 +308,16 @@ module Ftpd
       end
     end
 
+    def ensure_tls_supported
+      unless tls_enabled?
+        error "534 TLS not enabled"
+      end
+    end
+
+    def tls_enabled?
+      @socket.respond_to?(:encrypted?)
+    end
+
     def cmd_cdup(argument)
       ensure_logged_in
       cmd_cwd('..')
@@ -318,17 +329,19 @@ module Ftpd
     end
 
     def cmd_auth(security_scheme)
+      ensure_tls_supported
       if @socket.encrypted?
         error "503 AUTH already done"
       end
       unless security_scheme =~ /^TLS(-C)?$/i
-        error "500 Security scheme not implemented: #{security_scheme}"
+        error "504 Security scheme not implemented: #{security_scheme}"
       end
       reply "234 AUTH #{security_scheme} OK."
       @socket.encrypt
     end
 
     def cmd_pbsz(buffer_size)
+      ensure_tls_supported
       syntax_error unless buffer_size =~ /^\d+$/
       buffer_size = buffer_size.to_i
       unless @socket.encrypted?

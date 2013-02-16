@@ -36,10 +36,14 @@ end
 module Example
   class Main
 
+    include Ftpd::InsecureCertificate
+
     def initialize
       @data_dir = Ftpd::TempDir.make
       create_files
-      @server = Ftpd::FtpServer.new(:port => 0)
+      @server = 
+        Ftpd::FtpServer.new(:port => 0,
+                            :certfile_path => insecure_certfile_path)
       @driver = Driver.new(@data_dir)
       @server.driver = @driver
       display_connection_info
