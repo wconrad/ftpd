@@ -10,7 +10,6 @@ def login(user, password, client_name = nil)
 end
 
 Given /^a successful connection( with TLS)?$/ do |with_tls|
-  step 'the server is started'
   step "the client connects#{with_tls}"
 end
 
@@ -25,7 +24,6 @@ Given /^the( \w+)? client connects and logs in$/ do |client_name|
 end
 
 Given /^a failed login$/ do
-  step 'the server is started'
   step 'the client connects'
   step 'the client logs in with a bad password'
 end

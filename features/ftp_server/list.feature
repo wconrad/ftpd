@@ -4,6 +4,9 @@ Feature: List
   I want to list files
   So that I can see what file to transfer
 
+  Background:
+    Given the test server is started
+
   Scenario: Implicit
     Given a successful login
     And the server has file "foo"

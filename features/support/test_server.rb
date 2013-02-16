@@ -1,5 +1,7 @@
 require 'fileutils'
 require 'forwardable'
+require File.expand_path('test_server_files',
+                         File.dirname(__FILE__))
 
 class TestServer
   class TestServerDriver
@@ -23,7 +25,6 @@ class TestServer
 end
 
 class TestServer
-
   class TestServerFileSystem < Ftpd::DiskFileSystem
 
     def accessible?(ftp_path)
@@ -80,6 +81,7 @@ class TestServer
 
   extend Forwardable
   include FileUtils
+  include TestServerFiles
 
   def initialize
     @temp_dir = Ftpd::TempDir.make
@@ -98,24 +100,6 @@ class TestServer
     'localhost'
   end
 
-  def add_file(path)
-    full_path = temp_path(path)
-    mkdir_p File.dirname(full_path)
-    File.open(full_path, 'wb') do |file|
-      file.puts @templates[File.basename(full_path)]
-    end
-  end
-
-  def has_file?(path)
-    full_path = temp_path(path)
-    File.exists?(full_path)
-  end
-
-  def file_contents(path)
-    full_path = temp_path(path)
-    File.open(full_path, 'rb', &:read)
-  end
-
   def user
     TestServerDriver::USER
   end
@@ -128,8 +112,8 @@ class TestServer
 
   private
 
-  def temp_path(path)
-    File.expand_path(path, @temp_dir)
+  def temp_dir
+    @temp_dir
   end
 
 end

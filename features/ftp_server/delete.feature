@@ -4,6 +4,9 @@ Feature: Delete
   I want to delete files
   So that nobody can fetch them from the server
 
+  Background:
+    Given the test server is started
+
   Scenario: Delete a file
     Given a successful login
     And the server has file "foo"

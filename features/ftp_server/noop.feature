@@ -4,6 +4,9 @@ Feature: No Operation
   I want to keep the connection alive
   So that I don't have to log in so often
 
+  Background:
+    Given the test server is started
+
   Scenario: NOP
     Given a successful connection
     Then the client successfully does nothing

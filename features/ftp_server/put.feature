@@ -4,6 +4,9 @@ Feature: Put
   I want to put a file
   So that someone else can have it
 
+  Background:
+    Given the test server is started
+
   Scenario: ASCII file with *nix line endings
     Given a successful login
     And the client has file "ascii_unix"

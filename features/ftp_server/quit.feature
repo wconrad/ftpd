@@ -4,6 +4,9 @@ Feature: Quit
   In order to free up resources
   I want to close the connection
 
+  Background:
+    Given the test server is started
+
   Scenario: Logged in
     Given a successful login
     When the client successfully quits

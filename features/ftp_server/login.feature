@@ -4,14 +4,16 @@ Feature: Login
   I want to log in
   So that I can transfer files
 
+  Background:
+    Given the test server is started
+
   Scenario: Normal connection
     Given a successful login
     Then the server returns no error
     And the client should be logged in
 
   Scenario: Bad user
-    Given the server is started
-    And the client connects
+    Given the client connects
     When the client logs in with a bad user
     Then the server returns a login incorrect error
     And the client should not be logged in

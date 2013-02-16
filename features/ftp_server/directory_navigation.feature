@@ -4,6 +4,9 @@ Feature: Change Directory
   I want to change the current directory
   So that I can use shorter paths
 
+  Background:
+    Given the test server is started
+
   Scenario: Change to subdirectory
     Given a successful login
     And the server has file "subdir/bar"

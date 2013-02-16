@@ -4,6 +4,9 @@ Feature: Syntax Errors
   I want good error messages
   So that I can figure out what went wrong
 
+  Background:
+    Given the test server is started
+
   Scenario: Empty command
     Given a successful connection
     When the client sends an empty command

@@ -4,6 +4,9 @@ Feature: Get
   I want to get a file
   So that I have it on my computer
 
+  Background:
+    Given the test server is started
+
   Scenario: ASCII file with *nix line endings
     Given a successful login
     And the server has file "ascii_unix"
