@@ -11,7 +11,7 @@ module Ftpd
       @driver = args[:driver]
       @socket = args[:socket]
       @socket.encrypt if args[:implicit_tls]
-      @data_path = @cwd = args[:data_path].realpath
+      @data_path = args[:data_path].realpath
       @name_prefix = '/'
       @debug_path = args[:debug_path]
       @data_type = 'A'
@@ -42,6 +42,7 @@ module Ftpd
           rescue CommandError => e
             reply e.message
           rescue Errno::ECONNRESET, Errno::EPIPE
+            asdf
           end
         end
       end
@@ -175,52 +176,21 @@ module Ftpd
     end
 
     def cmd_list(argument)
-      ls(argument, '-l')
+      ls(argument, :list_long)
     end
 
     def cmd_nlst(argument)
-      ls(argument, '-1')
+      ls(argument, :list_short)
     end
 
-    def ls(path, option)
+    def ls(path, file_system_method)
       close_data_server_socket_when_done do
         ensure_logged_in
-        ls_dir, ls_path = get_ls_dir_and_path(path)
-        list = get_file_list(ls_dir, ls_path, option)
+        path ||= '.'
+        path = File.expand_path(path, @name_prefix)
+        list = @file_system.send(file_system_method, path)
         transmit_file(list, 'A')
       end
-    end
-
-    def get_ls_dir_and_path(path)
-      path = path || '.'
-      ensure_accessible path
-      target = target_path(path)
-      target = realpath(target)
-      if target.to_s.index(@cwd.to_s) == 0
-        ls_dir = @cwd
-        ls_path = target.to_s[@cwd.to_s.length..-1]
-      else
-        raise
-      end
-      if ls_path =~ /^\//
-        ls_path = $'
-      end
-      [ls_dir, ls_path]
-    end
-
-    def get_file_list(ls_dir, ls_path, option)
-      command = [
-        'ls',
-        option,
-        ls_path,
-        '2>&1',
-      ].compact.join(' ')
-      list = Dir.chdir(ls_dir) do
-        `#{command}`
-      end
-      list = "" if $? != 0
-      list = list.gsub(/^total \d+\n/, '')
-      list
     end
 
     def realpath(pathname)
@@ -307,17 +277,11 @@ module Ftpd
 
     def cmd_cwd(argument)
       ensure_logged_in
-      target = if argument =~ %r"^/(.*)$"
-                 @data_path + $1
-               else
-                 @cwd + argument
-               end
       path = File.expand_path(argument, @name_prefix)
       ensure_accessible path
       ensure_exists path
       ensure_directory path
       @name_prefix = path
-      @cwd = target
       pwd
     end
 
@@ -436,16 +400,6 @@ module Ftpd
 
     def child_path_of?(parent, child)
       child.cleanpath.to_s.index(parent.cleanpath.to_s) == 0
-    end
-
-    def target_path(path)
-      path = Pathname.new(path)
-      base, path = if path.to_s =~ /^\/(.*)/
-                     [@data_path, $1]
-                   else
-                     [@cwd, path]
-                   end
-      base + path
     end
 
     def handle_system_error

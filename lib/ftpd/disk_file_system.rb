@@ -54,7 +54,40 @@ module Ftpd
       end
     end
 
+    # Get a file list, long form.  Can raise FileSystemError.
+
+    def list_long(ftp_path)
+      ls(ftp_path, '-l')
+    end
+
+    # Get a file list, short form.  Can raise FileSystemError.
+
+    def list_short(ftp_path)
+      ls(ftp_path, '-1')
+    end
+
     private
+
+    def ls(ftp_path, option)
+      path = expand_ftp_path(ftp_path)
+      dirname = File.dirname(path)
+      filename = File.basename(path)
+      command = [
+        'ls',
+        option,
+        filename,
+        '2>&1',
+      ].compact.join(' ')
+      if File.exists?(dirname)
+        list = Dir.chdir(dirname) do
+          `#{command}`
+        end
+      else
+        list = ''
+      end
+      list = "" if $? != 0
+      list = list.gsub(/^total \d+\n/, '')
+    end
 
     def expand_ftp_path(ftp_path)
       File.expand_path(File.join(@data_dir, ftp_path))

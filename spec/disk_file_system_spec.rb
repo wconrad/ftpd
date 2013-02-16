@@ -40,8 +40,9 @@ module Ftpd
     end
 
     before(:each) do
-      make_directory 'dir'
       write_file 'file'
+      make_directory 'dir'
+      write_file 'dir/file_in_dir'
       make_directory 'unwritable_dir'
       write_file 'unwritable_dir/file'
     end
@@ -150,6 +151,86 @@ module Ftpd
             disk_file_system.write('dir', contents)
           }.to raise_error *is_a_directory_error
         end
+      end
+
+    end
+
+    describe '#list_short' do
+
+      subject do
+        disk_file_system.list_short(path)
+      end
+
+      shared_examples 'returns short list of root' do
+        it {should =~ /^dir$/}
+        it {should =~ /^file$/}
+        it {should =~ /^unwritable_dir$/}
+        its('lines.to_a.size') {should == 3}
+      end
+
+      context '(root)' do
+        let(:path) {'/'}
+        it_behaves_like 'returns short list of root'
+      end
+
+      context '(empty path)' do
+        let(:path) {''}
+        it_behaves_like 'returns short list of root'
+      end
+
+      context '(specific file)' do
+        let(:path) {'/file'}
+        it {should == "file\n"}
+      end
+
+      context '(specific directory)' do
+        let(:path) {'/dir'}
+        it {should == "file_in_dir\n"}
+      end
+
+      context '(missing directory)' do
+        let(:path) {'/missing/file'}
+        it {should be_empty}
+      end
+
+    end
+
+    describe '#list_long' do
+
+      subject do
+        disk_file_system.list_long(path)
+      end
+
+      shared_examples 'returns long list of root' do
+        it {should =~ /^d.*dir$/}
+        it {should =~ /^-.*file$/}
+        it {should =~ /^d.*unwritable_dir$/}
+        its('lines.to_a.size') {should == 3}
+      end
+
+      context '(root)' do
+        let(:path) {'/'}
+        it_behaves_like 'returns long list of root'
+      end
+
+      context '(empty path)' do
+        let(:path) {''}
+        it_behaves_like 'returns long list of root'
+      end
+
+      context '(specific file)' do
+        let(:path) {'/file'}
+        it {should =~ /^-.*file$/}
+      end
+
+      context '(specific directory)' do
+        let(:path) {'/dir'}
+        it {should =~ /^-.*file_in_dir\n/}
+      end
+
+      context '(missing directory)' do
+        let(:path) {'/missing/file'}
+        it {should be_empty}
       end
 
     end

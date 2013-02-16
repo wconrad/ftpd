@@ -18,17 +18,30 @@ class FileList
     !long_form?
   end
 
+  def empty?
+    @lines.empty?
+  end
+
 end
 
-When /^the client lists the directory(?: "(.*?)")?$/ do |directory|
+When /^the client successfully lists the directory(?: "(.*?)")?$/ do |directory|
+  @list = FileList.new(@client.ls(*[directory].compact))
+end
+
+When /^the client lists the directory( "(?:.*?)")?$/ do |directory|
   capture_error do
-    @list = FileList.new(@client.ls(*[directory].compact))
+    step "the client successfully lists the directory#{directory}"
   end
 end
 
-When /^the client name lists the directory(?: "(.*?)")?$/ do |directory|
+When /^the client successfully name-lists the directory(?: "(.*?)")?$/ do
+|directory|
+  @list = FileList.new(@client.nlst(*[directory].compact))
+end
+
+When /^the client name-lists the directory( "(?:.*?)")?$/ do |directory|
   capture_error do
-    @list = FileList.new(@client.nlst(*[directory].compact))
+    step "the client successfully name-lists the directory#{directory}"
   end
 end
 
@@ -43,4 +56,8 @@ end
 
 Then /^the file list should be in (long|short) form$/ do |form|
   @list.should send("be_#{form}_form")
+end
+
+Then /^the file list should be empty$/ do
+  @list.should be_empty
 end

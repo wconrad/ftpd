@@ -4,36 +4,45 @@ Feature: List
   I want to list files
   So that I can see what file to transfer
 
-  Scenario: List implicit
+  Scenario: Implicit
     Given a successful login
     And the server has file "foo"
     And the server has file "bar"
-    When the client lists the directory
+    When the client successfully lists the directory
     Then the file list should be in long form
     And the file list should contain "foo"
     And the file list should contain "bar"
 
-  Scenario: List root
+  Scenario: Root
     Given a successful login
     And the server has file "foo"
     And the server has file "bar"
-    When the client lists the directory "/"
+    When the client successfully lists the directory "/"
     Then the file list should be in long form
     And the file list should contain "foo"
     And the file list should contain "bar"
 
-  Scenario: List subdir
+  Scenario: Parent of root
+    Given a successful login
+    And the server has file "foo"
+    And the server has file "bar"
+    When the client successfully lists the directory "/.."
+    Then the file list should be in long form
+    And the file list should contain "foo"
+    And the file list should contain "bar"
+
+  Scenario: Subdir
     Given a successful login
     And the server has file "subdir/foo"
-    When the client lists the directory "subdir"
+    When the client successfully lists the directory "subdir"
     Then the file list should be in long form
     And the file list should contain "foo"
 
-  Scenario: List glob
+  Scenario: Glob
     Given a successful login
     And the server has file "foo"
     And the server has file "bar"
-    When the client lists the directory "f*"
+    When the client successfully lists the directory "f*"
     Then the file list should be in long form
     And the file list should contain "foo"
     And the file list should not contain "bar"
@@ -43,7 +52,7 @@ Feature: List
     And the server has file "foo"
     And the server has file "bar"
     And the client is in passive mode
-    When the client lists the directory
+    When the client successfully lists the directory
     Then the file list should be in long form
     And the file list should contain "foo"
     And the file list should contain "bar"
@@ -56,20 +65,15 @@ Feature: List
     And the server has file "foo"
     And the server has file "bar"
     And the client is in passive mode
-    When the client lists the directory
+    When the client successfully lists the directory
     Then the file list should be in long form
     And the file list should contain "foo"
     And the file list should contain "bar"
 
-  Scenario: Access denied
+  Scenario: Missing directory
     Given a successful login
-    When the client lists the directory "forbidden"
-    Then the server returns an access denied error
-
-  Scenario: Missing file
-    Given a successful login
-    When the client lists the directory "missing/file"
-    Then the server returns a no such file error
+    When the client successfully lists the directory "missing/file"
+    Then the file list should be empty
 
   Scenario: Not logged in
     Given a successful connection
