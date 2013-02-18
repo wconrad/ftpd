@@ -83,4 +83,4 @@ Wayne Conrad <wconrad@yagni.com>
 ## CREDITS
 
 Thanks to Databill, LLC, which supported the creation of this library,
-and granted permission to donate it ot the community.
+and granted permission to donate it to the community.
