@@ -31,7 +31,7 @@ module Ftpd
     # Remove a file.  Can raise FileSystemError.
 
     def delete(ftp_path)
-      handle_system_error do
+      translate_errors do
         FileUtils.rm expand_ftp_path(ftp_path)
       end
     end
@@ -39,7 +39,7 @@ module Ftpd
     # Read a file into memory.  Can raise FileSystemError.
 
     def read(ftp_path)
-      handle_system_error do
+      translate_errors do
         File.open(expand_ftp_path(ftp_path), 'rb', &:read)
       end
     end
@@ -47,7 +47,7 @@ module Ftpd
     # Write a file to disk.  Can raise FileSystemError.
 
     def write(ftp_path, contents)
-      handle_system_error do
+      translate_errors do
         File.open(expand_ftp_path(ftp_path), 'wb') do |file|
           file.write contents
         end
@@ -93,7 +93,7 @@ module Ftpd
       File.expand_path(File.join(@data_dir, ftp_path))
     end
 
-    def handle_system_error
+    def translate_errors
       begin
         return yield
       rescue SystemCallError => e
