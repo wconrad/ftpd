@@ -91,8 +91,7 @@ class TestServer
                     else
                       nil
                     end
-    @server = Ftpd::FtpServer.new(:data_path => @temp_dir,
-                                  :port => 0,
+    @server = Ftpd::FtpServer.new(:port => 0,
                                   :certfile_path => certfile_path)
     @templates = TestFileTemplates.new
     @server.driver = TestServerDriver.new(@temp_dir)
