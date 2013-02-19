@@ -1,21 +1,23 @@
 require 'fileutils'
-require 'ftpd/server'
+require 'memoizer'
 require 'openssl'
 require 'pathname'
 require 'socket'
 require 'tmpdir'
 
 module Ftpd
-  autoload :Error,                     'ftpd/error'
-  autoload :FtpServer,                 'ftpd/ftp_server'
   autoload :DiskFileSystem,            'ftpd/disk_file_system'
+  autoload :Error,                     'ftpd/error'
+  autoload :ExceptionTranslator,       'ftpd/exception_translator'
   autoload :FileSystemErrorTranslator, 'ftpd/file_system_error_translator'
+  autoload :FtpServer,                 'ftpd/ftp_server'
   autoload :InsecureCertificate,       'ftpd/insecure_certificate'
   autoload :MissingDriver,             'ftpd/missing_driver'
   autoload :Server,                    'ftpd/server'
   autoload :Session,                   'ftpd/session'
   autoload :TempDir,                   'ftpd/temp_dir'
   autoload :TlsServer,                 'ftpd/tls_server'
+  autoload :TranslateExceptions,       'ftpd/translate_exceptions'
 end
 
 require 'ftpd/exceptions'

@@ -18,6 +18,7 @@ GEM
       rake
       rdoc
     json (1.7.7)
+    memoizer (1.0.1)
     rake (10.0.3)
     rdoc (3.12.1)
       json (~> 1.4)
@@ -37,5 +38,6 @@ DEPENDENCIES
   cucumber (~> 1.2.1)
   double-bag-ftps (~> 0.1.0)
   jeweler (~> 1.8.4)
+  memoizer (~> 1.0.1)
   rake (~> 10.0.3)
   rspec (~> 2.12.0)

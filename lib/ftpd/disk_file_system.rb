@@ -5,20 +5,24 @@ module Ftpd
   #
   # Some methods may raise FileSystemError; some may not.  The
   # predicates (methods ending with a question mark) may not; other
-  # methods may.
+  # methods may.  FileSystemError is the _only_ exception which a file
+  # system driver may raise.
 
   class DiskFileSystem
+
+    include TranslateExceptions
 
     # Make a new instance to serve a directory.  data_dir should be
     # fully qualified.
 
     def initialize(data_dir)
       @data_dir = data_dir
+      translate_exception SystemCallError
     end
 
     # Return true if the path is accessible to the user.  This will be
-    # called for put, get and directory lists, so the path may not
-    # exist.
+    # called for put, get and directory lists, so the file or
+    # directory named by the path may not exist.
 
     def accessible?(ftp_path)
       # The server should never try to access a path outside of the
@@ -42,28 +46,25 @@ module Ftpd
     # Remove a file.  Can raise FileSystemError.
 
     def delete(ftp_path)
-      translate_errors do
-        FileUtils.rm expand_ftp_path(ftp_path)
-      end
+      FileUtils.rm expand_ftp_path(ftp_path)
     end
+    translate_exceptions :delete
 
     # Read a file into memory.  Can raise FileSystemError.
 
     def read(ftp_path)
-      translate_errors do
-        File.open(expand_ftp_path(ftp_path), 'rb', &:read)
-      end
+      File.open(expand_ftp_path(ftp_path), 'rb', &:read)
     end
+    translate_exceptions :read
 
     # Write a file to disk.  Can raise FileSystemError.
 
     def write(ftp_path, contents)
-      translate_errors do
-        File.open(expand_ftp_path(ftp_path), 'wb') do |file|
-          file.write contents
-        end
+      File.open(expand_ftp_path(ftp_path), 'wb') do |file|
+        file.write contents
       end
     end
+    translate_exceptions :write
 
     # Get a file list, long form.  Can raise FileSystemError.  This
     # returns a long-form directory listing.  The FTP standard does
@@ -130,14 +131,6 @@ module Ftpd
 
     def expand_ftp_path(ftp_path)
       File.expand_path(File.join(@data_dir, ftp_path))
-    end
-
-    def translate_errors
-      begin
-        return yield
-      rescue SystemCallError => e
-        raise FileSystemError, e.message
-      end
     end
 
   end
