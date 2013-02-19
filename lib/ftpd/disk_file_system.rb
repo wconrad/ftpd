@@ -1,5 +1,16 @@
 module Ftpd
+
+  # An FTP file system mapped to a disk directory.  This can serve as
+  # a template for creating your own specialized driver.
+  #
+  # Some methods may raise FileSystemError; some may not.  The
+  # predicates (methods ending with a question mark) may not; other
+  # methods may.
+
   class DiskFileSystem
+
+    # Make a new instance to serve a directory.  data_dir should be
+    # fully qualified.
 
     def initialize(data_dir)
       @data_dir = data_dir
@@ -54,13 +65,41 @@ module Ftpd
       end
     end
 
-    # Get a file list, long form.  Can raise FileSystemError.
+    # Get a file list, long form.  Can raise FileSystemError.  This
+    # returns a long-form directory listing.  The FTP standard does
+    # not specify the format of the listing, but many systems emit a
+    # *nix style directory listing:
+    #
+    #     -rw-r--r-- 1 wayne wayne 4 Feb 18 18:36 a
+    #     -rw-r--r-- 1 wayne wayne 8 Feb 18 18:36 b
+    #
+    # some emit a Windows style listing.  Some emit EPLF (Easily
+    # Parsed List Format):
+    #
+    #     +i8388621.48594,m825718503,r,s280, djb.html
+    #     +i8388621.50690,m824255907,/, 514
+    #     +i8388621.48598,m824253270,r,s612, 514.html
+    #
+    # EPLF is a draft internet standard for the output of LIST:
+    #
+    #     http://cr.yp.to/ftp/list/eplf.html
+    #
+    # Some FTP clients know how to parse EPLF; those clients will
+    # display the EPLF in a more user-friendly format.  Clients that
+    # don't recognize EPLF will display it raw.  The advantages of
+    # EPLF are that it's easier for clients to parse, and the client
+    # can display the LIST output in any format it likes.
+    #
+    # This class emits a *nix style listing.  It does so by shelling
+    # to the "ls" command, so it won't run on Windows at all.
 
     def list_long(ftp_path)
       ls(ftp_path, '-l')
     end
 
     # Get a file list, short form.  Can raise FileSystemError.
+    #
+    # This reurns one filename per line, and nothing else
 
     def list_short(ftp_path)
       ls(ftp_path, '-1')
