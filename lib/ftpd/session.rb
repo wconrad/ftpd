@@ -1,7 +1,5 @@
 #!/usr/bin/env ruby
 
-require 'ftpd/error'
-
 module Ftpd
   class Session
 
@@ -292,7 +290,7 @@ module Ftpd
 
     def ensure_accessible(path)
       unless @file_system.accessible?(path)
-        access_denied_error
+        error '550 Access denied'
       end
     end
 
