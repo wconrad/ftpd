@@ -100,7 +100,7 @@ module Ftpd
 
     # Get a file list, short form.  Can raise FileSystemError.
     #
-    # This reurns one filename per line, and nothing else
+    # This returns one filename per line, and nothing else
 
     def list_short(ftp_path)
       ls(ftp_path, '-1')
