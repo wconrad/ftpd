@@ -5,6 +5,39 @@ unless $:.include?(File.dirname(__FILE__) + '/../lib')
 end
 
 require 'ftpd'
+require 'optparse'
+
+module Example
+  class Arguments
+
+    attr_reader :interface
+    attr_reader :port
+
+    def initialize(argv)
+      @interface = 'localhost'
+      @port = 0
+      op = option_parser
+      op.parse!(argv)
+    rescue OptionParser::ParseError => e
+      $stderr.puts e
+      exit(1)
+    end
+
+    private
+
+    def option_parser
+      op = OptionParser.new do |op|
+        op.on('-p', '--port N', Integer, 'Bind to a specific port') do |value|
+          @port = value
+        end
+        op.on('-i', '--interface IP', 'Bind to a specific interface') do |value|
+          @interface = value
+        end
+      end
+    end
+
+  end
+end
 
 module Example
   class Driver
@@ -38,11 +71,13 @@ module Example
 
     include Ftpd::InsecureCertificate
 
-    def initialize
+    def initialize(argv)
+      @args = Arguments.new(argv)
       @data_dir = Ftpd::TempDir.make
       create_files
       @server = 
-        Ftpd::FtpServer.new(:port => 0,
+        Ftpd::FtpServer.new(:interface => @args.interface,
+                            :port => @args.port,
                             :certfile_path => insecure_certfile_path)
       @driver = Driver.new(@data_dir)
       @server.driver = @driver
@@ -56,7 +91,7 @@ module Example
     end
 
     private
-    
+
     HOST = 'localhost'
 
     def create_files
@@ -73,7 +108,7 @@ module Example
     end
 
     def display_connection_info
-      puts "Host: #{HOST}"
+      puts "Interface: #{@server.interface}"
       puts "Port: #{@server.port}"
       puts "User: #{@driver.expected_user}"
       puts "Pass: #{@driver.expected_password}"
@@ -104,4 +139,4 @@ module Example
   end
 end
 
-Example::Main.new.run if $0 == __FILE__
+Example::Main.new(ARGV).run if $0 == __FILE__

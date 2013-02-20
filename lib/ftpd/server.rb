@@ -7,6 +7,10 @@ module Ftpd
       @server_socket = make_server_socket(interface, port)
     end
 
+    def interface
+      @server_socket.addr[2]
+    end
+
     def port
       @server_socket.addr[1]
     end
