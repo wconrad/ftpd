@@ -42,8 +42,11 @@ class ExampleServer
 
   def read_output
     output = ''
-    while (line = @io.gets) !~ /FTP server started/
+    loop do
+      line = @io.gets
+      break if line.nil?
       output << line
+      break if line =~ /FTP server started/
     end
     output
   end
