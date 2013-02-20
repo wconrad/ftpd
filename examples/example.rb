@@ -12,9 +12,11 @@ module Example
 
     attr_reader :interface
     attr_reader :port
+    attr_reader :tls
 
     def initialize(argv)
       @interface = 'localhost'
+      @tls = :explicit
       @port = 0
       op = option_parser
       op.parse!(argv)
@@ -27,11 +29,15 @@ module Example
 
     def option_parser
       op = OptionParser.new do |op|
-        op.on('-p', '--port N', Integer, 'Bind to a specific port') do |value|
-          @port = value
+        op.on('-p', '--port N', Integer, 'Bind to a specific port') do |t|
+          @port = t
         end
-        op.on('-i', '--interface IP', 'Bind to a specific interface') do |value|
-          @interface = value
+        op.on('-i', '--interface IP', 'Bind to a specific interface') do |t|
+          @interface = t
+        end
+        op.on('--tls [TYPE]', [:off, :explicit, :implicit],
+              'Select TLS support (off, explicit, implicit)') do |t|
+          @tls = t
         end
       end
     end
@@ -78,9 +84,10 @@ module Example
       @server = 
         Ftpd::FtpServer.new(:interface => @args.interface,
                             :port => @args.port,
-                            :certfile_path => insecure_certfile_path)
+                            :certfile_path => certfile_path)
       @driver = Driver.new(@data_dir)
       @server.driver = @driver
+      @server.implicit_tls = @args.tls == :implicit
       display_connection_info
       create_connection_script
     end
@@ -93,6 +100,14 @@ module Example
     private
 
     HOST = 'localhost'
+
+    def certfile_path
+      if @args.tls == :off
+        nil
+      else
+        insecure_certfile_path
+      end
+    end
 
     def create_files
       create_file 'README',
@@ -112,6 +127,7 @@ module Example
       puts "Port: #{@server.port}"
       puts "User: #{@driver.expected_user}"
       puts "Pass: #{@driver.expected_password}"
+      puts "TLS: #{@args.tls}"
       puts "Directory: #{@data_dir}"
       puts "URI: ftp://#{HOST}:#{@server.port}"
     end
