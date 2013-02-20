@@ -11,8 +11,8 @@ module Ftpd
 
     private
 
-    def make_server_socket(port) 
-      socket = super(port)
+    def make_server_socket(*args)
+      socket = super(*args)
       if tls_enabled?
         socket = OpenSSL::SSL::SSLServer.new(socket, @ssl_context);
         socket.start_immediately = false

@@ -3,7 +3,8 @@ module Ftpd
 
     def initialize(opts = {})
       port = opts[:port] || 22
-      @server_socket = make_server_socket(port)
+      interface = opts[:interface] || 'localhost'
+      @server_socket = make_server_socket(interface, port)
     end
 
     def port
@@ -20,8 +21,8 @@ module Ftpd
 
     private
 
-    def make_server_socket(port)
-      return TCPServer.new('localhost', port)
+    def make_server_socket(interface, port)
+      return TCPServer.new(interface, port)
     end
 
     def make_server_thread
