@@ -2,7 +2,7 @@ module Ftpd
   class TlsServer < Server
 
     def initialize(opts = {})
-      @tls = opts[:tls]
+      @tls = opts[:tls] || :off
       @certfile_path = opts[:certfile_path]
       if tls_enabled?
         unless @certfile_path
