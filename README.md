@@ -4,22 +4,47 @@ ftpd is a pure Ruby FTP server library.  It supports implicit and
 explicit TLS, suitlble for use by a program such as a test fixture or
 FTP daemon.
 
-## UNFINISHED
+## HELLO WORLD
 
-I created ftpd to support the test framework I wrote for Databill,
-LLC, which has given its kind permission to donate it to the
-community.
+This is examples/hello_world.rb, a bare minimum FTP server.  It allows
+any user/password, and serves files in the diretory '/tmp/ftp'.  It
+binds to an ephemeral port on the local interface:
 
-I've moved the code from Databill's source tree, but it's not ready
-for prime time yet.  It needs pluggable authentication and file system
-drivers, refactoring, and the removal of bits of the Databill source
-tree which are temporarily included.
+    require 'ftpd'
+    
+    FTP_DIR = '/tmp/ftp'
+    
+    class Driver
+    
+      def authenticate(user, password)
+        true
+      end
+    
+      def file_system(user)
+        Ftpd::DiskFileSystem.new(FTP_DIR)
+      end
+    
+    end
+    
+    Dir.mkdir FTP_DIR
+    server = 
+      Ftpd::FtpServer.new(:driver => Driver.new)
+    puts "Server listening on port #{server.port}"
+    server.start
+    gets
+
+A more full-featured example that allows TLS and takes options is in
+examples/example.rb
 
 ## LIMITATIONS
 
-TLS is only supported in passive mode, not active.  Either the FTPS
-client used by the test doesn't work in active mode, or this server
-doesn't work in FTPS active mode (or both).
+TLS is only supported in passive mode, not active, but I don't know
+why.  Either the FTPS client used by the test doesn't work in active
+mode, or this server doesn't work in FTPS active mode (or both).
+
+The DiskFileSystem class only works in Linux.  This is because it
+shells out to the "ls" command.  This affects the example, which uses
+the DiskFileSystem.
 
 ## DEVELOPMENT
 
@@ -75,6 +100,12 @@ relevant 24 years after RFC959 was published:
 For a history lesson, check out Appendix III of RCF959. It lists the
 preceding (obsolete) RFC documents that relate to file transfers,
 including the ye old RFC114 from 1971, "A File Transfer Protocol"
+
+## ORIGIN
+
+I created ftpd to support the test framework I wrote for Databill,
+LLC, which has given its kind permission to donate it to the
+community.
 
 ## WHOAMI
 
