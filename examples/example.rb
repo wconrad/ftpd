@@ -46,6 +46,13 @@ module Example
 end
 
 module Example
+
+  # The FTP server requires and instance of a _driver_ which can
+  # authenticate users and create a file system drivers for a given
+  # user.  You can use this as a template for creating your own
+  # driver.  There's no need to use this class (or any other) as a
+  # base class.
+
   class Driver
 
     attr_reader :expected_user
