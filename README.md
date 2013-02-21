@@ -72,7 +72,7 @@ To run the stand-alone example:
 
 The example prints its port, username and password to the console.
 You can connect to the stand-alone example with any FTP client.  This
-is useful to testing how the server responds to a given FTP client.
+is useful when testing how the server responds to a given FTP client.
 
 ## REFERENCES
 
