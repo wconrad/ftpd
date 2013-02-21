@@ -81,13 +81,13 @@ module Example
       @args = Arguments.new(argv)
       @data_dir = Ftpd::TempDir.make
       create_files
+      @driver = Driver.new(@data_dir)
       @server = 
-        Ftpd::FtpServer.new(:interface => @args.interface,
+        Ftpd::FtpServer.new(:driver => @driver,
+                            :interface => @args.interface,
                             :port => @args.port,
                             :tls => @args.tls,
                             :certfile_path => insecure_certfile_path)
-      @driver = Driver.new(@data_dir)
-      @server.driver = @driver
       display_connection_info
       create_connection_script
     end

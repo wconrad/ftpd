@@ -4,13 +4,12 @@ module Ftpd
   class FtpServer < TlsServer
 
     attr_accessor :debug_path
-    attr_accessor :driver
     attr_accessor :response_delay
 
     def initialize(opts = {})
       super
+      @driver = opts[:driver]
       self.debug_path = '/dev/stdout'
-      @driver = MissingDriver.new
       @response_delay = 0
     end
 
