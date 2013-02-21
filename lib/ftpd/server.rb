@@ -2,8 +2,8 @@ module Ftpd
   class Server
 
     def initialize(opts = {})
-      port = opts[:port] || 22
       interface = opts[:interface] || 'localhost'
+      port = opts[:port] || 0
       @server_socket = make_server_socket(interface, port)
     end
 
