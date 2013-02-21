@@ -84,10 +84,10 @@ module Example
       @server = 
         Ftpd::FtpServer.new(:interface => @args.interface,
                             :port => @args.port,
-                            :certfile_path => certfile_path)
+                            :certfile_path => certfile_path,
+                            :implicit_tls => @args.tls == :implicit)
       @driver = Driver.new(@data_dir)
       @server.driver = @driver
-      @server.implicit_tls = @args.tls == :implicit
       display_connection_info
       create_connection_script
     end

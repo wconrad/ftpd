@@ -5,15 +5,15 @@ module Ftpd
 
     attr_accessor :debug_path
     attr_accessor :driver
-    attr_accessor :implicit_tls
+    attr_reader :implicit_tls
     attr_accessor :response_delay
 
     def initialize(opts = {})
       super
+      @implicit_tls = opts[:implicit_tls]
       self.debug_path = '/dev/stdout'
       @driver = MissingDriver.new
       @response_delay = 0
-      @implicit_tls = false
     end
 
     def session(socket)
