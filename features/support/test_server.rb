@@ -85,14 +85,11 @@ class TestServer
   include Ftpd::InsecureCertificate
 
   def initialize(opts = {})
+    tls = opts[:tls] || :off
     @temp_dir = Ftpd::TempDir.make
-    certfile_path = if opts[:tls]
-                      insecure_certfile_path
-                    else
-                      nil
-                    end
     @server = Ftpd::FtpServer.new(:port => 0,
-                                  :certfile_path => certfile_path)
+                                  :tls => tls,
+                                  :certfile_path => insecure_certfile_path)
     @templates = TestFileTemplates.new
     @server.driver = TestServerDriver.new(@temp_dir)
     @server.start 

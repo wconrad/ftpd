@@ -84,8 +84,8 @@ module Example
       @server = 
         Ftpd::FtpServer.new(:interface => @args.interface,
                             :port => @args.port,
-                            :certfile_path => certfile_path,
-                            :implicit_tls => @args.tls == :implicit)
+                            :tls => @args.tls,
+                            :certfile_path => insecure_certfile_path)
       @driver = Driver.new(@data_dir)
       @server.driver = @driver
       display_connection_info
@@ -100,14 +100,6 @@ module Example
     private
 
     HOST = 'localhost'
-
-    def certfile_path
-      if @args.tls == :off
-        nil
-      else
-        insecure_certfile_path
-      end
-    end
 
     def create_files
       create_file 'README',

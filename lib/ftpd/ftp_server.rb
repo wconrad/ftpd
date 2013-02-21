@@ -5,12 +5,10 @@ module Ftpd
 
     attr_accessor :debug_path
     attr_accessor :driver
-    attr_reader :implicit_tls
     attr_accessor :response_delay
 
     def initialize(opts = {})
       super
-      @implicit_tls = opts[:implicit_tls]
       self.debug_path = '/dev/stdout'
       @driver = MissingDriver.new
       @response_delay = 0
@@ -21,7 +19,7 @@ module Ftpd
                   :driver => @driver,
                   :debug_path => debug_path,
                   :response_delay => response_delay,
-                  :implicit_tls => @implicit_tls).run
+                  :tls => @tls).run
     end
 
   end

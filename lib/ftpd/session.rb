@@ -5,19 +5,20 @@ module Ftpd
 
     include Error
 
-    def initialize(args)
-      @driver = args[:driver]
-      @socket = args[:socket]
-      if tls_enabled? && args[:implicit_tls]
+    def initialize(opts)
+      @driver = opts[:driver]
+      @socket = opts[:socket]
+      @tls = opts[:tls]
+      if @tls == :implicit
         @socket.encrypt
       end
       @name_prefix = '/'
-      @debug_path = args[:debug_path]
+      @debug_path = opts[:debug_path]
       @data_type = 'A'
       @mode = 'S'
       @format = 'N'
       @structure = 'F'
-      @response_delay = args[:response_delay]
+      @response_delay = opts[:response_delay]
       @data_channel_protection_level = :clear
     end
 
@@ -313,7 +314,7 @@ module Ftpd
     end
 
     def tls_enabled?
-      @socket.respond_to?(:encrypted?)
+      @tls != :off
     end
 
     def cmd_cdup(argument)

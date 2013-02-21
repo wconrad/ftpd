@@ -2,8 +2,12 @@ module Ftpd
   class TlsServer < Server
 
     def initialize(opts = {})
+      @tls = opts[:tls]
       @certfile_path = opts[:certfile_path]
       if tls_enabled?
+        unless @certfile_path
+          raise ArgumentError, ":certfile required if tls enabled"
+        end
         @ssl_context = make_ssl_context
       end
       super
@@ -56,7 +60,7 @@ module Ftpd
     private
 
     def tls_enabled?
-      @certfile_path
+      @tls != :off
     end
 
   end
