@@ -12,7 +12,6 @@ module Ftpd
   autoload :FileSystemErrorTranslator, 'ftpd/file_system_error_translator'
   autoload :FtpServer,                 'ftpd/ftp_server'
   autoload :InsecureCertificate,       'ftpd/insecure_certificate'
-  autoload :MissingDriver,             'ftpd/missing_driver'
   autoload :Server,                    'ftpd/server'
   autoload :Session,                   'ftpd/session'
   autoload :TempDir,                   'ftpd/temp_dir'
