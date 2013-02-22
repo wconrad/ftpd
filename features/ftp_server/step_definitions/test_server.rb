@@ -1,8 +1,12 @@
-Given /^the test server is started( with TLS)?$/ do |with_tls|
-  tls = if :with_tls
-          :explicit
-        else
-          :off
-        end
-  @server = TestServer.new(:tls => tls)
+Given /^the test server is started$/ do
+  @server = TestServer.new(:tls => :off)
+end
+
+Given /^the test server is started with TLS$/ do
+  @server = TestServer.new(:tls => :explicit)
+end
+
+Given /^the test server is started with debug$/ do
+  @server = TestServer.new(:tls => :off,
+                           :debug => true)
 end

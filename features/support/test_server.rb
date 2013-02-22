@@ -1,5 +1,7 @@
 require 'fileutils'
 require 'forwardable'
+require 'tempfile'
+
 require File.expand_path('test_server_files',
                          File.dirname(__FILE__))
 
@@ -87,13 +89,21 @@ class TestServer
   def initialize(opts = {})
     tls = opts[:tls] || :off
     @temp_dir = Ftpd::TempDir.make
+    @debug_file = Tempfile.new('ftp-server-debug-output')
+    @debug_file.close
     driver = TestServerDriver.new(@temp_dir)
     @server = Ftpd::FtpServer.new(:driver => driver,
                                   :port => 0,
                                   :tls => tls,
                                   :certfile_path => insecure_certfile_path)
+    @server.debug_path = @debug_file.path
+    @server.debug = opts[:debug]
     @templates = TestFileTemplates.new
     @server.start 
+  end
+
+  def wrote_debug_output?
+    File.size(@debug_file.path) > 0
   end
 
   def stop

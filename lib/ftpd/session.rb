@@ -14,6 +14,7 @@ module Ftpd
       end
       @name_prefix = '/'
       @debug_path = opts[:debug_path]
+      @debug = opts[:debug]
       @data_type = 'A'
       @mode = 'S'
       @format = 'N'
@@ -561,7 +562,7 @@ module Ftpd
     end
 
     def debug?
-      ENV['DEBUG'].to_i != 0
+      @debug || ENV['FTPD_DEBUG'].to_i != 0
     end
 
   end
