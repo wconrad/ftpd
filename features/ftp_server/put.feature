@@ -35,6 +35,14 @@ Feature: Put
     When the client successfully puts text "ascii_unix"
     Then the remote file "ascii_unix" should match the local file
 
+  Scenario: Non-root working directory
+    Given a successful login
+    And the client has file "ascii_unix"
+    And the server has directory "foo"
+    And the client successfully cd's to "foo"
+    When the client successfully puts text "ascii_unix"
+    Then the remote file "foo/ascii_unix" should match the local file
+
   Scenario: Access denied
     Given a successful login
     And the client has file "forbidden"

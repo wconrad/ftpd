@@ -1,3 +1,7 @@
+Given /^the server has directory "(.*?)"$/ do |remote_path|
+  @server.add_directory remote_path
+end
+
 Given /^the server has file "(.*?)"$/ do |remote_path|
   @server.add_file remote_path
 end

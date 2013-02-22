@@ -144,6 +144,7 @@ module Ftpd
         ensure_logged_in
         path = argument
         syntax_error unless path
+        path = File.expand_path(path, @name_prefix)
         ensure_accessible path
         ensure_exists File.dirname(path)
         contents = receive_file(path)
