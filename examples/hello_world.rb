@@ -26,7 +26,7 @@ end
 Dir.mktmpdir do |temp_dir|
   driver = Driver.new(temp_dir)
   server = Ftpd::FtpServer.new(driver)
-  puts "Server listening on port #{server.bound_port}"
   server.start
+  puts "Server listening on port #{server.bound_port}"
   gets
 end

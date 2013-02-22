@@ -94,12 +94,12 @@ module Example
       @server.port = @args.port
       @server.tls = @args.tls
       @server.certfile_path = insecure_certfile_path
+      @server.start
       display_connection_info
       create_connection_script
     end
 
     def run
-      @server.start
       wait_until_stopped
     end
 

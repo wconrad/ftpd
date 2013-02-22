@@ -26,7 +26,7 @@ module Ftpd
     end
 
     def accept
-      socket = server_socket.accept
+      socket = @server_socket.accept
       if tls_enabled?
         add_tls_methods_to_socket(socket)
       end
