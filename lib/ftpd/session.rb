@@ -168,6 +168,7 @@ module Ftpd
       ensure_logged_in
       path = argument
       error "501 Path required" unless path
+      path = File.expand_path(path, @name_prefix)
       ensure_accessible path
       ensure_exists path
       @file_system.delete path

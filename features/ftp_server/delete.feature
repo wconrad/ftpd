@@ -13,6 +13,19 @@ Feature: Delete
     When the client successfully deletes "foo"
     Then the server should not have file "foo"
 
+  Scenario: Delete a file in a subdirectory
+    Given a successful login
+    And the server has file "foo/bar"
+    When the client successfully deletes "foo/bar"
+    Then the server should not have file "foo/bar"
+
+  Scenario: Change current directory
+    Given a successful login
+    And the server has file "foo/bar"
+    And the client successfully cd's to "foo"
+    When the client successfully deletes "bar"
+    Then the server should not have file "foo/bar"
+
   Scenario: Missing path
     Given a successful login
     And the server has file "foo"
