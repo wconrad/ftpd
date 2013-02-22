@@ -35,6 +35,18 @@ Feature: Get
     When the client successfully gets text "ascii_unix"
     Then the local file "ascii_unix" should match the remote file
 
+  Scenario: File in subdirectory
+    Given a successful login
+    And the server has file "foo/ascii_unix"
+    Then the client successfully gets text "foo/ascii_unix"
+
+  Scenario: Non-root working directory
+    Given a successful login
+    And the server has file "foo/ascii_unix"
+    And the client successfully cd's to "foo"
+    When the client successfully gets text "ascii_unix"
+    Then the remote file "foo/ascii_unix" should match the local file
+
   Scenario: Access denied
     Given a successful login
     When the client gets text "forbidden"
