@@ -1,8 +1,8 @@
 # FTPD
 
 ftpd is a pure Ruby FTP server library.  It supports implicit and
-explicit TLS, suitlble for use by a program such as a test fixture or
-FTP daemon.
+explicit TLS, and is suitable for use by a program such as a test
+fixture or small FTP daemon.
 
 ## HELLO WORLD
 
