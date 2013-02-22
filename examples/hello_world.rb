@@ -5,24 +5,28 @@ unless $:.include?(File.dirname(__FILE__) + '/../lib')
 end
 
 require 'ftpd'
-
-FTP_DIR = '/tmp/ftp'
+require 'tmpdir'
 
 class Driver
+
+  def initialize(temp_dir)
+    @temp_dir = temp_dir
+  end
 
   def authenticate(user, password)
     true
   end
 
   def file_system(user)
-    Ftpd::DiskFileSystem.new(FTP_DIR)
+    Ftpd::DiskFileSystem.new(@temp_dir)
   end
 
 end
 
-Dir.mkdir FTP_DIR
-server = 
-  Ftpd::FtpServer.new(:driver => Driver.new)
-puts "Server listening on port #{server.port}"
-server.start
-gets
+Dir.mktmpdir do |temp_dir|
+  driver = Driver.new(temp_dir)
+  server = Ftpd::FtpServer.new(driver)
+  puts "Server listening on port #{server.bound_port}"
+  server.start
+  gets
+end

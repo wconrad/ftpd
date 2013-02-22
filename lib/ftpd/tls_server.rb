@@ -1,38 +1,39 @@
 module Ftpd
   class TlsServer < Server
 
-    def initialize(opts = {})
-      @tls = opts[:tls] || :off
-      @certfile_path = opts[:certfile_path]
+    attr_accessor :tls
+    attr_accessor :certfile_path
+
+    def initialize
+      super
+      @tls = :off
       if tls_enabled?
         unless @certfile_path
           raise ArgumentError, ":certfile required if tls enabled"
         end
-        @ssl_context = make_ssl_context
       end
-      super
     end
 
     private
 
-    def make_server_socket(*args)
-      socket = super(*args)
+    def make_server_socket
+      socket = super
       if tls_enabled?
-        socket = OpenSSL::SSL::SSLServer.new(socket, @ssl_context);
+        socket = OpenSSL::SSL::SSLServer.new(socket, ssl_context);
         socket.start_immediately = false
       end
       socket
     end
 
     def accept
-      socket = @server_socket.accept
+      socket = server_socket.accept
       if tls_enabled?
         add_tls_methods_to_socket(socket)
       end
       socket
     end
 
-    def make_ssl_context
+    def ssl_context
       context = OpenSSL::SSL::SSLContext.new
       File.open(@certfile_path) do |certfile|
         context.cert = OpenSSL::X509::Certificate.new(certfile)
@@ -41,6 +42,7 @@ module Ftpd
       end
       context
     end
+    memoize :ssl_context
 
     def add_tls_methods_to_socket(socket)
       context = @ssl_context

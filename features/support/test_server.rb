@@ -81,7 +81,6 @@ end
 
 class TestServer
 
-  extend Forwardable
   include FileUtils
   include TestServerFiles
   include Ftpd::InsecureCertificate
@@ -92,10 +91,9 @@ class TestServer
     @debug_file = Tempfile.new('ftp-server-debug-output')
     @debug_file.close
     driver = TestServerDriver.new(@temp_dir)
-    @server = Ftpd::FtpServer.new(:driver => driver,
-                                  :port => 0,
-                                  :tls => tls,
-                                  :certfile_path => insecure_certfile_path)
+    @server = Ftpd::FtpServer.new(driver)
+    @server.tls = tls
+    @server.certfile_path = insecure_certfile_path
     @server.debug_path = @debug_file.path
     @server.debug = opts[:debug]
     @templates = TestFileTemplates.new
@@ -122,7 +120,9 @@ class TestServer
     TestServerDriver::PASSWORD
   end
 
-  def_delegator :@server, :port
+  def port
+    @server.bound_port
+  end
 
   private
 

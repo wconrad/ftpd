@@ -89,12 +89,11 @@ module Example
       @data_dir = Ftpd::TempDir.make
       create_files
       @driver = Driver.new(@data_dir)
-      @server = 
-        Ftpd::FtpServer.new(:driver => @driver,
-                            :interface => @args.interface,
-                            :port => @args.port,
-                            :tls => @args.tls,
-                            :certfile_path => insecure_certfile_path)
+      @server = Ftpd::FtpServer.new(@driver)
+      @server.interface = @args.interface
+      @server.port = @args.port
+      @server.tls = @args.tls
+      @server.certfile_path = insecure_certfile_path
       display_connection_info
       create_connection_script
     end
@@ -123,19 +122,19 @@ module Example
 
     def display_connection_info
       puts "Interface: #{@server.interface}"
-      puts "Port: #{@server.port}"
+      puts "Port: #{@server.bound_port}"
       puts "User: #{@driver.expected_user}"
       puts "Pass: #{@driver.expected_password}"
       puts "TLS: #{@args.tls}"
       puts "Directory: #{@data_dir}"
-      puts "URI: ftp://#{HOST}:#{@server.port}"
+      puts "URI: ftp://#{HOST}:#{@server.bound_port}"
     end
 
     def create_connection_script
       command_path = '/tmp/connect-to-example-ftp-server.sh'
       File.open(command_path, 'w') do |file|
         file.puts "#!/bin/bash"
-        file.puts "ftp $FTP_ARGS #{HOST} #{@server.port}"
+        file.puts "ftp $FTP_ARGS #{HOST} #{@server.bound_port}"
       end
       system("chmod +x #{command_path}")
       puts "Connection script written to #{command_path}"

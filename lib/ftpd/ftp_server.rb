@@ -7,12 +7,12 @@ module Ftpd
     attr_accessor :debug
     attr_accessor :response_delay
 
-    def initialize(opts = {})
-      @driver = opts[:driver]
+    def initialize(driver)
+      super()
+      @driver = driver
       @debug_path = '/dev/stdout'
       @debug = false
       @response_delay = 0
-      super
     end
 
     def session(socket)

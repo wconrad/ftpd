@@ -1,18 +1,18 @@
 module Ftpd
   class Server
 
-    def initialize(opts = {})
-      interface = opts[:interface] || 'localhost'
-      port = opts[:port] || 0
-      @server_socket = make_server_socket(interface, port)
+    include Memoizer
+
+    attr_accessor :interface
+    attr_accessor :port
+
+    def initialize
+      @interface = 'localhost'
+      @port = 0
     end
 
-    def interface
-      @server_socket.addr[2]
-    end
-
-    def port
-      @server_socket.addr[1]
+    def bound_port
+      server_socket.addr[1]
     end
 
     def start
@@ -20,13 +20,18 @@ module Ftpd
     end
 
     def stop
-      @server_socket.close
+      server_socket.close
     end
 
     private
 
-    def make_server_socket(interface, port)
-      return TCPServer.new(interface, port)
+    def server_socket
+      make_server_socket
+    end
+    memoize :server_socket
+
+    def make_server_socket
+      return TCPServer.new(@interface, @port)
     end
 
     def make_server_thread
@@ -37,7 +42,7 @@ module Ftpd
             begin
               socket = accept
             rescue Errno::EAGAIN, Errno::ECONNABORTED, Errno::EPROTO, Errno::EINVAL
-              IO.select([@server_socket])
+              IO.select([server_socket])
               sleep(0.2)
               retry
             end
@@ -60,7 +65,7 @@ module Ftpd
     end
 
     def accept
-      @server_socket.accept
+      server_socket.accept
     end
 
   end
