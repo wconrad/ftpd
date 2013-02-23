@@ -7,7 +7,7 @@ fixture or small FTP daemon.
 ## HELLO WORLD
 
 This is examples/hello_world.rb, a bare minimum FTP server.  It allows
-any user/password, and serves files in the diretory '/tmp/ftp'.  It
+any user/password, and serves files in a temporary directory.  It
 binds to an ephemeral port on the local interface:
 
     require 'ftpd'
