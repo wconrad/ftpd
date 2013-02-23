@@ -50,6 +50,10 @@ The DiskFileSystem class only works in Linux.  This is because it
 shells out to the "ls" command.  This affects the example, which uses
 the DiskFileSystem.
 
+The control connection is supposed to be a Telnet session.  It's not.
+In practice, it doesn't seem to matter whether it's a Telnet session
+or just plain sending and receiving characters.
+
 ## DEVELOPMENT
 
 ### TESTS
