@@ -23,6 +23,12 @@ module Ftpd
     # Return true if the path is accessible to the user.  This will be
     # called for put, get and directory lists, so the file or
     # directory named by the path may not exist.
+    #
+    # Called for:
+    # * STOR
+    # * RETR
+    # * DELE
+    # * CWD
 
     def accessible?(ftp_path)
       # The server should never try to access a path outside of the
@@ -32,18 +38,30 @@ module Ftpd
     end
 
     # Return true if the file or directory path exists.
+    #
+    # Called for:
+    # * STOR (with directory)
+    # * RETR
+    # * DELE
+    # * CWD
 
     def exists?(ftp_path)
       File.exists?(expand_ftp_path(ftp_path))
     end
 
     # Return true if the path exists and is a directory.
+    #
+    # Called for:
+    # * CWD
 
     def directory?(ftp_path)
       File.directory?(expand_ftp_path(ftp_path))
     end
 
     # Remove a file.  Can raise FileSystemError.
+    #
+    # Called for:
+    # * DELE
 
     def delete(ftp_path)
       FileUtils.rm expand_ftp_path(ftp_path)
@@ -51,6 +69,9 @@ module Ftpd
     translate_exceptions :delete
 
     # Read a file into memory.  Can raise FileSystemError.
+    #
+    # Called for:
+    # * RETR
 
     def read(ftp_path)
       File.open(expand_ftp_path(ftp_path), 'rb', &:read)
@@ -58,6 +79,9 @@ module Ftpd
     translate_exceptions :read
 
     # Write a file to disk.  Can raise FileSystemError.
+    #
+    # Called for:
+    # * STOR
 
     def write(ftp_path, contents)
       File.open(expand_ftp_path(ftp_path), 'wb') do |file|
@@ -93,6 +117,9 @@ module Ftpd
     #
     # This class emits a *nix style listing.  It does so by shelling
     # to the "ls" command, so it won't run on Windows at all.
+    #
+    # Called for:
+    # * LIST
 
     def list_long(ftp_path)
       ls(ftp_path, '-l')
@@ -101,6 +128,9 @@ module Ftpd
     # Get a file list, short form.  Can raise FileSystemError.
     #
     # This returns one filename per line, and nothing else
+    #
+    # Called for:
+    # * NLST
 
     def list_short(ftp_path)
       ls(ftp_path, '-1')
