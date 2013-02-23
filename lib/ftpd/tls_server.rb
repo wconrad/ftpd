@@ -1,17 +1,30 @@
 module Ftpd
   class TlsServer < Server
 
+    # Whether or not to do TLS, and which flavor.
+    #
+    # One of:
+    # * :off
+    # * :explicit
+    # * :implicit
+    #
+    # Defaults to :off
+    #
+    # Changes made after #start have no effect.  If TLS is enabled,
+    # then #certfile_path must be set.
+
     attr_accessor :tls
+
+    # The path of the SSL certificate to use for TLS.
+    # Changes made after #start have no effect.
+
     attr_accessor :certfile_path
+
+    # Create a new TLS server.
 
     def initialize
       super
       @tls = :off
-      if tls_enabled?
-        unless @certfile_path
-          raise ArgumentError, ":certfile required if tls enabled"
-        end
-      end
     end
 
     private
@@ -34,6 +47,9 @@ module Ftpd
     end
 
     def ssl_context
+      unless @certfile_path
+        raise ArgumentError, ":certfile required if tls enabled"
+      end
       context = OpenSSL::SSL::SSLContext.new
       File.open(@certfile_path) do |certfile|
         context.cert = OpenSSL::X509::Certificate.new(certfile)

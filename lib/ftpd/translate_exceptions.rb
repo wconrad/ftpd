@@ -1,6 +1,30 @@
 module Ftpd
 
-  # This module provides an easy interface to ExceptionTranslator.
+  # This module tranlates exceptions to FileSystemError exceptions.
+  #
+  # A disk file system (such as Ftpd::DiskFileSystem) is expected to
+  # raise only FileSystemError exceptions, but many common operations
+  # result in other exceptions such as SystemCallError.  This module
+  # aids a disk driver in translating exceptions to FileSystemError
+  # exceptions.
+  #
+  # In your file system, driver, include this module:
+  #
+  #     module MyDiskDriver
+  #       include Ftpd::TranslateExceptions
+  #
+  # in your constructor, register the exceptions that should be translated:
+  #
+  #       def initialize
+  #         translate_exception SystemCallError
+  #       end
+  #
+  # And register methods for translation:
+  #
+  #       def read(ftp_path)
+  #          ...
+  #       end
+  #       translate_exceptions :read
 
   module TranslateExceptions
 

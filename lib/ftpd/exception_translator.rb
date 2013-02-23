@@ -1,6 +1,9 @@
 module Ftpd
 
   # Translate specific exceptions to FileSystemError.
+  #
+  # This is not intended to be used directly, but via the
+  # TranslateExceptions module.
 
   class ExceptionTranslator
 

@@ -3,7 +3,17 @@ module Ftpd
 
     include Memoizer
 
+    # The interface to bind to (e.g. "127.0.0.1", "0.0.0.0",
+    # "10.0.0.12", etc.).  Defaults to "localhost"
+    # Changes made after #start have no effect.
+
     attr_accessor :interface
+
+    # The port to bind to.  Defaults to 0, which causes an ephemeral
+    # port to be used.  When bound to an ephemeral port, use
+    # #bound_port to find out which port was actually bound to.
+    # Changes made after #start have no effect.
+
     attr_accessor :port
 
     def initialize
@@ -11,14 +21,23 @@ module Ftpd
       @port = 0
     end
 
+    # The port the server is bound to.  Must be called until after
+    # #start is called.
+
     def bound_port
       @server_socket.addr[1]
     end
+
+    # Start the server.  This creates the server socket, and the
+    # thread to service it.
 
     def start
       @server_socket = make_server_socket
       @server_thread = make_server_thread
     end
+
+    # Stop the server.  This closes the server socket, which in turn
+    # stops the thread.
 
     def stop
       @server_socket.close

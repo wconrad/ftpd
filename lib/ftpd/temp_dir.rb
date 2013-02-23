@@ -1,5 +1,12 @@
 module Ftpd
+
+  # Create temporary directories that will be removed when the program
+  # exits.
+
   module TempDir
+
+    # Create a temporary directory, returning its path.  When the
+    # program exists, the directory (and its contents) are removed.
 
     def make
       Dir.mktmpdir.tap do |path|
