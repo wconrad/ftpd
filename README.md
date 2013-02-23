@@ -77,7 +77,6 @@ implemented.  They result in a "502 Command not implemented" response.
 
 * ABOR - Abort
 * ACCT - Account
-* ALLO - Allocate
 * APPE - Append (with create)
 * HELP - Help
 * MKD  - Make directory

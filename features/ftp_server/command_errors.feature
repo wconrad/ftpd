@@ -20,7 +20,6 @@ Feature: Command Errors
       | command |
       | ABOR    |
       | ACCT    |
-      | ALLO    |
       | APPE    |
       | HELP    |
       | MKD     |

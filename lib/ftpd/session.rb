@@ -89,6 +89,12 @@ module Ftpd
       "user",
     ]
 
+    def cmd_allo(argument)
+      ensure_logged_in
+      syntax_error unless argument =~ /^\d+( R \d+)?$/
+      command_not_needed
+    end
+
     def cmd_user(argument)
       syntax_error unless argument
       bad_sequence unless @state == :user
@@ -448,6 +454,10 @@ module Ftpd
         "mode data connection",
         ("(TLS)" if encrypt_data?)
       ].compact.join(' ')
+    end
+
+    def command_not_needed
+      reply '202 Command not needed at this site'
     end
 
     def encrypt_data?
