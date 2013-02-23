@@ -196,21 +196,6 @@ module Ftpd
       end
     end
 
-    def realpath(pathname)
-      handle_system_error do
-        basename = File.basename(pathname.to_s)
-        if is_glob?(basename)
-          pathname.dirname.realpath + basename
-        else
-          pathname.realpath
-        end
-      end
-    end
-
-    def is_glob?(filename)
-      filename =~ /[.*]/
-    end
-
     def cmd_type(argument)
       ensure_logged_in
       syntax_error unless argument =~ /^(\S)(?: (\S+))?$/
@@ -411,18 +396,6 @@ module Ftpd
 
     def set_file_system(file_system)
       @file_system = FileSystemErrorTranslator.new(file_system)
-    end
-
-    def child_path_of?(parent, child)
-      child.cleanpath.to_s.index(parent.cleanpath.to_s) == 0
-    end
-
-    def handle_system_error
-      begin
-        yield
-      rescue SystemCallError => e
-        error "550 #{e}"
-      end
     end
 
     def transmit_file(contents, data_type = @data_type)
