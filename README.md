@@ -72,6 +72,26 @@ The control connection is supposed to be a Telnet session.  It's not.
 In practice, it doesn't seem to matter whether it's a Telnet session
 or just plain sending and receiving characters.
 
+The following commands defined by RFC969 are understood, but not
+implemented.  They result in a "502 Command not implemented" response.
+
+* ABOR - Abort
+* ACCT - Account
+* ALLO - Allocate
+* APPE - Append (with create)
+* HELP - Help
+* MKD  - Make directory
+* REIN - Reinitialize
+* REST - Restart
+* RMD  - Remove directory
+* RNFR - Rename from
+* RNTO - Rename to
+* SITE - Site parameters
+* SMNT - Structure mount
+* STAT - Status
+* STOU - Store Unique
+* SYST - System
+
 ## DEVELOPMENT
 
 ### TESTS
