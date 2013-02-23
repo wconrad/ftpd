@@ -89,7 +89,6 @@ implemented.  They result in a "502 Command not implemented" response.
 * SMNT - Structure mount
 * STAT - Status
 * STOU - Store Unique
-* SYST - System
 
 ## DEVELOPMENT
 

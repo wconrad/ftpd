@@ -95,6 +95,11 @@ module Ftpd
       command_not_needed
     end
 
+    def cmd_syst(argument)
+      syntax_error if argument
+      reply "215 UNIX Type: L8"
+    end
+
     def cmd_user(argument)
       syntax_error unless argument
       bad_sequence unless @state == :user

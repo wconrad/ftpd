@@ -28,7 +28,8 @@ class TestClient
   :noop,
   :passive=,
   :pwd,
-  :quit
+  :quit,
+  :system
 
   def raw(*command)
     @ftp.sendcmd command.compact.join(' ')

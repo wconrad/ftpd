@@ -32,4 +32,3 @@ Feature: Command Errors
       | SMNT    |
       | STAT    |
       | STOU    |
-      | SYST    |
