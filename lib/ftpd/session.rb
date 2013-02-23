@@ -24,7 +24,7 @@ module Ftpd
     end
 
     def run
-      reply "220 FakeFtpServer"
+      reply "220 ftpd"
       @state = :user
       catch :done do
         loop do
