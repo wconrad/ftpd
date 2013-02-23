@@ -40,6 +40,24 @@ binds to an ephemeral port on the local interface:
 A more full-featured example that allows TLS and takes options is in
 examples/example.rb
 
+## DEBUGGING
+
+FTP can write debugging information (essentially a transcript of its
+conversation with a client) to a file.  If you turn the debug flag on,
+the server will write debug information to stdout:
+
+    server = Ftpd::FtpServer.new(driver)
+    server.debug = true
+
+If you want to send the debug output to somewhere else, set
+debug_path:
+
+    server.debug_path = '/tmp/ftp_session'
+
+Debug output can also be enabled by setting the environment variable
+FTPD_DEBUG to a non-zero value.  This is a convenient way to get debug
+output without having to change any code.
+
 ## LIMITATIONS
 
 TLS is only supported in passive mode, not active, but I don't know
