@@ -44,6 +44,7 @@ module Ftpd
       # * RETR
       # * DELE
       # * CWD
+      # * MKD
 
       def accessible?(ftp_path)
         # The server should never try to access a path outside of the
@@ -59,6 +60,7 @@ module Ftpd
       # * RETR
       # * DELE
       # * CWD
+      # * MKD
 
       def exists?(ftp_path)
         File.exists?(expand_ftp_path(ftp_path))
@@ -68,6 +70,7 @@ module Ftpd
       #
       # Called for:
       # * CWD
+      # * MKD
 
       def directory?(ftp_path)
         File.directory?(expand_ftp_path(ftp_path))
