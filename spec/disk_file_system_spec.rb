@@ -155,10 +155,10 @@ module Ftpd
 
     end
 
-    describe '#list_short' do
+    describe '#name_list' do
 
       subject do
-        disk_file_system.list_short(path)
+        disk_file_system.name_list(path)
       end
 
       shared_examples 'returns short list of root' do
@@ -195,10 +195,10 @@ module Ftpd
 
     end
 
-    describe '#list_long' do
+    describe '#list' do
 
       subject do
-        disk_file_system.list_long(path)
+        disk_file_system.list(path)
       end
 
       shared_examples 'returns long list of root' do

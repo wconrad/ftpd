@@ -219,7 +219,7 @@ module Ftpd
       #
       # If missing, then these commands are not supported.
 
-      def list_long(ftp_path)
+      def list(ftp_path)
         ls(ftp_path, '-l')
       end
 
@@ -243,7 +243,7 @@ module Ftpd
       #
       # If missing, then these commands are not supported.
 
-      def list_short(ftp_path)
+      def name_list(ftp_path)
         ls(ftp_path, '-1')
       end
 

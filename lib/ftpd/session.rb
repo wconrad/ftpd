@@ -203,7 +203,7 @@ module Ftpd
         path = argument
         path ||= '.'
         path = File.expand_path(path, @name_prefix)
-        list = @file_system.list_long(path)
+        list = @file_system.list(path)
         transmit_file(list, 'A')
       end
     end
@@ -215,7 +215,7 @@ module Ftpd
         path = argument
         path ||= '.'
         path = File.expand_path(path, @name_prefix)
-        list = @file_system.list_short(path)
+        list = @file_system.name_list(path)
         transmit_file(list, 'A')
       end
     end
@@ -345,13 +345,13 @@ module Ftpd
     end
 
     def ensure_list_supported
-      unless @file_system.respond_to?(:list_long)
+      unless @file_system.respond_to?(:list)
         unimplemented
       end
     end
 
     def ensure_name_list_supported
-      unless @file_system.respond_to?(:list_short)
+      unless @file_system.respond_to?(:name_list)
         unimplemented
       end
     end
