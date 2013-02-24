@@ -149,6 +149,30 @@ module Ftpd
 
   class DiskFileSystem
 
+    # DiskFileSystem mixing providing mkdir
+
+    module Mkdir
+
+      include TranslateExceptions
+
+      # Create a directory.  Can raise FileSystemError.
+      #
+      # Called for:
+      # * MKD
+      #
+      # If missing, then these commands are not supported.
+
+      def mkdir(ftp_path)
+        Dir.mkdir expand_ftp_path(ftp_path)
+      end
+      translate_exceptions :mkdir
+
+    end
+
+  end
+
+  class DiskFileSystem
+
     # Ls interface used by List and NameList
 
     module Ls
@@ -286,6 +310,7 @@ module Ftpd
 
     include DiskFileSystem::Delete
     include DiskFileSystem::List
+    include DiskFileSystem::Mkdir
     include DiskFileSystem::NameList
     include DiskFileSystem::Read
     include DiskFileSystem::Write

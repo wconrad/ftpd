@@ -92,3 +92,7 @@ end
 Then /^the server returns an action not taken error$/ do
   step 'the server returns a "450 Unable to do it" error'
 end
+
+Then /^the server returns an already exists error$/ do
+  step 'the server returns a "550 Already exists" error'
+end

@@ -106,7 +106,6 @@ implemented.  They result in a "502 Command not implemented" response.
 * ACCT - Account
 * APPE - Append (with create)
 * HELP - Help
-* MKD  - Make directory
 * REIN - Reinitialize
 * REST - Restart
 * RMD  - Remove directory

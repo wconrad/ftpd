@@ -24,6 +24,7 @@ class TestClient
   :gettextfile,
   :login,
   :ls,
+  :mkdir,
   :nlst,
   :noop,
   :passive=,

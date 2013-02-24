@@ -22,7 +22,6 @@ Feature: Command Errors
       | ACCT    |
       | APPE    |
       | HELP    |
-      | MKD     |
       | REIN    |
       | REST    |
       | RMD     |

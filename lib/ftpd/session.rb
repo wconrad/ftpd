@@ -297,6 +297,19 @@ module Ftpd
       pwd
     end
 
+    def cmd_mkd(argument)
+      syntax_error unless argument
+      ensure_logged_in
+      ensure_mkdir_supported
+      path = File.expand_path(argument, @name_prefix)
+      ensure_accessible path
+      ensure_exists File.dirname(path)
+      ensure_directory File.dirname(path)
+      ensure_does_not_exist path
+      @file_system.mkdir path
+      reply %Q'257 "#{path}" created'
+    end
+
     def ensure_logged_in
       return if @state == :logged_in
       error "530 Not logged in"
@@ -311,6 +324,12 @@ module Ftpd
     def ensure_exists(path)
       unless @file_system.exists?(path)
         error '550 No such file or directory'
+      end
+    end
+
+    def ensure_does_not_exist(path)
+      if @file_system.exists?(path)
+        error '550 Already exists'
       end
     end
 
@@ -352,6 +371,12 @@ module Ftpd
 
     def ensure_name_list_supported
       unless @file_system.respond_to?(:name_list)
+        unimplemented
+      end
+    end
+
+    def ensure_mkdir_supported
+      unless @file_system.respond_to?(:mkdir)
         unimplemented
       end
     end

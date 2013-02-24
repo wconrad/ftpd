@@ -31,6 +31,10 @@ module Ftpd
       File.open(data_path(path), 'rb', &:read)
     end
 
+    def directory?(path)
+      File.directory?(data_path(path))
+    end
+
     def exists?(path)
       File.exists?(data_path(path))
     end
@@ -150,6 +154,26 @@ module Ftpd
           expect {
             disk_file_system.write('dir', contents)
           }.to raise_error *is_a_directory_error
+        end
+      end
+
+    end
+
+    describe '#mkdir' do
+
+      context '(normal)' do
+        let(:path) {'another_subdir'}
+        specify do
+          disk_file_system.mkdir(path)
+          directory?(path).should be_true
+        end
+      end
+
+      context '(file system error)' do
+        specify do
+          expect {
+            disk_file_system.mkdir('file')
+          }.to raise_error FileSystemError, /^File exists/
         end
       end
 
