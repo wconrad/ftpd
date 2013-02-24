@@ -40,9 +40,36 @@ binds to an ephemeral port on the local interface:
 A more full-featured example that allows TLS and takes options is in
 examples/example.rb
 
+## DRIVER
+
+Ftpd's dynamic behavior such as authentication and file retrieval is
+controlled by a driver that you supply.  The Driver class in the
+"hello world" example above shows a rudimentary driver.  Ftpd calls
+the authenticate method to decide who can log in.  Once someone is
+logged on, it calls the file_system method to obtain a file system
+driver for that user.
+
+There is no base class for a driver.  Any class with that signature
+will do.
+
+## FILE SYSTEM
+
+The file system object that the driver supplies to Ftpd is Ftpds
+gateway to the logical file system.  Ftpd doesn't know or care whether
+it's serving files from disk, memory, or any other means.
+
+The file system can be very minimal.  If the file system is missing
+certain methods, the server simply disables the commands which need
+that method.  For example, if there is no write method, then STOR is
+not supported and causes a "502 Command not implemented" response to
+the client.
+
+The canonical and commented example of an Ftpd file system is
+Ftpd::DiskFileSystem.
+
 ## DEBUGGING
 
-FTP can write debugging information (essentially a transcript of its
+Ftpd can write debugging information (essentially a transcript of its
 conversation with a client) to a file.  If you turn the debug flag on,
 the server will write debug information to stdout:
 

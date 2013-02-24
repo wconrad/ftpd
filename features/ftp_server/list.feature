@@ -69,3 +69,9 @@ Feature: List
     Given a successful connection
     When the client lists the directory
     Then the server returns a not logged in error
+
+  Scenario: List not enabled
+    Given the test server is started without list
+    And a successful login
+    When the client lists the directory
+    Then the server returns an unimplemented command error

@@ -71,3 +71,10 @@ Feature: Put
     And the client has file "unable"
     When the client puts text "unable"
     Then the server returns an action not taken error
+
+  Scenario: Write not enabled
+    Given the test server is started without write
+    And a successful login
+    And the client has file "foo"
+    When the client puts text "foo"
+    Then the server returns an unimplemented command error

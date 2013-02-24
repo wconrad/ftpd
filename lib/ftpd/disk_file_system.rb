@@ -88,6 +88,8 @@ module Ftpd
       #
       # Called for:
       # * DELE
+      #
+      # If missing, then these commands are not supported.
 
       def delete(ftp_path)
         FileUtils.rm expand_ftp_path(ftp_path)
@@ -109,6 +111,8 @@ module Ftpd
       #
       # Called for:
       # * RETR
+      #
+      # If missing, then these commands are not supported.
 
       def read(ftp_path)
         File.open(expand_ftp_path(ftp_path), 'rb', &:read)
@@ -130,6 +134,8 @@ module Ftpd
       #
       # Called for:
       # * STOR
+      #
+      # If missing, then these commands are not supported.
 
       def write(ftp_path, contents)
         File.open(expand_ftp_path(ftp_path), 'wb') do |file|
@@ -139,6 +145,37 @@ module Ftpd
       translate_exceptions :write
 
     end
+  end
+
+  class DiskFileSystem
+
+    # Ls interface used by List and NameList
+
+    module Ls
+
+      def ls(ftp_path, option)
+        path = expand_ftp_path(ftp_path)
+        dirname = File.dirname(path)
+        filename = File.basename(path)
+        command = [
+          'ls',
+          option,
+          filename,
+          '2>&1',
+        ].compact.join(' ')
+        if File.exists?(dirname)
+          list = Dir.chdir(dirname) do
+            `#{command}`
+          end
+        else
+          list = ''
+        end
+        list = "" if $? != 0
+        list = list.gsub(/^total \d+\n/, '')
+      end
+
+    end
+
   end
 
   class DiskFileSystem
@@ -179,10 +216,23 @@ module Ftpd
       #
       # Called for:
       # * LIST
+      #
+      # If missing, then these commands are not supported.
 
       def list_long(ftp_path)
         ls(ftp_path, '-l')
       end
+
+    end
+  end
+
+  class DiskFileSystem
+
+    # DiskFileSystem mixin providing directory name listing
+
+    module NameList
+
+      include Ls
 
       # Get a file list, short form.  Can raise FileSystemError.
       #
@@ -190,32 +240,11 @@ module Ftpd
       #
       # Called for:
       # * NLST
+      #
+      # If missing, then these commands are not supported.
 
       def list_short(ftp_path)
         ls(ftp_path, '-1')
-      end
-
-      private
-
-      def ls(ftp_path, option)
-        path = expand_ftp_path(ftp_path)
-        dirname = File.dirname(path)
-        filename = File.basename(path)
-        command = [
-          'ls',
-          option,
-          filename,
-          '2>&1',
-        ].compact.join(' ')
-        if File.exists?(dirname)
-          list = Dir.chdir(dirname) do
-            `#{command}`
-          end
-        else
-          list = ''
-        end
-        list = "" if $? != 0
-        list = list.gsub(/^total \d+\n/, '')
       end
 
     end
@@ -256,9 +285,10 @@ module Ftpd
     # more commands be unimplemented.
 
     include DiskFileSystem::Delete
+    include DiskFileSystem::List
+    include DiskFileSystem::NameList
     include DiskFileSystem::Read
     include DiskFileSystem::Write
-    include DiskFileSystem::List
 
     # Make a new instance to serve a directory.  data_dir should be an
     # absolute path.

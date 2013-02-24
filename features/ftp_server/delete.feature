@@ -51,3 +51,10 @@ Feature: Delete
     Given a successful connection
     When the client deletes "foo"
     Then the server returns a not logged in error
+
+  Scenario: Delete not enabled
+    Given the test server is started without delete
+    And a successful login
+    And the server has file "foo"
+    When the client deletes "foo"
+    Then the server returns an unimplemented command error

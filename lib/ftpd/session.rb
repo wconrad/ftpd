@@ -37,7 +37,7 @@ module Ftpd
             end
             method = 'cmd_' + command
             unless self.class.private_method_defined?(method)
-              error "502 Command not implemented: #{command}"
+              unimplemented
             end
             send(method, argument)
           rescue CommandError => e
@@ -112,6 +112,10 @@ module Ftpd
       error "503 Bad sequence of commands"
     end
 
+    def unimplemented
+      error "502 Command not implemented"
+    end
+
     def cmd_pass(argument)
       syntax_error unless argument
       bad_sequence unless @state == :password
@@ -154,6 +158,7 @@ module Ftpd
     def cmd_stor(argument)
       close_data_server_socket_when_done do
         ensure_logged_in
+        ensure_write_supported
         path = argument
         syntax_error unless path
         path = File.expand_path(path, @name_prefix)
@@ -168,6 +173,7 @@ module Ftpd
     def cmd_retr(argument)
       close_data_server_socket_when_done do
         ensure_logged_in
+        ensure_read_supported
         path = argument
         syntax_error unless path
         path = File.expand_path(path, @name_prefix)
@@ -180,6 +186,7 @@ module Ftpd
 
     def cmd_dele(argument)
       ensure_logged_in
+      ensure_delete_supported
       path = argument
       error "501 Path required" unless path
       path = File.expand_path(path, @name_prefix)
@@ -190,19 +197,25 @@ module Ftpd
     end
 
     def cmd_list(argument)
-      ls(argument, :list_long)
+      close_data_server_socket_when_done do
+        ensure_logged_in
+        ensure_list_supported
+        path = argument
+        path ||= '.'
+        path = File.expand_path(path, @name_prefix)
+        list = @file_system.list_long(path)
+        transmit_file(list, 'A')
+      end
     end
 
     def cmd_nlst(argument)
-      ls(argument, :list_short)
-    end
-
-    def ls(path, file_system_method)
       close_data_server_socket_when_done do
         ensure_logged_in
+        ensure_name_list_supported
+        path = argument
         path ||= '.'
         path = File.expand_path(path, @name_prefix)
-        list = @file_system.send(file_system_method, path)
+        list = @file_system.list_short(path)
         transmit_file(list, 'A')
       end
     end
@@ -310,6 +323,36 @@ module Ftpd
     def ensure_tls_supported
       unless tls_enabled?
         error "534 TLS not enabled"
+      end
+    end
+
+    def ensure_write_supported
+      unless @file_system.respond_to?(:write)
+        unimplemented
+      end
+    end
+
+    def ensure_read_supported
+      unless @file_system.respond_to?(:read)
+        unimplemented
+      end
+    end
+
+    def ensure_delete_supported
+      unless @file_system.respond_to?(:delete)
+        unimplemented
+      end
+    end
+
+    def ensure_list_supported
+      unless @file_system.respond_to?(:list_long)
+        unimplemented
+      end
+    end
+
+    def ensure_name_list_supported
+      unless @file_system.respond_to?(:list_short)
+        unimplemented
       end
     end
 
