@@ -1,10 +1,18 @@
+### dev
+
+Bug fixes
+
+* Fixed formatting in Changelog
+
 ### 0.2.0
 
 API changes
 
 * Renamed two of the file system methods:
+
   * `list_long -> long`
   * `list_short -> short`
+
   This will affect anyone who has written their own disk system.
   Anyone using Ftpd::DiskFileSystem won't notice this change.
 
