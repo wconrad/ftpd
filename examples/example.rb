@@ -109,7 +109,8 @@ module Example
 
     def create_files
       create_file 'README',
-        "Temporary directory created by ftpd sample program\n"
+      "This file, and the directory it is in, will go away\n"
+      "When this example exits.\n"
     end
 
     def create_file(path, contents)
