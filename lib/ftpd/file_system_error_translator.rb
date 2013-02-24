@@ -12,7 +12,7 @@ module Ftpd
     end
 
     def respond_to?(method)
-      @file_system.respond_to?(method)
+      @file_system.respond_to?(method) || super
     end
 
     def method_missing(method, *args)
