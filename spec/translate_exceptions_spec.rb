@@ -27,7 +27,7 @@ module Ftpd
     it 'should translate a registered error' do
       expect {
         subject.raise_error(FooError, message)
-      }.to raise_error FileSystemError, message
+      }.to raise_error PermanentFileSystemError, message
     end
 
     it 'should pass through an unregistered error' do

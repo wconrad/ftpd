@@ -11,11 +11,17 @@ module Ftpd
 
   class CommandError < FtpServerError ; end
 
-  # Any errors raised by a file system driver are (or are derived
-  # from) this class.  See the mixin TranslateExceptions for an easy
-  # way to generate FileSystemError exceptions from other types of
-  # exceptions.
+  # A permanent file system error.  Deprecated; use
+  # PermanentFileSystemError instead.
 
   class FileSystemError < FtpServerError ; end
+
+  # A permanent file system error.  The file isn't there, etc.
+
+  class PermanentFileSystemError < FtpServerError ; end
+
+  # A transient file system error.  The file is busy, etc.
+
+  class TransientFileSystemError < FtpServerError ; end
 
 end

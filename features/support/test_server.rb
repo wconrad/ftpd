@@ -91,7 +91,7 @@ class TestServer
         define_method method_name do |*args|
           ftp_path = args.first
           if force_file_system_error?(ftp_path)
-            raise Ftpd::FileSystemError, 'Unable to do it'
+            raise Ftpd::PermanentFileSystemError, 'Unable to do it'
           end
           original_method.bind(self).call *args
         end

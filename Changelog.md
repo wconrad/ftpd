@@ -1,8 +1,9 @@
 ### dev
 
-Bug fixes
-
-* Fixed formatting in Changelog
+API changes
+* Introduced PermanentFileSystemError and TransientFileSystemError exceptions.
+# Deprecated FileSystemError (use PermanentFileSystemError instead).
+* DiskFileSystem errors generate 550 responses, not 450
 
 ### 0.2.0
 

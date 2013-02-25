@@ -6,10 +6,10 @@ module Ftpd
     let(:data_dir) {Ftpd::TempDir.make}
     let(:disk_file_system) {DiskFileSystem.new(data_dir)}
     let(:missing_file_error) do
-      [Ftpd::FileSystemError, /No such file or directory/]
+      [Ftpd::PermanentFileSystemError, /No such file or directory/]
     end
     let(:is_a_directory_error) do
-      [Ftpd::FileSystemError, /Is a directory/]
+      [Ftpd::PermanentFileSystemError, /Is a directory/]
     end
     let(:missing_path) {'missing_path'}
 
@@ -173,7 +173,7 @@ module Ftpd
         specify do
           expect {
             disk_file_system.mkdir('file')
-          }.to raise_error FileSystemError, /^File exists/
+          }.to raise_error PermanentFileSystemError, /^File exists/
         end
       end
 

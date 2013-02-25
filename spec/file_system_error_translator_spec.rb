@@ -5,8 +5,8 @@ module Ftpd
 
     class MockFileSystem
 
-      def with_error
-        raise FileSystemError, 'An error occurred'
+      def with_error(klass)
+        raise klass, 'An error occurred'
       end
 
       def without_error
@@ -31,10 +31,26 @@ module Ftpd
       its(:without_error) {should == 123}
     end
 
-    context 'exception' do
+    context 'FileSystemError' do
       specify do
         expect {
-          translator.with_error
+          translator.with_error(FileSystemError)
+        }.to raise_error CommandError, '550 An error occurred'
+      end
+    end
+
+    context 'PermanentFileSystemError' do
+      specify do
+        expect {
+          translator.with_error(PermanentFileSystemError)
+        }.to raise_error CommandError, '550 An error occurred'
+      end
+    end
+
+    context 'TransientFileSystemError' do
+      specify do
+        expect {
+          translator.with_error(TransientFileSystemError)
         }.to raise_error CommandError, '450 An error occurred'
       end
     end

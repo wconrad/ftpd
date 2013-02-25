@@ -23,7 +23,7 @@ module Ftpd
       begin
         return yield
       rescue *@exceptions => e
-        raise FileSystemError, e.message
+        raise PermanentFileSystemError, e.message
       end
     end
 

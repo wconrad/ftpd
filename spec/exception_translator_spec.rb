@@ -17,7 +17,7 @@ module Ftpd
           subject.translate_exceptions do
             raise FooError, message
           end
-        }.to raise_error FileSystemError, message
+        }.to raise_error PermanentFileSystemError, message
       end
     end
 

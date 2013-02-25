@@ -90,7 +90,7 @@ Then /^the server returns an unimplemented command error$/ do
 end
 
 Then /^the server returns an action not taken error$/ do
-  step 'the server returns a "450 Unable to do it" error'
+  step 'the server returns a "550 Unable to do it" error'
 end
 
 Then /^the server returns an already exists error$/ do

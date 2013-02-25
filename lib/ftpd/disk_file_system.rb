@@ -293,9 +293,11 @@ module Ftpd
   # An FTP file system mapped to a disk directory.  This can serve as
   # a template for creating your own specialized driver.
   #
-  # Any method may raise FileSystemError (but that's the only
-  # exception this class may raise).  A FileSystemError exception
-  # causes a "450" error response to be sent to the client.
+  # Any method may raise a PermanentFileSystemError (e.g. "file not
+  # found") or TransientFileSystemError (e.g. "file busy").  A
+  # PermanentFileSystemError will cause a "550" error response to be
+  # sent; a TransientFileSystemError will cause a "450" error response
+  # to be sent.
   #
   # The class is divided into modules that may be included piecemeal.
   # By including some mixins and not others, you can compose a disk
