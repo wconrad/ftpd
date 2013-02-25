@@ -1,7 +1,7 @@
 module Ftpd
 
-  # This class is a proxy file system driver that sends "450" replies
-  # when the wrapped file system driver raises a FileSystemError.
+  # A proxy file system driver that sends "450" replies when the
+  # wrapped file system driver raises a FileSystemError.
 
   class FileSystemErrorTranslator
 

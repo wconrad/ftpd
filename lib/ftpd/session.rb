@@ -37,7 +37,7 @@ module Ftpd
             end
             method = 'cmd_' + command
             unless self.class.private_method_defined?(method)
-              unimplemented
+              unimplemented_error
             end
             send(method, argument)
           rescue CommandError => e
@@ -112,10 +112,6 @@ module Ftpd
       error "503 Bad sequence of commands"
     end
 
-    def unimplemented
-      error "502 Command not implemented"
-    end
-
     def cmd_pass(argument)
       syntax_error unless argument
       bad_sequence unless @state == :password
@@ -158,7 +154,6 @@ module Ftpd
     def cmd_stor(argument)
       close_data_server_socket_when_done do
         ensure_logged_in
-        ensure_write_supported
         path = argument
         syntax_error unless path
         path = File.expand_path(path, @name_prefix)
@@ -173,7 +168,6 @@ module Ftpd
     def cmd_retr(argument)
       close_data_server_socket_when_done do
         ensure_logged_in
-        ensure_read_supported
         path = argument
         syntax_error unless path
         path = File.expand_path(path, @name_prefix)
@@ -186,7 +180,6 @@ module Ftpd
 
     def cmd_dele(argument)
       ensure_logged_in
-      ensure_delete_supported
       path = argument
       error "501 Path required" unless path
       path = File.expand_path(path, @name_prefix)
@@ -199,7 +192,6 @@ module Ftpd
     def cmd_list(argument)
       close_data_server_socket_when_done do
         ensure_logged_in
-        ensure_list_supported
         path = argument
         path ||= '.'
         path = File.expand_path(path, @name_prefix)
@@ -211,7 +203,6 @@ module Ftpd
     def cmd_nlst(argument)
       close_data_server_socket_when_done do
         ensure_logged_in
-        ensure_name_list_supported
         path = argument
         path ||= '.'
         path = File.expand_path(path, @name_prefix)
@@ -300,7 +291,6 @@ module Ftpd
     def cmd_mkd(argument)
       syntax_error unless argument
       ensure_logged_in
-      ensure_mkdir_supported
       path = File.expand_path(argument, @name_prefix)
       ensure_accessible path
       ensure_exists File.dirname(path)
@@ -342,42 +332,6 @@ module Ftpd
     def ensure_tls_supported
       unless tls_enabled?
         error "534 TLS not enabled"
-      end
-    end
-
-    def ensure_write_supported
-      unless @file_system.respond_to?(:write)
-        unimplemented
-      end
-    end
-
-    def ensure_read_supported
-      unless @file_system.respond_to?(:read)
-        unimplemented
-      end
-    end
-
-    def ensure_delete_supported
-      unless @file_system.respond_to?(:delete)
-        unimplemented
-      end
-    end
-
-    def ensure_list_supported
-      unless @file_system.respond_to?(:list)
-        unimplemented
-      end
-    end
-
-    def ensure_name_list_supported
-      unless @file_system.respond_to?(:name_list)
-        unimplemented
-      end
-    end
-
-    def ensure_mkdir_supported
-      unless @file_system.respond_to?(:mkdir)
-        unimplemented
       end
     end
 
@@ -474,7 +428,12 @@ module Ftpd
     }
 
     def set_file_system(file_system)
-      @file_system = FileSystemErrorTranslator.new(file_system)
+      @file_system = [
+        FileSystemErrorTranslator,
+        FileSystemMethodMissing,
+      ].inject(file_system) do |file_system, klass|
+        klass.new(file_system)
+      end
     end
 
     def transmit_file(contents, data_type = @data_type)

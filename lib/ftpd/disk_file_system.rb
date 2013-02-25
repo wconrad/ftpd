@@ -87,7 +87,7 @@ module Ftpd
 
       include TranslateExceptions
 
-      # Remove a file.  Can raise FileSystemError.
+      # Remove a file.
       #
       # Called for:
       # * DELE
@@ -110,7 +110,7 @@ module Ftpd
 
       include TranslateExceptions
 
-      # Read a file into memory.  Can raise FileSystemError.
+      # Read a file into memory.
       #
       # Called for:
       # * RETR
@@ -133,7 +133,7 @@ module Ftpd
 
       include TranslateExceptions
 
-      # Write a file to disk.  Can raise FileSystemError.
+      # Write a file to disk.
       #
       # Called for:
       # * STOR
@@ -158,7 +158,7 @@ module Ftpd
 
       include TranslateExceptions
 
-      # Create a directory.  Can raise FileSystemError.
+      # Create a directory.
       #
       # Called for:
       # * MKD
@@ -213,10 +213,10 @@ module Ftpd
 
       include TranslateExceptions
 
-      # Get a file list, long form.  Can raise FileSystemError.  This
-      # returns a long-form directory listing.  The FTP standard does
-      # not specify the format of the listing, but many systems emit a
-      # *nix style directory listing:
+      # Get a file list, long form.  This returns a long-form
+      # directory listing.  The FTP standard does not specify the
+      # format of the listing, but many systems emit a *nix style
+      # directory listing:
       #
       #     -rw-r--r-- 1 wayne wayne 4 Feb 18 18:36 a
       #     -rw-r--r-- 1 wayne wayne 8 Feb 18 18:36 b
@@ -261,7 +261,7 @@ module Ftpd
 
       include Ls
 
-      # Get a file list, short form.  Can raise FileSystemError.
+      # Get a file list, short form.
       #
       # This returns one filename per line, and nothing else
       #
@@ -293,15 +293,15 @@ module Ftpd
   # An FTP file system mapped to a disk directory.  This can serve as
   # a template for creating your own specialized driver.
   #
-  # Some methods may raise FileSystemError; some may not.  The
-  # predicates (methods ending with a question mark) may not; other
-  # methods may.  FileSystemError is the _only_ exception which a file
-  # system driver may raise.
+  # Any method may raise FileSystemError (but that's the only
+  # exception this class may raise).  A FileSystemError exception
+  # causes a "450" error response to be sent to the client.
   #
   # The class is divided into modules that may be included piecemeal.
   # By including some mixins and not others, you can compose a disk
-  # file system driver "a la cart."  This is useful if you want an FTP
-  # server that, for example, allows reading but not writing files.
+  # file system driver "a la carte."  This is useful if you want an
+  # FTP server that, for example, allows reading but not writing
+  # files.
 
   class DiskFileSystem
 
