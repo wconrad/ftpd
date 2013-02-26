@@ -108,8 +108,6 @@ implemented.  They result in a "502 Command not implemented" response.
 * HELP - Help
 * REIN - Reinitialize
 * REST - Restart
-* RNFR - Rename from
-* RNTO - Rename to
 * SITE - Site parameters
 * SMNT - Structure mount
 * STAT - Status

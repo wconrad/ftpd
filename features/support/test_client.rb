@@ -29,6 +29,7 @@ class TestClient
   :noop,
   :passive=,
   :pwd,
+  :rename,
   :rmdir,
   :quit,
   :system

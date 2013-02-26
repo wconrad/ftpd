@@ -101,14 +101,14 @@ module Ftpd
 
     describe '#delete' do
 
-      context '(normal)' do
+      context '(success)' do
         specify do
           disk_file_system.delete('file')
           exists?('file').should be_false
         end
       end
 
-      context '(file system error)' do
+      context '(error)' do
         specify do
           expect {
             disk_file_system.delete(missing_path)
@@ -120,14 +120,14 @@ module Ftpd
 
     describe '#read' do
 
-      context '(normal)' do
+      context '(success)' do
         let(:path) {'file'}
         specify do
           disk_file_system.read(path).should == canned_contents(path)
         end
       end
 
-      context '(file system error)' do
+      context '(error)' do
         specify do
           expect {
             disk_file_system.read(missing_path)
@@ -141,7 +141,7 @@ module Ftpd
 
       let(:contents) {'file contents'}
 
-      context '(normal)' do
+      context '(success)' do
         let(:path) {'file_path'}
         specify do
           disk_file_system.write(path, contents)
@@ -149,7 +149,7 @@ module Ftpd
         end
       end
 
-      context '(file system error)' do
+      context '(error)' do
         specify do
           expect {
             disk_file_system.write('dir', contents)
@@ -161,7 +161,7 @@ module Ftpd
 
     describe '#mkdir' do
 
-      context '(normal)' do
+      context '(success)' do
         let(:path) {'another_subdir'}
         specify do
           disk_file_system.mkdir(path)
@@ -169,7 +169,7 @@ module Ftpd
         end
       end
 
-      context '(file system error)' do
+      context '(error)' do
         specify do
           expect {
             disk_file_system.mkdir('file')
@@ -255,6 +255,29 @@ module Ftpd
       context '(missing directory)' do
         let(:path) {'/missing/file'}
         it {should be_empty}
+      end
+
+    end
+
+    describe '#rename' do
+
+      let(:from_path) {'file'}
+      let(:to_path) {'renamed_file'}
+
+      context '(success)' do
+        specify do
+          disk_file_system.rename(from_path, to_path)
+          exists?(from_path).should be_false
+          exists?(to_path).should be_true
+        end
+      end
+
+      context '(error)' do
+        specify do
+          expect {
+            disk_file_system.rename(missing_path, to_path)
+          }.to raise_error *missing_file_error
+        end
       end
 
     end

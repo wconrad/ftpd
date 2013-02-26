@@ -304,6 +304,30 @@ module Ftpd
 
   class DiskFileSystem
 
+    # DiskFileSystem mixin providing file/directory rename/move
+
+    module Rename
+
+      include TranslateExceptions
+
+      # Rename or move a file or directory
+      #
+      # Called for:
+      # * RNTO
+      #
+      # If missing, then these commands are not supported.
+
+      def rename(from_ftp_path, to_ftp_path)
+        FileUtils.mv(expand_ftp_path(from_ftp_path),
+                     expand_ftp_path(to_ftp_path))
+      end
+      translate_exceptions :rename
+
+    end
+  end
+
+  class DiskFileSystem
+
     # DiskFileSystem "omnibus" mixin, which pulls in mixins which are
     # likely to be needed by any DiskFileSystem.
 
@@ -343,6 +367,7 @@ module Ftpd
     include DiskFileSystem::Mkdir
     include DiskFileSystem::NameList
     include DiskFileSystem::Read
+    include DiskFileSystem::Rename
     include DiskFileSystem::Rmdir
     include DiskFileSystem::Write
 

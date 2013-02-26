@@ -18,6 +18,7 @@ class TestServer
     attr_accessor :mkdir
     attr_accessor :name_list
     attr_accessor :read
+    attr_accessor :rename
     attr_accessor :rmdir
     attr_accessor :write
 
@@ -28,6 +29,7 @@ class TestServer
       @mkdir = true
       @name_list = true
       @read = true
+      @rename = true
       @rmdir = true
       @write = true
     end
@@ -43,6 +45,7 @@ class TestServer
                                :mkdir => @mkdir,
                                :name_list => @name_list,
                                :read => @read,
+                               :rename => @rename,
                                :rmdir => @rmdir,
                                :write => @write)
     end
@@ -157,6 +160,11 @@ class TestServer
           raise_on_file_system_error :read
         end
 
+        if opts[:rename]
+          include Ftpd::DiskFileSystem::Rename
+          raise_on_file_system_error :rename
+        end
+
         if opts[:rmdir]
           include Ftpd::DiskFileSystem::Rmdir
         end
@@ -213,6 +221,7 @@ class TestServer
   def_delegator :@driver, :'name_list='
   def_delegator :@driver, :'rmdir='
   def_delegator :@driver, :'read='
+  def_delegator :@driver, :'rename='
   def_delegator :@driver, :'write='
 
   def start
