@@ -87,9 +87,8 @@ output without having to change any code.
 
 ## LIMITATIONS
 
-TLS is only supported in passive mode, not active, but I don't know
-why.  Either the FTPS client used by the test doesn't work in active
-mode, or this server doesn't work in FTPS active mode (or both).
+The automated tests don't cover TLS in passive mode (although it works
+fine): The FTPS client used by the test locks up in active mode.
 
 The DiskFileSystem class only works in Linux.  This is because it
 shells out to the "ls" command.  This affects the example, which uses
