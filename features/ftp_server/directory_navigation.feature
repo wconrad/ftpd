@@ -7,22 +7,22 @@ Feature: Change Directory
   Background:
     Given the test server is started
 
-  Scenario: Change to subdirectory
+  Scenario: Down to subdir
     Given a successful login
     And the server has file "subdir/bar"
     When the client successfully cd's to "subdir"
     Then the current directory should be "/subdir"
 
-  Scenario: Change to parent from subdir
+  Scenario: Up from subdir
     Given a successful login
     And the server has file "subdir/bar"
     And the client successfully cd's to "subdir"
-    When the client successfully cd's up
+    When the client successfully cd's to ".."
     Then the current directory should be "/"
 
-  Scenario: Change to parent from root
+  Scenario: Up from root
     Given a successful login
-    When the client successfully cd's up
+    When the client successfully cd's to ".."
     Then the current directory should be "/"
 
   Scenario: Change to file

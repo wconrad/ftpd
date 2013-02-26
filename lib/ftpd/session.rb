@@ -325,6 +325,7 @@ module Ftpd
     end
 
     def cmd_cdup(argument)
+      syntax_error if argument
       ensure_logged_in
       cmd_cwd('..')
     end

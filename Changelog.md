@@ -13,11 +13,12 @@ Enhancements
 * Support RNFR/RNTO (rename/move file/directory)
 * Test implicit TLS
 
-Bug fixes
+Bug Fixes
 
 * Passive mode transfers bind to the correct interface.  They were
   erroneously binding to the local interface, which kept passive mode
   transfers from working when the client was on another machine.
+* CDUP responds with syntax error if given an argument.
 
 ### 0.2.0
 
