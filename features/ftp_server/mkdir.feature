@@ -18,17 +18,22 @@ Feature: Make directory
     When the client successfully makes directory "foo/bar"
     Then the server has directory "foo/bar"
 
-  Scenario: Missing directory
-    Given a successful login
-    When the client makes directory "foo/bar"
-    Then the server returns a not found error
-
   Scenario: After cwd
     Given a successful login
     And the server has directory "foo"
     And the client successfully cd's to "foo"
     When the client successfully makes directory "bar"
     Then the server has directory "foo/bar"
+
+  Scenario: XMKD
+    Given a successful login
+    When the client successfully sends "XMKD foo"
+    Then the server has directory "foo"
+
+  Scenario: Missing directory
+    Given a successful login
+    When the client makes directory "foo/bar"
+    Then the server returns a not found error
 
   Scenario: Not logged in
     Given a successful connection

@@ -264,6 +264,7 @@ module Ftpd
       @file_system.mkdir path
       reply %Q'257 "#{path}" created'
     end
+    alias cmd_xmkd :cmd_mkd
 
     def cmd_rmd(argument)
       syntax_error unless argument
