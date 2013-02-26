@@ -8,7 +8,8 @@ API changes
 
 Enhancements
 
-* SUpport RMD	
+* Support MKD	
+* Support RMD
 
 ### 0.2.0
 
