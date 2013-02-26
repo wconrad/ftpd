@@ -277,6 +277,7 @@ module Ftpd
       @file_system.rmdir path
       reply '250 RMD command successful'
     end
+    alias cmd_xrmd :cmd_rmd
 
     def ensure_file_system_supports(method)
       unless @file_system.respond_to?(method)

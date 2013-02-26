@@ -20,17 +20,23 @@ Feature: Remove directory
     Then the server should not have directory "foo/bar"
     And the server has directory "foo"
 
-  Scenario: Missing directory
-    Given a successful login
-    When the client removes directory "foo/bar"
-    Then the server returns a not found error
-
   Scenario: After cwd
     Given a successful login
     And the server has directory "foo/bar"
     And the client successfully cd's to "foo"
     When the client successfully removes directory "bar"
     Then the server should not have directory "foo/bar"
+
+  Scenario: XRMD
+    Given a successful login
+    And the server has directory "foo"
+    When the client successfully sends "XRMD foo"
+    Then the server should not have directory "foo"
+
+  Scenario: Missing directory
+    Given a successful login
+    When the client removes directory "foo/bar"
+    Then the server returns a not found error
 
   Scenario: Not logged in
     Given a successful connection

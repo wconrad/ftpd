@@ -9,7 +9,7 @@ API changes
 Enhancements
 
 * Support MKD and XMKD (make directory)
-* Support RMD (remove directory)
+* Support RMD and XRMD (remove directory)
 * Support RNFR/RNTO (rename/move file/directory)
 * Test implicit TLS
 
