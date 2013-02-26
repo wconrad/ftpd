@@ -54,6 +54,7 @@ module Ftpd
 
     def session(socket)
       Session.new(:socket => socket,
+                  :interface => interface,
                   :driver => @driver,
                   :debug => @debug,
                   :debug_path => debug_path,

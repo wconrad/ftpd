@@ -113,6 +113,13 @@ implemented.  They result in a "502 Command not implemented" response.
 * STAT - Status
 * STOU - Store Unique
 
+To bind the server to an external interface, the interface must be set
+to the public IP of that interface (e.g. "1.2.3.4"), not to "0.0.0.0".
+That's because the interface IP is used both for binding server ports,
+_and_ for advertising to the client which IP to connect to.  Binding
+to 0.0.0.0 will work fine, but when the client tries to connect to
+0.0.0.0, it won't get to the server.
+
 ## DEVELOPMENT
 
 ### TESTS
