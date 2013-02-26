@@ -12,6 +12,7 @@ Enhancements
 * Support RMD and XRMD (remove directory)
 * Support RNFR/RNTO (rename/move file/directory)
 * Support XCUP (alias for CDUP)
+* Support XPWD (alias for PWD)
 * Test implicit TLS
 
 Bug Fixes

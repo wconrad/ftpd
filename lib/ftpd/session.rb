@@ -335,6 +335,7 @@ module Ftpd
       ensure_logged_in
       pwd
     end
+    alias cmd_xpwd :cmd_pwd
 
     def cmd_auth(security_scheme)
       ensure_tls_supported

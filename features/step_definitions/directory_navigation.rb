@@ -20,3 +20,7 @@ end
 Then /^the current directory should be "(.*?)"$/ do |path|
   @client.pwd.should == path
 end
+
+Then /^the XPWD directory should be "(.*?)"$/ do |path|
+  @client.xpwd.should == path
+end

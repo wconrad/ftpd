@@ -60,6 +60,11 @@ class TestClient
     File.open(temp_path(path), 'rb', &:read)
   end
 
+  def xpwd
+    response = raw('XPWD')
+    response[/"(.+)"/, 1]
+  end
+
   private
 
   RAW_METHOD_REGEX = /^send_(.*)$/
