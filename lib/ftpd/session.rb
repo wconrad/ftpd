@@ -329,6 +329,7 @@ module Ftpd
       ensure_logged_in
       cmd_cwd('..')
     end
+    alias cmd_xcup :cmd_cdup
 
     def cmd_pwd(argument)
       ensure_logged_in
