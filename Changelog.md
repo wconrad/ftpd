@@ -1,11 +1,13 @@
 ### dev
 
 API changes
+
 * Introduced PermanentFileSystemError and TransientFileSystemError exceptions.
-# Deprecated FileSystemError (use PermanentFileSystemError instead).
+* Deprecated FileSystemError (use PermanentFileSystemError instead).
 * DiskFileSystem errors generate 550 responses, not 450
 
 Enhancements
+
 * SUpport RMD	
 
 ### 0.2.0

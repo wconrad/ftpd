@@ -154,6 +154,7 @@ module Ftpd
     def cmd_stor(argument)
       close_data_server_socket_when_done do
         ensure_logged_in
+        ensure_file_system_supports :write
         path = argument
         syntax_error unless path
         path = File.expand_path(path, @name_prefix)
@@ -168,6 +169,7 @@ module Ftpd
     def cmd_retr(argument)
       close_data_server_socket_when_done do
         ensure_logged_in
+        ensure_file_system_supports :read
         path = argument
         syntax_error unless path
         path = File.expand_path(path, @name_prefix)
@@ -180,6 +182,7 @@ module Ftpd
 
     def cmd_dele(argument)
       ensure_logged_in
+      ensure_file_system_supports :delete
       path = argument
       error "501 Path required" unless path
       path = File.expand_path(path, @name_prefix)
@@ -192,6 +195,7 @@ module Ftpd
     def cmd_list(argument)
       close_data_server_socket_when_done do
         ensure_logged_in
+        ensure_file_system_supports :list
         path = argument
         path ||= '.'
         path = File.expand_path(path, @name_prefix)
@@ -203,6 +207,7 @@ module Ftpd
     def cmd_nlst(argument)
       close_data_server_socket_when_done do
         ensure_logged_in
+        ensure_file_system_supports :name_list
         path = argument
         path ||= '.'
         path = File.expand_path(path, @name_prefix)
@@ -291,6 +296,7 @@ module Ftpd
     def cmd_mkd(argument)
       syntax_error unless argument
       ensure_logged_in
+      ensure_file_system_supports :mkdir
       path = File.expand_path(argument, @name_prefix)
       ensure_accessible path
       ensure_exists File.dirname(path)
@@ -446,12 +452,7 @@ module Ftpd
     }
 
     def set_file_system(file_system)
-      @file_system = [
-        FileSystemErrorTranslator,
-        FileSystemMethodMissing,
-      ].inject(file_system) do |file_system, klass|
-        klass.new(file_system)
-      end
+      @file_system = FileSystemErrorTranslator.new(file_system)
     end
 
     def transmit_file(contents, data_type = @data_type)
