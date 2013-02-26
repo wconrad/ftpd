@@ -18,6 +18,7 @@ class TestServer
     attr_accessor :mkdir
     attr_accessor :name_list
     attr_accessor :read
+    attr_accessor :rmdir
     attr_accessor :write
 
     def initialize(temp_dir)
@@ -27,6 +28,7 @@ class TestServer
       @mkdir = true
       @name_list = true
       @read = true
+      @rmdir = true
       @write = true
     end
 
@@ -41,6 +43,7 @@ class TestServer
                                :mkdir => @mkdir,
                                :name_list => @name_list,
                                :read => @read,
+                               :rmdir => @rmdir,
                                :write => @write)
     end
 
@@ -154,6 +157,10 @@ class TestServer
           raise_on_file_system_error :read
         end
 
+        if opts[:rmdir]
+          include Ftpd::DiskFileSystem::Rmdir
+        end
+
         if opts[:write]
           include Ftpd::DiskFileSystem::Write
           raise_on_file_system_error :write
@@ -204,6 +211,7 @@ class TestServer
   def_delegator :@driver, :'list='
   def_delegator :@driver, :'mkdir='
   def_delegator :@driver, :'name_list='
+  def_delegator :@driver, :'rmdir='
   def_delegator :@driver, :'read='
   def_delegator :@driver, :'write='
 

@@ -15,6 +15,15 @@ Then /^the server should( not)? have file "(.*?)"$/ do |neg, path|
   @server.has_file?(path).should send(matcher)
 end
 
+Then /^the server should( not)? have directory "(.*?)"$/ do |neg, path|
+  matcher = if neg
+              :be_false
+            else
+              :be_true
+            end
+  @server.has_directory?(path).should send(matcher)
+end
+
 Then /^the remote file "(.*?)" should have (unix|windows) line endings$/ do
 |remote_path, line_ending_type|
   line_ending_type(@server.file_contents(remote_path)).should ==

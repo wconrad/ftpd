@@ -45,6 +45,7 @@ module Ftpd
       # * DELE
       # * CWD
       # * MKD
+      # * RMD
 
       def accessible?(ftp_path)
         # The server should never try to access a path outside of the
@@ -169,6 +170,30 @@ module Ftpd
         Dir.mkdir expand_ftp_path(ftp_path)
       end
       translate_exceptions :mkdir
+
+    end
+
+  end
+
+  class DiskFileSystem
+
+    # DiskFileSystem mixing providing mkdir
+
+    module Rmdir
+
+      include TranslateExceptions
+
+      # Remove a directory.
+      #
+      # Called for:
+      # * RMD
+      #
+      # If missing, then these commands are not supported.
+
+      def rmdir(ftp_path)
+        Dir.rmdir expand_ftp_path(ftp_path)
+      end
+      translate_exceptions :rmdir
 
     end
 
@@ -318,6 +343,7 @@ module Ftpd
     include DiskFileSystem::Mkdir
     include DiskFileSystem::NameList
     include DiskFileSystem::Read
+    include DiskFileSystem::Rmdir
     include DiskFileSystem::Write
 
     # Make a new instance to serve a directory.  data_dir should be an

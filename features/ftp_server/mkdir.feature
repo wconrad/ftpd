@@ -1,7 +1,7 @@
 Feature: Make directory
 
   As a client
-  I want to creat a directory
+  I want to create a directory
   So that I can categorize my uploads
 
   Background:
@@ -23,7 +23,7 @@ Feature: Make directory
     When the client makes directory "foo/bar"
     Then the server returns a not found error
 
-  Scenario: Directory within directory
+  Scenario: After cwd
     Given a successful login
     And the server has directory "foo"
     And the client successfully cd's to "foo"

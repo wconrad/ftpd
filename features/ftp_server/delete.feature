@@ -32,7 +32,7 @@ Feature: Delete
     When the client deletes with no path
     Then the server returns a path required error
 
-  Scenario: No such file
+  Scenario: not found
     Given a successful login
     When the client deletes "foo"
     Then the server returns a not found error

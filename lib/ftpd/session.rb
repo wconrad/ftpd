@@ -300,6 +300,24 @@ module Ftpd
       reply %Q'257 "#{path}" created'
     end
 
+    def cmd_rmd(argument)
+      syntax_error unless argument
+      ensure_logged_in
+      ensure_file_system_supports :rmdir
+      path = File.expand_path(argument, @name_prefix)
+      ensure_accessible path
+      ensure_exists path
+      ensure_directory path
+      @file_system.rmdir path
+      reply '250 RMD command successful'
+    end
+
+    def ensure_file_system_supports(method)
+      unless @file_system.respond_to?(method)
+        unimplemented_error
+      end
+    end
+
     def ensure_logged_in
       return if @state == :logged_in
       error "530 Not logged in"

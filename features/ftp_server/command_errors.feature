@@ -24,7 +24,6 @@ Feature: Command Errors
       | HELP    |
       | REIN    |
       | REST    |
-      | RMD     |
       | RNFR    |
       | RNTO    |
       | SITE    |

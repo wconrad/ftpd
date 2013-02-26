@@ -55,7 +55,7 @@ Feature: Get
   Scenario: Missing file
     Given a successful login
     When the client gets text "foo"
-    Then the server returns a no such file error
+    Then the server returns a not found error
 
   Scenario: Not logged in
     Given a successful connection

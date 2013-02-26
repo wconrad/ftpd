@@ -18,6 +18,11 @@ module TestServerFiles
     File.exists?(full_path)
   end
 
+  def has_directory?(path)
+    full_path = temp_path(path)
+    File.directory?(full_path)
+  end
+
   def file_contents(path)
     full_path = temp_path(path)
     File.open(full_path, 'rb', &:read)

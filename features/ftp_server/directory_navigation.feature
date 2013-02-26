@@ -34,7 +34,7 @@ Feature: Change Directory
   Scenario: No such directory
     Given a successful login
     When the client cd's to "subdir"
-    Then the server returns a no such file error
+    Then the server returns a not found error
 
   Scenario: Access denied
     Given a successful login

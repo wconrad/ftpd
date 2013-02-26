@@ -53,7 +53,7 @@ Feature: Put
     Given a successful login
     And the client has file "bar"
     When the client puts text "foo/bar"
-    Then the server returns a no such file error
+    Then the server returns a not found error
 
   Scenario: Not logged in
     Given a successful connection
