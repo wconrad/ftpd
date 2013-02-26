@@ -251,6 +251,7 @@ module Ftpd
       @name_prefix = path
       pwd
     end
+    alias cmd_xcwd :cmd_cwd
 
     def cmd_mkd(argument)
       syntax_error unless argument

@@ -31,6 +31,12 @@ Feature: Change Directory
     When the client successfully cd's to "subdir"
     Then the XPWD directory should be "/subdir"
 
+  Scenario: XCWD
+    Given a successful login
+    And the server has directory "subdir"
+    When the client successfully sends "XCWD subdir"
+    Then the current directory should be "/subdir"
+
   Scenario: Change to file
     Given a successful login
     And the server has file "baz"

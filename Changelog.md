@@ -13,6 +13,7 @@ Enhancements
 * Support RNFR/RNTO (rename/move file/directory)
 * Support XCUP (alias for CDUP)
 * Support XPWD (alias for PWD)
+* Support XCWD (alias for CWD)
 * Test implicit TLS
 
 Bug Fixes
