@@ -1,8 +1,8 @@
 Then /^the server should have written( no)? debug output$/ do |neg|
-  matcher = if neg
-              be_false
-            else
-              be_true
-            end
-  @server.wrote_debug_output?.should matcher
+  method = if neg
+             :should
+           else
+             :should_not
+           end
+  @server.debug_output.send(method) == ''
 end

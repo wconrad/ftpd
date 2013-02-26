@@ -223,8 +223,8 @@ class TestServer
     @server.stop
   end
 
-  def wrote_debug_output?
-    File.size(@debug_file.path) > 0
+  def debug_output
+    IO.read(@debug_file.path)
   end
 
   def host
