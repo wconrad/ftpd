@@ -5,13 +5,13 @@ Feature: List TLS
   So that I can see what file to transfer
 
   Background:
-    Given the test server is started with TLS
+    Given the test server is started with explicit TLS
 
   Scenario: TLS
     pending "TLS not supported in active mode (see README)"
 
   Scenario: TLS, Passive
-    Given a successful login with TLS
+    Given a successful login with explicit TLS
     And the server has file "foo"
     And the server has file "bar"
     And the client is in passive mode

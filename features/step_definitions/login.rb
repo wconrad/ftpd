@@ -9,11 +9,11 @@ def login(user, password, client_name = nil)
   end
 end
 
-Given /^a successful connection( with TLS)?$/ do |with_tls|
+Given /^a successful connection( with \w+ TLS)?$/ do |with_tls|
   step "the client connects#{with_tls}"
 end
 
-Given /^a successful login( with TLS)?$/ do |with_tls|
+Given /^a successful login( with \w+ TLS)?$/ do |with_tls|
   step "a successful connection#{with_tls}"
   step 'the client logs in'
 end

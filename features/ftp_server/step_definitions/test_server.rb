@@ -3,9 +3,10 @@ Given /^the test server is started$/ do
   @server.start
 end
 
-Given /^the test server is started with TLS$/ do
+Given /^the test server is started with(?: (\w+) TLS)?$/ do |mode|
+  mode ||= 'explicit'
   @server = TestServer.new
-  @server.tls = :explicit
+  @server.tls = mode.to_sym
   @server.start
 end
 

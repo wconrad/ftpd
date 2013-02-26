@@ -5,13 +5,13 @@ Feature: Get TLS
   So that I have it on my computer
 
   Background:
-    Given the test server is started with TLS
+    Given the test server is started with explicit TLS
 
   Scenario: TLS
     pending "TLS not supported in active mode (see README)"
 
   Scenario: TLS, Passive
-    Given a successful login with TLS
+    Given a successful login with explicit TLS
     And the server has file "ascii_unix"
     And the client is in passive mode
     When the client successfully gets text "ascii_unix"

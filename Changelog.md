@@ -11,6 +11,7 @@ Enhancements
 * Support MKD (make directory)
 * Support RMD (remove directory)
 * Support RNFR/RNTO (rename/move file/directory)
+* Test implicit TLS
 
 ### 0.2.0
 

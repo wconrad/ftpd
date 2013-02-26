@@ -73,20 +73,26 @@ class TestClient
   end
 
   def make_ftp(opts)
-    tls = opts[:tls]
-    if tls
-      make_tls_ftp
-    else
+    tls_mode = opts[:tls] || :off
+    case tls_mode
+    when :off
       make_non_tls_ftp
+    when :implicit
+      make_tls_ftp(:implicit)
+    when :explicit
+      make_tls_ftp(:explicit)
+    else
+      raise "Unknown TLS mode: #{tls_mode}"
     end
   end
 
-  def make_tls_ftp
+  def make_tls_ftp(ftps_mode)
     ftp = DoubleBagFTPS.new
     context_opts = {
       :verify_mode => OpenSSL::SSL::VERIFY_NONE
     }
     ftp.ssl_context = DoubleBagFTPS.create_ssl_context(context_opts)
+    ftp.ftps_mode = ftps_mode
     ftp
   end
 
