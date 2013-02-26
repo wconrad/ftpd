@@ -32,12 +32,9 @@ module Ftpd
             s = get_command
             syntax_error unless s =~ /^(\w+)(?: (.*))?$/
             command, argument = $1.downcase, $2
-            unless VALID_COMMANDS.include?(command)
-              error "500 Syntax error, command unrecognized: #{s}"
-            end
             method = 'cmd_' + command
-            unless self.class.private_method_defined?(method)
-              unimplemented_error
+            unless respond_to?(method, true)
+              unrecognized_error s
             end
             send(method, argument)
           rescue CommandError => e
@@ -49,45 +46,6 @@ module Ftpd
     end
 
     private
-
-    VALID_COMMANDS = [
-      "abor",
-      "acct",
-      "allo",
-      "appe",
-      "auth",
-      "pbsz",
-      "cdup",
-      "cwd",
-      "dele",
-      "help",
-      "list",
-      "mkd",
-      "mode",
-      "nlst",
-      "noop",
-      "pass",
-      "pasv",
-      "port",
-      "prot",
-      "pwd",
-      "quit",
-      "rein",
-      "rest",
-      "retr",
-      "rmd",
-      "rnfr",
-      "rnto",
-      "site",
-      "smnt",
-      "stat",
-      "stor",
-      "stou",
-      "stru",
-      "syst",
-      "type",
-      "user",
-    ]
 
     def cmd_allo(argument)
       ensure_logged_in
@@ -436,6 +394,25 @@ module Ftpd
       @file_system.rename(@rename_from_path, to_path)
       reply '250 Rename successful'
     end
+
+    def self.unimplemented(command)
+      method_name = "cmd_#{command}"
+      define_method method_name do |arguments|
+        unimplemented_error
+      end
+      private method_name
+    end
+
+    unimplemented :abor
+    unimplemented :acct
+    unimplemented :appe
+    unimplemented :help
+    unimplemented :rein
+    unimplemented :rest
+    unimplemented :site
+    unimplemented :smnt
+    unimplemented :stat
+    unimplemented :stou
 
     def pwd
       reply %Q(257 "#{@name_prefix}" is current directory)

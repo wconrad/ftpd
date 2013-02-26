@@ -9,6 +9,10 @@ module Ftpd
       error "450 #{message}"
     end
 
+    def unrecognized_error(s)
+      error "500 Syntax error, command unrecognized: #{s.chomp}"
+    end
+
     def unimplemented_error
       error "502 Command not implemented"
     end
