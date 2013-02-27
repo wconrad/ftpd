@@ -17,8 +17,8 @@ module Ftpd
       # Expand an ftp_path to an absolute file system path.
       #
       # ftp_path is an absolute path relative to the FTP file system.
-      # @data_dir is an absolute path relative to the disk file system.
-      # The return value is an absolute path relative to the disk file system.
+      # The return value is an absolute path relative to the disk file
+      # system.
 
       def expand_ftp_path(ftp_path)
         File.expand_path(File.join(@data_dir, ftp_path))
