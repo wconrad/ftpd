@@ -7,6 +7,7 @@ group :development do
   gem 'double-bag-ftps'
   gem 'jeweler'
   gem 'rake'
+  gem 'redcarpet'
   gem 'rspec'
   gem 'yard'
 end
