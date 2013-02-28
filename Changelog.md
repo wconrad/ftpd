@@ -22,6 +22,7 @@ Bug Fixes
   erroneously binding to the local interface, which kept passive mode
   transfers from working when the client was on another machine.
 * CDUP responds with syntax error if given an argument.
+* RNTO checks that RNFM was called	
 
 ### 0.2.0
 

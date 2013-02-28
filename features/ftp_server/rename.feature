@@ -61,7 +61,9 @@ Feature: Rename
   Scenario: Not logged in (RNTO)
     Given a successful connection
     When the client sends "RNTO foo"
-    Then the server returns a not logged in error
+    # Although the RNTO command checks for logged in, sequence error
+    # gets triggered first.
+    Then the server returns a bad sequence error
 
   Scenario: Missing path (RNFR)
     Given a successful login
@@ -70,6 +72,8 @@ Feature: Rename
 
   Scenario: Missing path (RNTO)
     Given a successful login
+    And the server has file "foo"
+    And the client successfully sends "RNFR foo"
     When the client sends "RNTO"
     Then the server returns a syntax error
 
@@ -79,3 +83,8 @@ Feature: Rename
     And the server has file "foo"
     When the client renames "foo" to "bar"
     Then the server returns an unimplemented command error
+
+  Scenario: RNTO without RNFR
+    Given a successful login
+    When the client sends "RNTO bar"
+    Then the server returns a bad sequence error

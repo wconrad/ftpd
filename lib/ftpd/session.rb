@@ -61,19 +61,19 @@ module Ftpd
 
     def cmd_user(argument)
       syntax_error unless argument
-      bad_sequence unless @state == :user
+      sequence_error unless @state == :user
       @user = argument
       @state = :password
       reply "331 Password required"
     end
 
-    def bad_sequence
+    def sequence_error
       error "503 Bad sequence of commands"
     end
 
     def cmd_pass(argument)
       syntax_error unless argument
-      bad_sequence unless @state == :password
+      sequence_error unless @state == :password
       password = argument
       unless @driver.authenticate(@user, password)
         @state = :user
@@ -392,6 +392,7 @@ module Ftpd
     end
 
     def cmd_rnto(argument)
+      sequence_error unless @rename_from_path
       ensure_logged_in
       ensure_file_system_supports :rename
       syntax_error unless argument
@@ -400,6 +401,7 @@ module Ftpd
       ensure_does_not_exist to_path
       @file_system.rename(@rename_from_path, to_path)
       reply '250 Rename successful'
+      @rename_from_path = nil
     end
 
     def self.unimplemented(command)
