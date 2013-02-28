@@ -120,6 +120,14 @@ _and_ for advertising to the client which IP to connect to.  Binding
 to 0.0.0.0 will work fine, but when the client tries to connect to
 0.0.0.0, it won't get to the server.
 
+## VERSIONS
+
+The tests pass with these Rubies:
+
+* ruby-1.8.7-p371
+* ruby-1.9.3-p392
+* ruby-2.0.0-p0
+
 ## DEVELOPMENT
 
 ### TESTS
