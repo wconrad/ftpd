@@ -23,6 +23,7 @@ Bug Fixes
   transfers from working when the client was on another machine.
 * CDUP responds with syntax error if given an argument.
 * RNTO checks that RNFM was called	
+* Tests pass in Ruby 2.0.
 
 ### 0.2.0
 
