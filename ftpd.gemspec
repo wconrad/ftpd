@@ -5,12 +5,12 @@
 
 Gem::Specification.new do |s|
   s.name = "ftpd"
-  s.version = "0.2.0"
+  s.version = "0.2.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Wayne Conrad"]
-  s.date = "2013-02-24"
-  s.description = "ftpd is a pure Ruby FTP server library.  It supports implicit and explicit TLS, and can be used as part of a test fixture or to embed in another program."
+  s.date = "2013-02-28"
+  s.description = "ftpd is a pure Ruby FTP server library.  It supports implicit and explicit TLS, passive and active mode, and most of the commands specified in RFC 969.  It an be used as part of a test fixture or embedded in a program."
   s.email = "wconrad@yagni.com"
   s.extra_rdoc_files = [
     "LICENSE.md",
@@ -24,11 +24,13 @@ Gem::Specification.new do |s|
     "README.md",
     "Rakefile",
     "VERSION",
+    "doc/rfc.md",
     "examples/example.rb",
     "examples/hello_world.rb",
     "features/example/example.feature",
     "features/example/step_definitions/example_server.rb",
     "features/ftp_server/allo.feature",
+    "features/ftp_server/cdup.feature",
     "features/ftp_server/command_errors.feature",
     "features/ftp_server/concurrent_sessions.feature",
     "features/ftp_server/debug.feature",
@@ -37,9 +39,11 @@ Gem::Specification.new do |s|
     "features/ftp_server/file_structure.feature",
     "features/ftp_server/get.feature",
     "features/ftp_server/get_tls.feature",
+    "features/ftp_server/implicit_tls.feature",
     "features/ftp_server/list.feature",
     "features/ftp_server/list_tls.feature",
     "features/ftp_server/login.feature",
+    "features/ftp_server/mkdir.feature",
     "features/ftp_server/mode.feature",
     "features/ftp_server/name_list.feature",
     "features/ftp_server/name_list_tls.feature",
@@ -48,6 +52,8 @@ Gem::Specification.new do |s|
     "features/ftp_server/put.feature",
     "features/ftp_server/put_tls.feature",
     "features/ftp_server/quit.feature",
+    "features/ftp_server/rename.feature",
+    "features/ftp_server/rmdir.feature",
     "features/ftp_server/step_definitions/debug.rb",
     "features/ftp_server/step_definitions/test_server.rb",
     "features/ftp_server/syntax_errors.feature",
@@ -59,7 +65,7 @@ Gem::Specification.new do |s|
     "features/step_definitions/command.rb",
     "features/step_definitions/connect.rb",
     "features/step_definitions/delete.rb",
-    "features/step_definitions/directories.rb",
+    "features/step_definitions/directory_navigation.rb",
     "features/step_definitions/error_replies.rb",
     "features/step_definitions/file_structure.rb",
     "features/step_definitions/generic_send.rb",
@@ -68,12 +74,15 @@ Gem::Specification.new do |s|
     "features/step_definitions/line_endings.rb",
     "features/step_definitions/list.rb",
     "features/step_definitions/login.rb",
+    "features/step_definitions/mkdir.rb",
     "features/step_definitions/mode.rb",
     "features/step_definitions/noop.rb",
     "features/step_definitions/passive.rb",
     "features/step_definitions/port.rb",
     "features/step_definitions/put.rb",
     "features/step_definitions/quit.rb",
+    "features/step_definitions/rename.rb",
+    "features/step_definitions/rmdir.rb",
     "features/step_definitions/server_files.rb",
     "features/step_definitions/stop_server.rb",
     "features/step_definitions/success_replies.rb",
@@ -109,7 +118,6 @@ Gem::Specification.new do |s|
     "rake_tasks/spec.rake",
     "rake_tasks/test.rake",
     "rake_tasks/yard.rake",
-    "sandbox/em-server.rb",
     "spec/disk_file_system_spec.rb",
     "spec/exception_translator_spec.rb",
     "spec/file_system_error_translator_spec.rb",
@@ -119,7 +127,7 @@ Gem::Specification.new do |s|
   s.homepage = "http://github.com/wconrad/ftpd"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.25"
+  s.rubygems_version = "1.8.24"
   s.summary = "Pure Ruby FTP server library"
 
   if s.respond_to? :specification_version then
@@ -131,6 +139,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<double-bag-ftps>, [">= 0"])
       s.add_development_dependency(%q<jeweler>, [">= 0"])
       s.add_development_dependency(%q<rake>, [">= 0"])
+      s.add_development_dependency(%q<redcarpet>, [">= 0"])
       s.add_development_dependency(%q<rspec>, [">= 0"])
       s.add_development_dependency(%q<yard>, [">= 0"])
     else
@@ -139,6 +148,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<double-bag-ftps>, [">= 0"])
       s.add_dependency(%q<jeweler>, [">= 0"])
       s.add_dependency(%q<rake>, [">= 0"])
+      s.add_dependency(%q<redcarpet>, [">= 0"])
       s.add_dependency(%q<rspec>, [">= 0"])
       s.add_dependency(%q<yard>, [">= 0"])
     end
@@ -148,6 +158,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<double-bag-ftps>, [">= 0"])
     s.add_dependency(%q<jeweler>, [">= 0"])
     s.add_dependency(%q<rake>, [">= 0"])
+    s.add_dependency(%q<redcarpet>, [">= 0"])
     s.add_dependency(%q<rspec>, [">= 0"])
     s.add_dependency(%q<yard>, [">= 0"])
   end
