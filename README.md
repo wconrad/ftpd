@@ -88,30 +88,13 @@ output without having to change any code.
 
 ## LIMITATIONS
 
-The automated tests don't cover TLS in passive mode (although it works
-fine): The FTPS client used by the test locks up in active mode.
+Ftpd is not yet RFC compliant.  It does most of RFC969, and enough TLS
+to get by.  {file:doc/rfc.md Here} is a list of RFCs, indicating how
+much of each Ftpd complies with.
 
 The DiskFileSystem class only works in Linux.  This is because it
 shells out to the "ls" command.  This affects the example, which uses
 the DiskFileSystem.
-
-The control connection is supposed to be a Telnet session.  It's not.
-In practice, it doesn't seem to matter whether it's a Telnet session
-or just plain sending and receiving characters.
-
-The following commands defined by RFC969 are understood, but not
-implemented.  They result in a "502 Command not implemented" response.
-
-* ABOR - Abort
-* ACCT - Account
-* APPE - Append (with create)
-* HELP - Help
-* REIN - Reinitialize
-* REST - Restart
-* SITE - Site parameters
-* SMNT - Structure mount
-* STAT - Status
-* STOU - Store Unique
 
 To bind the server to an external interface, the interface must be set
 to the public IP of that interface (e.g. "1.2.3.4"), not to "0.0.0.0".
@@ -197,3 +180,8 @@ Wayne Conrad <wconrad@yagni.com>
 
 Thanks to Databill, LLC, which supported the creation of this library,
 and granted permission to donate it to the community.
+
+## See also
+
+* {file:doc/rfc.md RFC compliance}
+* {file:Changelog.md}
