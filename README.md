@@ -120,7 +120,7 @@ _and_ for advertising to the client which IP to connect to.  Binding
 to 0.0.0.0 will work fine, but when the client tries to connect to
 0.0.0.0, it won't get to the server.
 
-## VERSIONS
+## RUBY COMPATABILITY
 
 The tests pass with these Rubies:
 
