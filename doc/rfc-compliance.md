@@ -90,7 +90,7 @@ FEATURE                                    |SECTION        | | | |T|T|e
 Implement TYPE T if same as TYPE N         |4.1.2.2        | |x| | | |  
 File/Record transform invertible if poss.  |4.1.2.4        | |x| | | |  
 Server-FTP implement PASV                  |4.1.2.6        |x| | | | |  C
-  PASV is per-transfer                     |4.1.2.6        |x| | | | |  
+  PASV is per-transfer                     |4.1.2.6        |x| | | | |  C
 NLST reply usable in RETR cmds             |4.1.2.7        |x| | | | |  C
 Implied type for LIST and NLST             |4.1.2.7        | |x| | | |  C
 SITE cmd for non-standard features         |4.1.2.8        | |x| | | |  
