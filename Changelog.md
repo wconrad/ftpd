@@ -1,3 +1,9 @@
+### dev
+
+Bug fixes
+* Respond with sequence error if RNFR is not immediately followed by
+  RNTO
+
 ### 0.2.1
 
 API changes

@@ -88,3 +88,10 @@ Feature: Rename
     Given a successful login
     When the client sends "RNTO bar"
     Then the server returns a bad sequence error
+
+  Scenario: RNFR not followed by RNTO
+    Given a successful login
+    And the server has file "foo"
+    And the client sends "RNFR foo"
+    When the client sends "NOOP"
+    Then the server returns a bad sequence error

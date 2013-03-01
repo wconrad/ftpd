@@ -6,6 +6,7 @@ require 'socket'
 require 'tmpdir'
 
 module Ftpd
+  autoload :CommandSequenceChecker,    'ftpd/command_sequence_checker'
   autoload :DiskFileSystem,            'ftpd/disk_file_system'
   autoload :Error,                     'ftpd/error'
   autoload :ExceptionTranslator,       'ftpd/exception_translator'

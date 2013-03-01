@@ -17,6 +17,10 @@ module Ftpd
       error "502 Command not implemented"
     end
 
+    def sequence_error
+      error "503 Bad sequence of commands"
+    end
+
     def permanent_error(message)
       error "550 #{message}"
     end

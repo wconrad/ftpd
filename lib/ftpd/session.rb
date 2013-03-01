@@ -22,6 +22,7 @@ module Ftpd
       @structure = 'F'
       @response_delay = opts[:response_delay]
       @data_channel_protection_level = :clear
+      @command_sequence_checker = CommandSequenceChecker.new
     end
 
     def run
@@ -37,6 +38,7 @@ module Ftpd
             unless respond_to?(method, true)
               unrecognized_error s
             end
+            @command_sequence_checker.check command
             send(method, argument)
           rescue CommandError => e
             reply e.message
@@ -65,10 +67,6 @@ module Ftpd
       @user = argument
       @state = :password
       reply "331 Password required"
-    end
-
-    def sequence_error
-      error "503 Bad sequence of commands"
     end
 
     def cmd_pass(argument)
@@ -389,6 +387,7 @@ module Ftpd
       ensure_exists from_path
       @rename_from_path = from_path
       reply '350 RNFR accepted; ready for destination'
+      expect 'rnto'
     end
 
     def cmd_rnto(argument)
@@ -458,6 +457,10 @@ module Ftpd
       'E'=>:confidential,
       'P'=>:private
     }
+
+    def expect(command)
+      @command_sequence_checker.expect command
+    end
 
     def set_file_system(file_system)
       @file_system = FileSystemErrorTranslator.new(file_system)
