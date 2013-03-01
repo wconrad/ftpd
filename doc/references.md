@@ -12,6 +12,8 @@ chronological order, the more useful ones are:
 * {http://tools.ietf.org/rfc/rfc2228.txt RFC-2228} - FTP Security Extensions
 * {http://tools.ietf.org/rfc/rfc2389.txt RFC-2389} - Feature negotiation mechanism for the File Transfer Protocol
 * {http://tools.ietf.org/rfc/rfc2428.txt RFC-2428} - FTP Extensions for IPv6 and NATs
+* {http://tools.ietf.org/rfc/rfc2577.txt RFC-2577} - FTP Security Considerations
+* {http://tools.ietf.org/rfc/rfc2640.txt RFC-2640} - Internationalization of the File Transfer Protocol
 * {http://tools.ietf.org/rfc/rfc3659.txt RFC-3659} - Extensions to FTP
 * {http://tools.ietf.org/rfc/rfc4217.txt RFC-4217} - Internationalization of the File Transfer Protocol
 
