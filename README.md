@@ -139,33 +139,6 @@ The example prints its port, username and password to the console.
 You can connect to the stand-alone example with any FTP client.  This
 is useful when testing how the server responds to a given FTP client.
 
-## REFERENCES
-
-(This list of references comes from the README of the em-ftpd gem,
-which is licensed under the same MIT license as this gem, and is
-Copyright (c) 2008 James Healy)
-
-There are a range of RFCs that together specify the FTP protocol. In
-chronological order, the more useful ones are:
-
-* <http://tools.ietf.org/rfc/rfc959.txt>
-* <http://tools.ietf.org/rfc/rfc1123.txt>
-* <http://tools.ietf.org/rfc/rfc2228.txt>
-* <http://tools.ietf.org/rfc/rfc2389.txt>
-* <http://tools.ietf.org/rfc/rfc2428.txt>
-* <http://tools.ietf.org/rfc/rfc3659.txt>
-* <http://tools.ietf.org/rfc/rfc4217.txt>
-
-For an english summary that's somewhat more legible than the RFCs, and
-provides some commentary on what features are actually useful or
-relevant 24 years after RFC959 was published:
-
-* <http://cr.yp.to/ftp.html>
-
-For a history lesson, check out Appendix III of RCF959. It lists the
-preceding (obsolete) RFC documents that relate to file transfers,
-including the ye old RFC114 from 1971, "A File Transfer Protocol"
-
 ## ORIGIN
 
 I created ftpd to support the test framework I wrote for Databill,
@@ -183,5 +156,6 @@ and granted permission to donate it to the community.
 
 ## See also
 
-* {file:doc/rfc.md RFC compliance}
 * {file:Changelog.md}
+* {file:doc/rfc.md RFC compliance}
+* {file:doc/references.md}
