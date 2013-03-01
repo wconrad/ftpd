@@ -31,7 +31,7 @@ Commands supported:
     DELE    Yes    0.1.0    Delete file    
     HELP    No      ---     Help
     LIST    Yes    0.1.0    List directory    
-    MKD     Yes     dev     Make directory    
+    MKD     Yes    0.2.1    Make directory    
     MODE    Yes    0.1.0    Set transfer mode
                             "Stream" mode supported; "Block" and
                             "Compressed" are not
@@ -45,9 +45,9 @@ Commands supported:
     REIN    No      ---     Reinitialize session    
     REST    No      ---     Restart transfer    
     RETR    Yes    0.1.0    Retrieve file    
-    RMD     Yes     dev     Remove directory    
-    RNFR    Yes     dev     Rename file (from)    
-    RNTO    Yes     dev     Rename file (to)    
+    RMD     Yes    0.2.1    Remove directory    
+    RNFR    Yes    0.2.1    Rename file (from)    
+    RNTO    Yes    0.2.1    Rename file (to)    
     SITE    No      ---     Site specific commands
     SMNT    No      ---     Structure Mount    
     STAT    No      ---     Server status    
@@ -219,7 +219,7 @@ Restruct PASV/PORT to non-priv. ports     No      ---
 Disconnect after so many wrong auths.     No      ---
 Delay on invalid password                 No      ---
 Per-source IP limit                       No      ---
-Do not reject wrong usernames             Yes     ---
+Do not reject wrong usernames             Yes    0.1.0
 Port stealing protection                  No      ---
 </pre>
 
@@ -269,9 +269,9 @@ Provides a description on how to implement TLS as a security mechanism to secure
 * [link](http://tools.ietf.org/rfc/rfc4217.txt)
 
 <pre>
-AUTH    Yes     ---     Authentication/Security Mechanism
+AUTH    Yes    0.1.0    Authentication/Security Mechanism
 CCC     No      ---     Clear Command Channel
-PBSZ    Yes     ---     Protection Buffer Size
-PROT    Yes     ---     Data Channel Protection Level.
+PBSZ    Yes    0.1.0    Protection Buffer Size
+PROT    Yes    0.1.0    Data Channel Protection Level.
                         Support only "Private" level
 </pre>
