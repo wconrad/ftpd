@@ -6,6 +6,8 @@ Bug fixes
   RNTO
 * Respond with sequence error if USER is not immediately followed by
   PASS
+* Open PASV mode data connection on same local IP as control connection.
+  This is required by RFC 1123.
 
 ### 0.2.1
 

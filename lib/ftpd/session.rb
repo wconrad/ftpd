@@ -8,7 +8,6 @@ module Ftpd
     def initialize(opts)
       @driver = opts[:driver]
       @socket = opts[:socket]
-      @interface = opts[:interface]
       @tls = opts[:tls]
       if @tls == :implicit
         @socket.encrypt
@@ -226,7 +225,8 @@ module Ftpd
       if @data_server
         reply "200 Already in passive mode"
       else
-        @data_server = TCPServer.new(@interface, 0)
+        interface = @socket.addr[3]
+        @data_server = TCPServer.new(interface, 0)
         ip = @data_server.addr[3]
         port = @data_server.addr[1]
         quads = [
