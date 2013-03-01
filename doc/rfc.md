@@ -202,6 +202,21 @@ FEAT    No      ---     List new supported commands
 OPTS    No      ---     Set options for certain commands
 </pre>
 
+## RFC-2428 - FTP Extensions for IPv6 and NATs
+
+Introduces the new commands EPRT and EPSV extending FTP to enable its
+use over various network protocols, and the new response codes 522 and
+229.
+
+* Issued: September 1998
+* Status: PROPOSED STANDARD
+* [link](http://tools.ietf.org/rfc/rfc2428.txt)
+
+<pre>
+EPRT    No      ---     Set active data connection over IPv4 or IPv6    
+EPSV    No      ---     Set passive data connection over IPv4 or IPv6 
+</pre>
+
 ##RFC-2577 - FTP Security Considerations
 
 Provides several configuration and implementation suggestions to
