@@ -21,7 +21,7 @@ module Ftpd
       @port = 0
     end
 
-    # The port the server is bound to.  Must be called until after
+    # The port the server is bound to.  Must not be called until after
     # #start is called.
 
     def bound_port
