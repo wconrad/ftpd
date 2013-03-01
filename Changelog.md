@@ -1,6 +1,7 @@
 ### dev
 
 Bug fixes
+
 * Respond with sequence error if RNFR is not immediately followed by
   RNTO
 * Respond with sequence error if USER is not immediately followed by
