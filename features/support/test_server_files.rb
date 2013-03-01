@@ -18,6 +18,19 @@ module TestServerFiles
     File.exists?(full_path)
   end
 
+  def has_file_with_contents_of?(path)
+    expected_contents = @templates[File.basename(path)]
+    all_paths.any? do |path|
+      File.open(path, 'rb', &:read) == expected_contents
+    end
+  end
+
+  def files_named_like(name)
+    all_paths.select do |path|
+      path.include?(name)
+    end
+  end
+
   def has_directory?(path)
     full_path = temp_path(path)
     File.directory?(full_path)
@@ -30,6 +43,10 @@ module TestServerFiles
 
   def temp_path(path)
     File.expand_path(path, temp_dir)
+  end
+
+  def all_paths
+    Dir[temp_path('**/*')]
   end
 
 end

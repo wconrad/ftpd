@@ -65,6 +65,11 @@ class TestClient
     response[/"(.+)"/, 1]
   end
 
+  def store_unique(path)
+    command = ['STOU', path].compact.join(' ')
+    @ftp.storbinary command, temp_path(path), Net::FTP::DEFAULT_BLOCKSIZE
+  end
+
   private
 
   RAW_METHOD_REGEX = /^send_(.*)$/

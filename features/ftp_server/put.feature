@@ -1,9 +1,8 @@
 Feature: Put
 
   As a client
-  I want to securely put a file
+  I want to upload a file
   So that someone else can have it
-  But nobody else can
 
   Background:
     Given the test server is started

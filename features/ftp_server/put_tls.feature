@@ -1,8 +1,8 @@
 Feature: Put TLS
 
   As a client
-  I want to put a file
-  So that someone else can have it
+  I want to put a file securely
+  So that nobody can intercept it
 
   Background:
     Given the test server is started with explicit TLS

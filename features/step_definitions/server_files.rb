@@ -29,3 +29,13 @@ Then /^the remote file "(.*?)" should have (unix|windows) line endings$/ do
   line_ending_type(@server.file_contents(remote_path)).should ==
     line_ending_type.to_sym
 end
+
+Then /^the server should have a file with the contents of "(.*?)"$/ do
+|path|
+  @server.has_file_with_contents_of?(path).should be_true
+end
+
+Then /^the server should have (\d+) files? with "(.*?)" in the name$/ do
+|count, name|
+  @server.files_named_like(name).size.should == count.to_i
+end

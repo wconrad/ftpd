@@ -14,3 +14,8 @@ When /^the client puts with no path$/ do
     @client.raw 'STOR'
   end
 end
+
+When /^the client successfully puts unique "(.*?)"$/ do
+|local_path|
+  @client.store_unique local_path
+end
