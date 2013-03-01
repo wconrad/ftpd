@@ -157,5 +157,5 @@ and granted permission to donate it to the community.
 ## See also
 
 * {file:Changelog.md}
-* {file:doc/rfc.md RFC compliance}
+* {file:doc/rfc-compliance.md RFC compliance}
 * {file:doc/references.md}
