@@ -58,5 +58,24 @@ module Ftpd
 
     end
 
+    context 'when a command must be expected' do
+
+      before(:each) do
+        checker.must_expect 'PASS'
+      end
+
+      it 'rejects that command if not expected' do
+        expect {
+          checker.check 'PASS'
+        }.to raise_error *sequence_error
+      end
+
+      it 'accepts that command when it is accepted' do
+        checker.expect 'PASS'
+        checker.check 'PASS'
+      end
+
+    end
+
   end
 end

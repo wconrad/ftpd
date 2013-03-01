@@ -22,12 +22,12 @@ module Ftpd
       @structure = 'F'
       @response_delay = opts[:response_delay]
       @data_channel_protection_level = :clear
-      @command_sequence_checker = CommandSequenceChecker.new
+      @command_sequence_checker = init_command_sequence_checker
+      @logged_in = false
     end
 
     def run
       reply "220 ftpd"
-      @state = :user
       catch :done do
         loop do
           begin
@@ -63,31 +63,28 @@ module Ftpd
 
     def cmd_user(argument)
       syntax_error unless argument
-      sequence_error unless @state == :user
+      sequence_error if @logged_in
       @user = argument
-      @state = :password
       reply "331 Password required"
       expect 'pass'
     end
 
     def cmd_pass(argument)
       syntax_error unless argument
-      sequence_error unless @state == :password
       password = argument
       unless @driver.authenticate(@user, password)
-        @state = :user
         error "530 Login incorrect"
       end
       reply "230 Logged in"
       set_file_system @driver.file_system(@user)
-      @state = :logged_in
+      @logged_in = true
     end
 
     def cmd_quit(argument)
       syntax_error if argument
       ensure_logged_in
       reply "221 Byebye"
-      @state = :user
+      @logged_in = false
     end
 
     def syntax_error
@@ -286,7 +283,7 @@ module Ftpd
     end
 
     def ensure_logged_in
-      return if @state == :logged_in
+      return if @logged_in
       error "530 Not logged in"
     end
 
@@ -392,7 +389,6 @@ module Ftpd
     end
 
     def cmd_rnto(argument)
-      sequence_error unless @rename_from_path
       ensure_logged_in
       ensure_file_system_supports :rename
       syntax_error unless argument
@@ -401,7 +397,6 @@ module Ftpd
       ensure_does_not_exist to_path
       @file_system.rename(@rename_from_path, to_path)
       reply '250 Rename successful'
-      @rename_from_path = nil
     end
 
     def self.unimplemented(command)
@@ -609,6 +604,13 @@ module Ftpd
 
     def debug?
       @debug || ENV['FTPD_DEBUG'].to_i != 0
+    end
+
+    def init_command_sequence_checker
+      checker = CommandSequenceChecker.new
+      checker.must_expect 'pass'
+      checker.must_expect 'rnto'
+      checker
     end
 
   end

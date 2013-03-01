@@ -47,7 +47,8 @@ Feature: Login
 
   Scenario: PASS without parameter
     Given a successful connection
-    And the client sends a password with no parameter
+    And the client sends a user
+    When the client sends a password with no parameter
     Then the server returns a syntax error
 
   Scenario: USER without parameter
