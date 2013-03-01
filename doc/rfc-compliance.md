@@ -230,7 +230,7 @@ attempts and third-party "proxy FTP" transfers, which can be used in
 
 <pre>
 FTP bounce protection
-Restruct PASV/PORT to non-priv. ports     No      ---
+Restrict PASV/PORT to non-priv. ports     No      ---
 Disconnect after so many wrong auths.     No      ---
 Delay on invalid password                 No      ---
 Per-source IP limit                       No      ---
