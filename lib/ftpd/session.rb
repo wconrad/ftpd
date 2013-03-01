@@ -67,6 +67,7 @@ module Ftpd
       @user = argument
       @state = :password
       reply "331 Password required"
+      expect 'pass'
     end
 
     def cmd_pass(argument)

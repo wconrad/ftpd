@@ -3,6 +3,8 @@
 Bug fixes
 * Respond with sequence error if RNFR is not immediately followed by
   RNTO
+* Respond with sequence error if USER is not immediately followed by
+  PASS
 
 ### 0.2.1
 

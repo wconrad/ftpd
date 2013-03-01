@@ -50,7 +50,13 @@ Feature: Login
     And the client sends a password with no parameter
     Then the server returns a syntax error
 
-  Scenario: USRE without parameter
+  Scenario: USER without parameter
     Given a successful connection
     And the client sends a user with no parameter
     Then the server returns a syntax error
+
+  Scenario: USER not followed by PASS
+    Given a successful connection
+    And the client sends a user
+    When the client sends "NOOP"
+    Then the server returns a bad sequence error
