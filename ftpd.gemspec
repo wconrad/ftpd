@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "ftpd"
-  s.version = "0.2.1"
+  s.version = "0.2.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Wayne Conrad"]
-  s.date = "2013-02-28"
+  s.date = "2013-03-02"
   s.description = "ftpd is a pure Ruby FTP server library.  It supports implicit and explicit TLS, passive and active mode, and most of the commands specified in RFC 969.  It an be used as part of a test fixture or embedded in a program."
   s.email = "wconrad@yagni.com"
   s.extra_rdoc_files = [
@@ -24,7 +24,8 @@ Gem::Specification.new do |s|
     "README.md",
     "Rakefile",
     "VERSION",
-    "doc/rfc.md",
+    "doc/references.md",
+    "doc/rfc-compliance.md",
     "examples/example.rb",
     "examples/hello_world.rb",
     "features/example/example.feature",
@@ -39,6 +40,7 @@ Gem::Specification.new do |s|
     "features/ftp_server/file_structure.feature",
     "features/ftp_server/get.feature",
     "features/ftp_server/get_tls.feature",
+    "features/ftp_server/help.feature",
     "features/ftp_server/implicit_tls.feature",
     "features/ftp_server/list.feature",
     "features/ftp_server/list_tls.feature",
@@ -51,6 +53,7 @@ Gem::Specification.new do |s|
     "features/ftp_server/port.feature",
     "features/ftp_server/put.feature",
     "features/ftp_server/put_tls.feature",
+    "features/ftp_server/put_unique.feature",
     "features/ftp_server/quit.feature",
     "features/ftp_server/rename.feature",
     "features/ftp_server/rmdir.feature",
@@ -70,6 +73,7 @@ Gem::Specification.new do |s|
     "features/step_definitions/file_structure.rb",
     "features/step_definitions/generic_send.rb",
     "features/step_definitions/get.rb",
+    "features/step_definitions/help.rb",
     "features/step_definitions/invalid_commands.rb",
     "features/step_definitions/line_endings.rb",
     "features/step_definitions/list.rb",
@@ -78,6 +82,7 @@ Gem::Specification.new do |s|
     "features/step_definitions/mode.rb",
     "features/step_definitions/noop.rb",
     "features/step_definitions/passive.rb",
+    "features/step_definitions/pending.rb",
     "features/step_definitions/port.rb",
     "features/step_definitions/put.rb",
     "features/step_definitions/quit.rb",
@@ -100,6 +105,7 @@ Gem::Specification.new do |s|
     "ftpd.gemspec",
     "insecure-test-cert.pem",
     "lib/ftpd.rb",
+    "lib/ftpd/command_sequence_checker.rb",
     "lib/ftpd/disk_file_system.rb",
     "lib/ftpd/error.rb",
     "lib/ftpd/exception_translator.rb",
@@ -118,6 +124,7 @@ Gem::Specification.new do |s|
     "rake_tasks/spec.rake",
     "rake_tasks/test.rake",
     "rake_tasks/yard.rake",
+    "spec/command_sequence_checker_spec.rb",
     "spec/disk_file_system_spec.rb",
     "spec/exception_translator_spec.rb",
     "spec/file_system_error_translator_spec.rb",
@@ -127,7 +134,7 @@ Gem::Specification.new do |s|
   s.homepage = "http://github.com/wconrad/ftpd"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.24"
+  s.rubygems_version = "1.8.25"
   s.summary = "Pure Ruby FTP server library"
 
   if s.respond_to? :specification_version then
