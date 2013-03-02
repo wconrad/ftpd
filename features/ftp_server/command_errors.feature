@@ -21,7 +21,6 @@ Feature: Command Errors
       | ABOR    |
       | ACCT    |
       | APPE    |
-      | HELP    |
       | REIN    |
       | REST    |
       | SITE    |

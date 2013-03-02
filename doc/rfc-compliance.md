@@ -29,7 +29,7 @@ Commands supported:
     CDUP    Yes    0.1.0    Change to parent directory    
     CWD     Yes    0.1.0    Change working directory    
     DELE    Yes    0.1.0    Delete file    
-    HELP    No      ---     Help
+    HELP    Yes     dev     Help
     LIST    Yes    0.1.0    List directory    
     MKD     Yes    0.2.1    Make directory    
     MODE    Yes    0.1.0    Set transfer mode
@@ -159,7 +159,7 @@ Support commands:                          |               | | | | | |
   SITE                                     |4.1.2.8        | | |x| | |
   STAT                                     |4.1.2.13       |x| | | | |
   SYST                                     |4.1.2.13       |x| | | | |
-  HELP                                     |4.1.2.13       |x| | | | |
+  HELP                                     |4.1.2.13       |x| | | | |  C
   NOOP                                     |4.1.2.13       |x| | | | |  C
 
 Footnotes:

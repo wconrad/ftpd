@@ -22,6 +22,7 @@ class TestClient
   :delete,
   :getbinaryfile,
   :gettextfile,
+  :help,
   :login,
   :ls,
   :mkdir,

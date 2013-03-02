@@ -414,6 +414,26 @@ module Ftpd
       reply '250 Rename successful'
     end
 
+    def cmd_help(argument)
+      if argument
+        command = argument.upcase
+        if supported_commands.include?(command)
+          reply "214 Command #{command} is recognized"
+        else
+          reply "214 Command #{command} is not recognized"
+        end
+      else
+        reply '214-The following commands are recognized:'
+        supported_commands.sort.each_slice(8) do |commands|
+          line = commands.map do |command|
+            '   %-4s' % command
+          end.join
+          reply line
+        end
+        reply '214 Have a nice day.'
+      end
+    end
+
     def self.unimplemented(command)
       method_name = "cmd_#{command}"
       define_method method_name do |arguments|
@@ -425,12 +445,17 @@ module Ftpd
     unimplemented :abor
     unimplemented :acct
     unimplemented :appe
-    unimplemented :help
     unimplemented :rein
     unimplemented :rest
     unimplemented :site
     unimplemented :smnt
     unimplemented :stat
+
+    def supported_commands
+      private_methods.map do |method|
+        method.to_s[/^cmd_(\w+)$/, 1]
+      end.compact.map(&:upcase)
+    end
 
     def pwd
       reply %Q(257 "#{@name_prefix}" is current directory)

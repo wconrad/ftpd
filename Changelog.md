@@ -12,6 +12,7 @@ Bug fixes
 Enhancements
 
 * Support STOU (store unique)
+* Support HELP
 
 ### 0.2.1
 
