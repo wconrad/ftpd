@@ -15,7 +15,15 @@ When /^the client puts with no path$/ do
   end
 end
 
-When /^the client successfully puts unique "(.*?)"$/ do
-|local_path|
-  @client.store_unique local_path
+When /^the client successfully stores unique "(.*?)"(?: to "(.*?)")?$/ do
+|local_path, remote_path|
+  @client.store_unique local_path, remote_path
+end
+
+When /^the client stores unique "(.*?)"( to ".*?")?$/ do
+|local_path, remote_path|
+  capture_error do
+    step(%Q'the client successfully stores unique ' +
+         %Q'"#{local_path}"#{remote_path}')
+  end
 end

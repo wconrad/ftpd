@@ -52,7 +52,7 @@ class TestClient
     full_path = temp_path(path)
     mkdir_p File.dirname(full_path)
     File.open(full_path, 'wb') do |file|
-      file.puts @templates[File.basename(full_path)]
+      file.write @templates[File.basename(full_path)]
     end
   end
 
@@ -65,9 +65,11 @@ class TestClient
     response[/"(.+)"/, 1]
   end
 
-  def store_unique(path)
-    command = ['STOU', path].compact.join(' ')
-    @ftp.storbinary command, temp_path(path), Net::FTP::DEFAULT_BLOCKSIZE
+  def store_unique(local_path, remote_path)
+    command = ['STOU', remote_path].compact.join(' ')
+    File.open(temp_path(local_path), 'rb') do |file|
+      @ftp.storbinary command, file, Net::FTP::DEFAULT_BLOCKSIZE
+    end
   end
 
   private

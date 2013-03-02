@@ -114,7 +114,22 @@ module Ftpd
         path = File.expand_path(path, @name_prefix)
         ensure_accessible path
         ensure_exists File.dirname(path)
-        contents = receive_file(path)
+        contents = receive_file
+        @file_system.write path, contents
+        reply "226 Transfer complete"
+      end
+    end
+
+    def cmd_stou(argument)
+      close_data_server_socket_when_done do
+        ensure_logged_in
+        ensure_file_system_supports :write
+        path = argument || 'ftpd'
+        path = File.expand_path(path, @name_prefix)
+        path = unique_path(path)
+        ensure_accessible path
+        ensure_exists File.dirname(path)
+        contents = receive_file(File.basename(path))
         @file_system.write path, contents
         reply "226 Transfer complete"
       end
@@ -416,7 +431,6 @@ module Ftpd
     unimplemented :site
     unimplemented :smnt
     unimplemented :stat
-    unimplemented :stou
 
     def pwd
       reply %Q(257 "#{@name_prefix}" is current directory)
@@ -471,8 +485,8 @@ module Ftpd
       end
     end
 
-    def receive_file(path)
-      open_data_connection do |data_socket|
+    def receive_file(path_to_advertise = nil)
+      open_data_connection(path_to_advertise) do |data_socket|
         contents = data_socket.read
         contents = nvt_ascii_to_unix(contents) if @data_type == 'A'
         debug("Received #{contents.size} bytes")
@@ -489,8 +503,8 @@ module Ftpd
       s.gsub(/\r\n/, "\n")
     end
 
-    def open_data_connection(&block)
-      reply "150 Opening #{data_connection_description}"
+    def open_data_connection(path_to_advertise = nil, &block)
+      send_start_of_data_connection_reply(path_to_advertise)
       if @data_server
         if encrypt_data?
           open_passive_tls_data_connection(&block)
@@ -503,6 +517,14 @@ module Ftpd
         else
           open_active_data_connection(&block)
         end
+      end
+    end
+
+    def send_start_of_data_connection_reply(path)
+      if path
+        reply "150 FILE: #{path}"
+      else
+        reply "150 Opening #{data_connection_description}"
       end
     end
 
@@ -593,6 +615,25 @@ module Ftpd
       end
       debug(s)
       @socket.puts(s)
+    end
+
+    def unique_path(path)
+      suffix = nil
+      100.times do
+        path_with_suffix = [path, suffix].compact.join('.')
+        unless @file_system.exists?(path_with_suffix)
+          return path_with_suffix
+        end
+        suffix = generate_suffix
+      end
+      raise "Unable to find unique path"
+    end
+
+    def generate_suffix
+      set = ('a'..'z').to_a
+      8.times.map do
+        set.sample
+      end.join
     end
 
     def debug(*s)

@@ -4,7 +4,7 @@ module TestServerFiles
     full_path = temp_path(path)
     mkdir_p File.dirname(full_path)
     File.open(full_path, 'wb') do |file|
-      file.puts @templates[File.basename(full_path)]
+      file.write @templates[File.basename(full_path)]
     end
   end
 

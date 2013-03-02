@@ -9,6 +9,10 @@ Bug fixes
 * Open PASV mode data connection on same local IP as control connection.
   This is required by RFC 1123.
 
+Enhancements
+
+* Support STOU (store unique)
+
 ### 0.2.1
 
 API changes

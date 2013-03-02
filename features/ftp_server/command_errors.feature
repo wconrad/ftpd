@@ -27,4 +27,3 @@ Feature: Command Errors
       | SITE    |
       | SMNT    |
       | STAT    |
-      | STOU    |

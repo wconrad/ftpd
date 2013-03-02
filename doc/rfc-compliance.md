@@ -52,7 +52,7 @@ Commands supported:
     SMNT    No      ---     Structure Mount    
     STAT    No      ---     Server status    
     STOR    Yes    0.1.0    Store file    
-    STOU    No      ---     Store with unique name    
+    STOU    Yes     dev     Store with unique name    
     STRU    Yes    0.1.0    Set file structure
                             Supports "File" structure only. "Record" and
                             "Page" are not supported
@@ -94,7 +94,7 @@ Server-FTP implement PASV                  |4.1.2.6        |x| | | | |  C
 NLST reply usable in RETR cmds             |4.1.2.7        |x| | | | |  C
 Implied type for LIST and NLST             |4.1.2.7        | |x| | | |  C
 SITE cmd for non-standard features         |4.1.2.8        | |x| | | |  
-STOU cmd return pathname as specified      |4.1.2.9        |x| | | | |  
+STOU cmd return pathname as specified      |4.1.2.9        |x| | | | |  C
 Use TCP READ boundaries on control conn.   |4.1.2.10       | | | | |x|  C
 Server-FTP send only correct reply format  |4.1.2.11       |x| | | | |  C
 Server-FTP use defined reply code if poss. |4.1.2.11       | |x| | | |  C
@@ -143,7 +143,7 @@ Support commands:                          |               | | | | | |
                                            |               | | | | | |
   RETR                                     |4.1.2.13       |x| | | | |  C
   STOR                                     |4.1.2.13       |x| | | | |  C
-  STOU                                     |959 5.3.1      | | |x| | |
+  STOU                                     |959 5.3.1      | | |x| | |  C
   APPE                                     |4.1.2.13       |x| | | | |
   ALLO                                     |959 5.3.1      | | |x| | |  C
   REST                                     |959 5.3.1      | | |x| | |

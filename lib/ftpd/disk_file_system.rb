@@ -138,6 +138,7 @@ module Ftpd
       #
       # Called for:
       # * STOR
+      # * STOU
       #
       # If missing, then these commands are not supported.
 
