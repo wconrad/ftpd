@@ -26,3 +26,7 @@ relevant 24 years after RFC959 was published:
 For a history lesson, check out Appendix III of RCF959. It lists the
 preceding (obsolete) RFC documents that relate to file transfers,
 including the ye old RFC114 from 1971, "A File Transfer Protocol"
+
+There is a {http://secureftp-test.com public test server} which is
+very handy for checking out clients, and seeing how at least one
+server behaves.
