@@ -1,4 +1,4 @@
-### dev
+### 0.2.2
 
 Bug fixes
 
@@ -8,6 +8,9 @@ Bug fixes
   PASS
 * Open PASV mode data connection on same local IP as control connection.
   This is required by RFC 1123.
+* Disabled globbing in LIST (for now) due to code injection
+  vulnerability.  This patch also disables globbing in NLST, but NLST
+  probably shouldn't do globbing.
 
 Enhancements
 

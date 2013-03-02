@@ -42,6 +42,7 @@ Feature: List
     And the file list should contain "foo"
 
   Scenario: Glob
+    Given PENDING "Disabled (for now) due to code injection vulnerability"
     Given a successful login
     And the server has file "foo"
     And the server has file "bar"

@@ -103,6 +103,10 @@ _and_ for advertising to the client which IP to connect to.  Binding
 to 0.0.0.0 will work fine, but when the client tries to connect to
 0.0.0.0, it won't get to the server.
 
+LIST doesn't accept globs.  It has other problems (it accepts
+arbitrary ls arguments!) and needs to be rewritten to not shell out to
+"ls".
+
 ## RUBY COMPATABILITY
 
 The tests pass with these Rubies:

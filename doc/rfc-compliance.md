@@ -29,7 +29,7 @@ Commands supported:
     CDUP    Yes    0.1.0    Change to parent directory    
     CWD     Yes    0.1.0    Change working directory    
     DELE    Yes    0.1.0    Delete file    
-    HELP    Yes     dev     Help
+    HELP    Yes    0.2.2    Help
     LIST    Yes    0.1.0    List directory    
     MKD     Yes    0.2.1    Make directory    
     MODE    Yes    0.1.0    Set transfer mode
@@ -52,7 +52,7 @@ Commands supported:
     SMNT    No      ---     Structure Mount    
     STAT    No      ---     Server status    
     STOR    Yes    0.1.0    Store file    
-    STOU    Yes     dev     Store with unique name    
+    STOU    Yes    0.2.2    Store with unique name    
     STRU    Yes    0.1.0    Set file structure
                             Supports "File" structure only. "Record" and
                             "Page" are not supported

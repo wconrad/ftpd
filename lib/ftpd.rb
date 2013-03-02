@@ -2,6 +2,7 @@ require 'fileutils'
 require 'memoizer'
 require 'openssl'
 require 'pathname'
+require 'shellwords'
 require 'socket'
 require 'tmpdir'
 

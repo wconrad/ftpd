@@ -41,15 +41,6 @@ Feature: Name List
     Then the file list should be in short form
     And the file list should contain "foo"
 
-  Scenario: Glob
-    Given a successful login
-    And the server has file "foo"
-    And the server has file "bar"
-    When the client successfully name-lists the directory "f*"
-    Then the file list should be in short form
-    And the file list should contain "foo"
-    And the file list should not contain "bar"
-
   Scenario: Passive
     Given a successful login
     And the server has file "foo"

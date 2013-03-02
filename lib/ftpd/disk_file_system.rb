@@ -206,6 +206,8 @@ module Ftpd
 
     module Ls
 
+      include Shellwords
+
       def ls(ftp_path, option)
         path = expand_ftp_path(ftp_path)
         dirname = File.dirname(path)
@@ -214,11 +216,10 @@ module Ftpd
           'ls',
           option,
           filename,
-          '2>&1',
-        ].compact.join(' ')
+        ].compact
         if File.exists?(dirname)
           list = Dir.chdir(dirname) do
-            `#{command}`
+            `#{shelljoin(command)} 2>&1`
           end
         else
           list = ''
