@@ -1,7 +1,8 @@
 # Some commands are supposed to occur in sequence.  For example, USER
 # must be immediately followed by PASS.  This class keeps track of
-# when a specific command is expected, and raises a "bad sequence"
-# error when that command is not next.
+# when a specific command either must arrive or must not arrive, and
+# raises a "bad sequence" error when commands arrive in the wrong
+# sequence.
 
 module Ftpd
   class CommandSequenceChecker
