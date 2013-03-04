@@ -25,6 +25,12 @@ module Ftpd
 
     attr_accessor :response_delay
 
+    # The class for formatting for LIST output.  Defaults to
+    # {Ftpd::ListFormat::Ls}.  Changes to this attribute only take
+    # effect for new sessions.
+
+    attr_accessor :list_formatter
+
     # Create a new FTP server.  The server won't start until the
     # #start method is called.
     #
@@ -48,6 +54,7 @@ module Ftpd
       @debug_path = '/dev/stdout'
       @debug = false
       @response_delay = 0
+      @list_formatter = ListFormat::Ls
     end
 
     private
@@ -57,6 +64,7 @@ module Ftpd
                   :driver => @driver,
                   :debug => @debug,
                   :debug_path => debug_path,
+                  :list_formatter => @list_formatter,
                   :response_delay => response_delay,
                   :tls => @tls).run
     end

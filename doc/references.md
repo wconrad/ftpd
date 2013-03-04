@@ -1,5 +1,7 @@
 # REFERENCES
 
+## RFCs
+
 _This list of references comes from the README of the em-ftpd gem,
 which is licensed under the same MIT license as this gem, and is
 Copyright (c) 2008 James Healy_
@@ -30,3 +32,8 @@ including the ye old RFC114 from 1971, "A File Transfer Protocol"
 There is a {http://secureftp-test.com public test server} which is
 very handy for checking out clients, and seeing how at least one
 server behaves.
+
+## LIST output format
+
+* {http://www.gnu.org/software/coreutils/manual/html_node/What-information-is-listed.html#What-information-is-listed GNU docs for ls}
+* {http://cr.yp.to/ftp/list/eplf.html Easily Parsed LIST format (EPLF)}

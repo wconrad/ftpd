@@ -43,12 +43,17 @@ module Ftpd
       "Contents of #{path}"
     end
 
+    def add_symlink(target_path, symlink_path)
+      FileUtils.ln_s data_path(target_path), data_path(symlink_path)
+    end
+
     before(:each) do
       write_file 'file'
       make_directory 'dir'
       write_file 'dir/file_in_dir'
       make_directory 'unwritable_dir'
       write_file 'unwritable_dir/file'
+      add_symlink 'file', 'symlink'
     end
 
     describe '#accessible?' do
@@ -179,86 +184,6 @@ module Ftpd
 
     end
 
-    describe '#name_list' do
-
-      subject do
-        disk_file_system.name_list(path)
-      end
-
-      shared_examples 'returns short list of root' do
-        it {should =~ /^dir$/}
-        it {should =~ /^file$/}
-        it {should =~ /^unwritable_dir$/}
-        its('lines.to_a.size') {should == 3}
-      end
-
-      context '(root)' do
-        let(:path) {'/'}
-        it_behaves_like 'returns short list of root'
-      end
-
-      context '(empty path)' do
-        let(:path) {''}
-        it_behaves_like 'returns short list of root'
-      end
-
-      context '(specific file)' do
-        let(:path) {'/file'}
-        it {should == "file\n"}
-      end
-
-      context '(specific directory)' do
-        let(:path) {'/dir'}
-        it {should == "file_in_dir\n"}
-      end
-
-      context '(missing directory)' do
-        let(:path) {'/missing/file'}
-        it {should be_empty}
-      end
-
-    end
-
-    describe '#list' do
-
-      subject do
-        disk_file_system.list(path)
-      end
-
-      shared_examples 'returns long list of root' do
-        it {should =~ /^d.*dir$/}
-        it {should =~ /^-.*file$/}
-        it {should =~ /^d.*unwritable_dir$/}
-        its('lines.to_a.size') {should == 3}
-      end
-
-      context '(root)' do
-        let(:path) {'/'}
-        it_behaves_like 'returns long list of root'
-      end
-
-      context '(empty path)' do
-        let(:path) {''}
-        it_behaves_like 'returns long list of root'
-      end
-
-      context '(specific file)' do
-        let(:path) {'/file'}
-        it {should =~ /^-.*file$/}
-      end
-
-      context '(specific directory)' do
-        let(:path) {'/dir'}
-        it {should =~ /^-.*file_in_dir\n/}
-      end
-
-      context '(missing directory)' do
-        let(:path) {'/missing/file'}
-        it {should be_empty}
-      end
-
-    end
-
     describe '#rename' do
 
       let(:from_path) {'file'}
@@ -278,6 +203,80 @@ module Ftpd
             disk_file_system.rename(missing_path, to_path)
           }.to raise_error *missing_file_error
         end
+      end
+
+    end
+
+    describe '#file_info' do
+
+      let(:identifier) {"#{stat.dev}.#{stat.ino}"}
+      let(:owner) {Etc.getpwuid(stat.uid).name}
+      let(:group) {Etc.getgrgid(stat.gid).name}
+      let(:stat) {File.stat(data_path(path))}
+      subject {disk_file_system.file_info(path)}
+
+      shared_examples 'file info' do
+        its(:ftype) {should == stat.ftype}
+        its(:group) {should == group}
+        its(:mode) {should == stat.mode}
+        its(:mtime) {should == stat.mtime}
+        its(:nlink) {should == stat.nlink}
+        its(:owner) {should == owner}
+        its(:size) {should == stat.size}
+        its(:path) {should == path}
+        its(:identifier) {should == identifier}
+      end
+
+      context '(file)' do
+        let(:path) {'file'}
+        it_behaves_like 'file info'
+      end
+
+      context '(symlink)' do
+        let(:path) {'symlink'}
+        it_behaves_like 'file info'
+      end
+
+    end
+
+    describe '#dir' do
+
+      subject(:dir) do
+        disk_file_system.dir(path)
+      end
+
+      context '(no such file)' do
+        let(:path) {'missing'}
+        it {should be_empty}
+      end
+
+      context '(file)' do
+        let(:path) {'file'}
+        it {should include '/file'}
+      end
+
+      context '(directory)' do
+        let(:path) {'dir'}
+        it {should include '/dir'}
+        it {should_not include '/dir/file_in_dir'}
+      end
+
+      context '(directory + wildcard)' do
+        let(:path) {'dir/*'}
+        it {should_not include '/dir'}
+        it {should include '/dir/file_in_dir'}
+      end
+
+      context '(wildcard)' do
+        let(:path) {'*'}
+        it {should include '/unwritable_dir'}
+        it {should include '/file'}
+        it {should include '/dir'}
+      end
+
+      context '(no such directory)' do
+        let(:path) {'foo/*'}
+        it {should be_empty}
       end
 
     end

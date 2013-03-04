@@ -202,103 +202,92 @@ module Ftpd
 
   class DiskFileSystem
 
-    # Ls interface used by List and NameList
-
-    module Ls
-
-      include Shellwords
-
-      def ls(ftp_path, option)
-        path = expand_ftp_path(ftp_path)
-        dirname = File.dirname(path)
-        filename = File.basename(path)
-        command = [
-          'ls',
-          option,
-          filename,
-        ].compact
-        if File.exists?(dirname)
-          list = Dir.chdir(dirname) do
-            `#{shelljoin(command)} 2>&1`
-          end
-        else
-          list = ''
-        end
-        list = "" if $? != 0
-        list = list.gsub(/^total \d+\n/, '')
-      end
-
-    end
-
-  end
-
-  class DiskFileSystem
-
     # DiskFileSystem mixin providing directory listing
 
     module List
 
       include TranslateExceptions
 
-      # Get a file list, long form.  This returns a long-form
-      # directory listing.  The FTP standard does not specify the
-      # format of the listing, but many systems emit a *nix style
-      # directory listing:
+      # Get information about a single file or directory.
       #
-      #     -rw-r--r-- 1 wayne wayne 4 Feb 18 18:36 a
-      #     -rw-r--r-- 1 wayne wayne 8 Feb 18 18:36 b
+      # Should follow symlinks (per
+      # {http://cr.yp.to/ftp/list/eplf.html}, "lstat() is not a good
+      # idea for FTP directory listings").
       #
-      # some emit a Windows style listing.  Some emit EPLF (Easily
-      # Parsed List Format):
-      #
-      #     +i8388621.48594,m825718503,r,s280, djb.html
-      #     +i8388621.50690,m824255907,/, 514
-      #     +i8388621.48598,m824253270,r,s612, 514.html
-      #
-      # EPLF is a draft internet standard for the output of LIST:
-      #
-      #     http://cr.yp.to/ftp/list/eplf.html
-      #
-      # Some FTP clients know how to parse EPLF; those clients will
-      # display the EPLF in a more user-friendly format.  Clients that
-      # don't recognize EPLF will display it raw.  The advantages of
-      # EPLF are that it's easier for clients to parse, and the client
-      # can display the LIST output in any format it likes.
-      #
-      # This class emits a *nix style listing.  It does so by shelling
-      # to the "ls" command, so it won't run on Windows at all.
+      # @return [FileInfo]
       #
       # Called for:
       # * LIST
       #
       # If missing, then these commands are not supported.
 
-      def list(ftp_path)
-        ls(ftp_path, '-l')
+      def file_info(path)
+        stat = File.stat(expand_ftp_path(path))
+        FileInfo.new(:ftype => stat.ftype,
+                     :group => gid_name(stat.gid),
+                     :identifier => identifier(stat),
+                     :mode => stat.mode,
+                     :mtime => stat.mtime,
+                     :nlink => stat.nlink,
+                     :owner => uid_name(stat.uid),
+                     :path => path,
+                     :size => stat.size)
       end
+      translate_exceptions :file_info
 
-    end
-  end
-
-  class DiskFileSystem
-
-    # DiskFileSystem mixin providing directory name listing
-
-    module NameList
-
-      include Ls
-
-      # Get a file list, short form.
+      # Expand a path that may contain globs into a list of paths of
+      # matching files and directories.
       #
-      # This returns one filename per line, and nothing else
+      # * If the path matches no files, returns an empty list.
+      #
+      # * If the path has no glob and matches a directory, then the
+      #   list contains only that directory.
+      #
+      # * If the patch has a glob, it may return multiple entries.
+      #
+      # The paths returned are fully qualified, relative to the root
+      # of the virtual file system.
+      # 
+      # For example, suppose these files exist on the physical file
+      # system:
+      #
+      #   /var/lib/ftp/foo/foo
+      #   /var/lib/ftp/foo/subdir/bar
+      #   /var/lib/ftp/foo/subdir/baz
+      #
+      # and that the directory /var/lib/ftp is the root of the virtual
+      # file system.  Then:
+      #
+      #   dir('foo')         # => ['/foo']
+      #   dir('subdir')      # => ['/subdir']
+      #   dir('subdir/*')    # => ['/subdir/bar', '/subdir/baz']
+      #   dir('*')           # => ['/foo', '/subdir']
       #
       # Called for:
+      # * LIST
       # * NLST
       #
       # If missing, then these commands are not supported.
 
-      def name_list(ftp_path)
-        ls(ftp_path, '-1')
+      def dir(path)
+        Dir[expand_ftp_path(path)].map do |path|
+          path.sub(/^#{@data_dir}/, '')
+        end
+      end
+      translate_exceptions :dir
+
+      private
+
+      def uid_name(uid)
+        Etc.getpwuid(uid).name
+      end
+
+      def gid_name(gid)
+        Etc.getgrgid(gid).name
+      end
+
+      def identifier(stat)
+        [stat.dev, stat.ino].join('.')
       end
 
     end
@@ -367,7 +356,6 @@ module Ftpd
     include DiskFileSystem::Delete
     include DiskFileSystem::List
     include DiskFileSystem::Mkdir
-    include DiskFileSystem::NameList
     include DiskFileSystem::Read
     include DiskFileSystem::Rename
     include DiskFileSystem::Rmdir

@@ -15,6 +15,7 @@ module Ftpd
       @name_prefix = '/'
       @debug_path = opts[:debug_path]
       @debug = opts[:debug]
+      @list_formatter = opts[:list_formatter]
       @data_type = 'A'
       @mode = 'S'
       @format = 'N'
@@ -164,24 +165,23 @@ module Ftpd
     def cmd_list(argument)
       close_data_server_socket_when_done do
         ensure_logged_in
-        ensure_file_system_supports :list
+        ensure_file_system_supports :dir
+        ensure_file_system_supports :file_info
         path = argument
         path ||= '.'
         path = File.expand_path(path, @name_prefix)
-        list = @file_system.list(path)
-        transmit_file(list, 'A')
+        transmit_file(list(path), 'A')
       end
     end
 
     def cmd_nlst(argument)
       close_data_server_socket_when_done do
         ensure_logged_in
-        ensure_file_system_supports :name_list
+        ensure_file_system_supports :dir
         path = argument
         path ||= '.'
         path = File.expand_path(path, @name_prefix)
-        list = @file_system.name_list(path)
-        transmit_file(list, 'A')
+        transmit_file(name_list(path), 'A')
       end
     end
 
@@ -677,6 +677,30 @@ module Ftpd
       checker.must_expect 'pass'
       checker.must_expect 'rnto'
       checker
+    end
+
+    def list(path)
+      format_list(path_list(path))
+    end
+
+    def format_list(paths)
+      paths.map do |path|
+        file_info = @file_system.file_info(path)
+        @list_formatter.new(file_info).to_s + "\n"
+      end.join
+    end
+
+    def name_list(path)
+      path_list(path).map do |path|
+        File.basename(path) + "\n"
+      end.join
+    end
+
+    def path_list(path)
+      if @file_system.directory?(path)
+        path = File.join(path, '*')
+      end
+      @file_system.dir(path).sort
     end
 
   end

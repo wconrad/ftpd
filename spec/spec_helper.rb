@@ -3,3 +3,6 @@ unless $:.include?(File.dirname(__FILE__) + '/../lib')
 end
 
 require 'ftpd'
+require 'timecop'
+require 'tmpdir'
+

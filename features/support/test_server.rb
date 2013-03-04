@@ -16,7 +16,6 @@ class TestServer
     attr_accessor :delete
     attr_accessor :list
     attr_accessor :mkdir
-    attr_accessor :name_list
     attr_accessor :read
     attr_accessor :rename
     attr_accessor :rmdir
@@ -27,7 +26,6 @@ class TestServer
       @delete = true
       @list = true
       @mkdir = true
-      @name_list = true
       @read = true
       @rename = true
       @rmdir = true
@@ -43,7 +41,6 @@ class TestServer
                                :delete => @delete,
                                :list => @list,
                                :mkdir => @mkdir,
-                               :name_list => @name_list,
                                :read => @read,
                                :rename => @rename,
                                :rmdir => @rmdir,
@@ -147,10 +144,6 @@ class TestServer
           include Ftpd::DiskFileSystem::List
         end
 
-        if opts[:name_list]
-          include Ftpd::DiskFileSystem::NameList
-        end
-
         if opts[:mkdir]
           include Ftpd::DiskFileSystem::Mkdir
         end
@@ -218,7 +211,6 @@ class TestServer
   def_delegator :@driver, :'delete='
   def_delegator :@driver, :'list='
   def_delegator :@driver, :'mkdir='
-  def_delegator :@driver, :'name_list='
   def_delegator :@driver, :'rmdir='
   def_delegator :@driver, :'read='
   def_delegator :@driver, :'rename='

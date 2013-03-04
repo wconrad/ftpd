@@ -1,8 +1,29 @@
 ### 0.3.0
 
+API changes
+
+The file system interface for directory listing was completely
+rewritten.  It no longer shells out to ls, which removes potential
+command injection security holes, and improves prospects for
+portability.
+
+* Removed {Ftpd::DiskFileSystem::Ls}
+* Removed {Ftpd::DiskFileSystem::NameList}.  NLIST now uses the
+  functions in {Ftpd::DiskFileSystem::List}.
+* Removed {Ftpd::DiskFileSystem::List#list}.  The formatting of
+  directory output is now done by ftpd, not by the file system driver.
+* Added {Ftpd::DiskFileSystem::List#file_info}, used by LIST.
+* Added {Ftpd::DiskFileSystem::List#dir}, used by LIST and NLST.
+
 Bug fixes
 
+* LIST and NLST support globs again.
 * STOU (store unique) works in Ruby 1.8.7
+
+Enhancements
+
+* The output of the "LIST" command can be customized (see
+  {Ftpd::FtpServer#list_formatter})
 
 ### 0.2.2
 

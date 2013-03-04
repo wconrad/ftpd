@@ -41,8 +41,15 @@ Feature: List
     Then the file list should be in long form
     And the file list should contain "foo"
 
+  Scenario: After CWD
+    Given a successful login
+    And the server has file "subdir/foo"
+    And the client successfully cd's to "subdir"
+    When the client successfully lists the directory
+    Then the file list should be in long form
+    And the file list should contain "foo"
+
   Scenario: Glob
-    Given PENDING "Disabled (for now) due to code injection vulnerability"
     Given a successful login
     And the server has file "foo"
     And the server has file "bar"
