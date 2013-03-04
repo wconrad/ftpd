@@ -92,20 +92,12 @@ Ftpd is not yet RFC compliant.  It does most of RFC969, and enough TLS
 to get by.  {file:doc/rfc.md Here} is a list of RFCs, indicating how
 much of each Ftpd complies with.
 
-The DiskFileSystem class only works in Linux.  This is because it
-shells out to the "ls" command.  This affects the example, which uses
-the DiskFileSystem.
-
 To bind the server to an external interface, the interface must be set
 to the public IP of that interface (e.g. "1.2.3.4"), not to "0.0.0.0".
 That's because the interface IP is used both for binding server ports,
 _and_ for advertising to the client which IP to connect to.  Binding
 to 0.0.0.0 will work fine, but when the client tries to connect to
 0.0.0.0, it won't get to the server.
-
-LIST doesn't accept globs.  It has other problems (it accepts
-arbitrary ls arguments!) and needs to be rewritten to not shell out to
-"ls".
 
 ## RUBY COMPATABILITY
 
