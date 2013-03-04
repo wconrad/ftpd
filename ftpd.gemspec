@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "ftpd"
-  s.version = "0.2.2"
+  s.version = "0.3.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Wayne Conrad"]
-  s.date = "2013-03-02"
+  s.date = "2013-03-04"
   s.description = "ftpd is a pure Ruby FTP server library.  It supports implicit and explicit TLS, passive and active mode, and most of the commands specified in RFC 969.  It an be used as part of a test fixture or embedded in a program."
   s.email = "wconrad@yagni.com"
   s.extra_rdoc_files = [
@@ -148,6 +148,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<rake>, [">= 0"])
       s.add_development_dependency(%q<redcarpet>, [">= 0"])
       s.add_development_dependency(%q<rspec>, [">= 0"])
+      s.add_development_dependency(%q<timecop>, [">= 0"])
       s.add_development_dependency(%q<yard>, [">= 0"])
     else
       s.add_dependency(%q<memoizer>, ["~> 1.0.1"])
@@ -157,6 +158,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<rake>, [">= 0"])
       s.add_dependency(%q<redcarpet>, [">= 0"])
       s.add_dependency(%q<rspec>, [">= 0"])
+      s.add_dependency(%q<timecop>, [">= 0"])
       s.add_dependency(%q<yard>, [">= 0"])
     end
   else
@@ -167,6 +169,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<rake>, [">= 0"])
     s.add_dependency(%q<redcarpet>, [">= 0"])
     s.add_dependency(%q<rspec>, [">= 0"])
+    s.add_dependency(%q<timecop>, [">= 0"])
     s.add_dependency(%q<yard>, [">= 0"])
   end
 end
