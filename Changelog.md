@@ -1,3 +1,9 @@
+### 0.3.0
+
+Bug fixes
+
+* STOU (store unique) works in Ruby 1.8.7
+
 ### 0.2.2
 
 Bug fixes

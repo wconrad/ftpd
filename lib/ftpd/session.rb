@@ -657,7 +657,7 @@ module Ftpd
     def generate_suffix
       set = ('a'..'z').to_a
       8.times.map do
-        set.sample
+        set[rand(set.size)]
       end.join
     end
 
