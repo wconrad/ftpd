@@ -18,6 +18,12 @@ class FileList
     !long_form?
   end
 
+  def eplf_format?
+    @lines.all? do |line|
+      line =~ /^\+.*\t.*$/
+    end
+  end
+
   def empty?
     @lines.empty?
   end
@@ -60,4 +66,8 @@ end
 
 Then /^the file list should be empty$/ do
   @list.should be_empty
+end
+
+Then /^the list should be in EPLF format$/ do
+  @list.should be_eplf_format
 end

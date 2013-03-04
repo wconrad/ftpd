@@ -10,6 +10,7 @@ require 'optparse'
 module Example
   class Arguments
 
+    attr_reader :eplf
     attr_reader :interface
     attr_reader :port
     attr_reader :tls
@@ -38,6 +39,9 @@ module Example
         op.on('--tls [TYPE]', [:off, :explicit, :implicit],
               'Select TLS support (off, explicit, implicit)') do |t|
           @tls = t
+        end
+        op.on('--eplf', 'LIST uses EPLF format') do |t|
+          @eplf = t
         end
       end
     end
@@ -94,6 +98,9 @@ module Example
       @server.port = @args.port
       @server.tls = @args.tls
       @server.certfile_path = insecure_certfile_path
+      if @args.eplf
+        @server.list_formatter = Ftpd::ListFormat::Eplf
+      end
       @server.start
       display_connection_info
       create_connection_script

@@ -8,6 +8,7 @@ require 'tmpdir'
 
 module Ftpd
   module ListFormat
+    autoload :Eplf,                    'ftpd/list_format/eplf'
     autoload :Ls,                      'ftpd/list_format/ls'
   end
   autoload :CommandSequenceChecker,    'ftpd/command_sequence_checker'

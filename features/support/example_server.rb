@@ -9,10 +9,11 @@ class ExampleServer
   include FileUtils
   include TestServerFiles
 
-  def initialize
+  def initialize(args = nil)
     command = [
       File.expand_path('../../examples/example.rb',
-                       File.dirname(__FILE__))
+                       File.dirname(__FILE__)),
+      args,
     ].join(' ')
     @io = IO.popen(command, 'r+')
     @output = read_output
