@@ -50,8 +50,11 @@ the authenticate method to decide who can log in.  Once someone is
 logged on, it calls the file_system method to obtain a file system
 driver for that user.
 
-There is no base class for a driver.  Any class with that signature
-will do.
+There is no base class for a driver.  Any object that quacks like a
+driver will do.  Here are the methods your driver needs:
+
+* {Example::Driver#authenticate authenticate}
+* {Example::Driver#file_system file_system}
 
 ## FILE SYSTEM
 
@@ -66,7 +69,7 @@ not supported and causes a "502 Command not implemented" response to
 the client.
 
 The canonical and commented example of an Ftpd file system is
-Ftpd::DiskFileSystem.
+{Ftpd::DiskFileSystem}.
 
 ## DEBUGGING
 

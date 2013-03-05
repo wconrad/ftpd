@@ -8,6 +8,9 @@ require 'ftpd'
 require 'optparse'
 
 module Example
+
+  # Command-line option parser
+
   class Arguments
 
     attr_reader :eplf
@@ -54,27 +57,31 @@ module Example
   # The FTP server requires and instance of a _driver_ which can
   # authenticate users and create a file system drivers for a given
   # user.  You can use this as a template for creating your own
-  # driver.  There's no need to use this class (or any other) as a
-  # base class.
+  # driver.
 
   class Driver
 
-    attr_reader :expected_user
-    attr_reader :expected_password
+    # Your driver's initialize method can be anything you need.  Ftpd
+    # does not create an instance of your driver.
 
-    def initialize(data_dir)
+    def initialize(user, password, data_dir)
+      @user = user
+      @password = password
       @data_dir = data_dir
-      @expected_user = ENV['LOGNAME']
-      @expected_password = ''
     end
 
-    # Return true if the user/password should be allowed to log in.
+    # Return true if the user should be allowed to log in.
+    # @param user [String]
+    # @param password [String]
+    # @return [Boolean]
 
     def authenticate(user, password)
-      user == @expected_user && password == @expected_password
+      user == @user && password == @password
     end
 
     # Return the file system to use for a user.
+    # @param user [String]
+    # @return A file system driver that quacks like {Ftpd::DiskFileSystem}
 
     def file_system(user)
       Ftpd::DiskFileSystem.new(@data_dir)
@@ -92,7 +99,7 @@ module Example
       @args = Arguments.new(argv)
       @data_dir = Ftpd::TempDir.make
       create_files
-      @driver = Driver.new(@data_dir)
+      @driver = Driver.new(user, password, @data_dir)
       @server = Ftpd::FtpServer.new(@driver)
       @server.interface = @args.interface
       @server.port = @args.port
@@ -131,8 +138,8 @@ module Example
     def display_connection_info
       puts "Interface: #{@server.interface}"
       puts "Port: #{@server.bound_port}"
-      puts "User: #{@driver.expected_user}"
-      puts "Pass: #{@driver.expected_password}"
+      puts "User: #{user}"
+      puts "Pass: #{password}"
       puts "TLS: #{@args.tls}"
       puts "Directory: #{@data_dir}"
       puts "URI: ftp://#{HOST}:#{@server.bound_port}"
@@ -156,6 +163,14 @@ module Example
       rescue Interrupt
         puts "Interrupt"
       end
+    end
+
+    def user
+      ENV['LOGNAME']
+    end
+
+    def password
+      ''
     end
 
   end
