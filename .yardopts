@@ -1,0 +1,2 @@
+-o doc-api
+--files doc/*.md
