@@ -143,7 +143,6 @@ RFC does not meet the following The following
 "conditionally compliant":
 
 * Server-FTP handle Telnet options
-* Sender assume 110 replies are synchronous
 * Support TYPE "LOCAL 8"
 * Support command ACCT
 * Support command APPE
@@ -157,7 +156,6 @@ requirements, it would be "unconditionally compliant":
 * Implement TYPE T if same as TYPE N
 * Idle timeout in server-FTP
 * Configurable idle timeout
-* Receiver checkpoint data at Restart Marker
 * Support TYPE ASCII - Telent (AT)
 
 ## RUBY COMPATABILITY
