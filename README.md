@@ -91,6 +91,54 @@ Here are the methods a file system may expose:
 * {Ftpd::DiskFileSystem::List#dir dir}
 * {Ftpd::DiskFileSystem::Rename#rename rename}
 
+### DiskFileSystem
+
+Ftpd includes a disk based file system:
+
+    class Driver
+
+      ...
+
+      def file_system(user)
+        Ftpd::DiskFileSystem.new('/var/lib/ftp')
+      end
+
+    end
+
+*Warning*: The DiskFileSystem allows file and directory modification
+including writing, renaming, deleting, etc.  See below for how to
+create a read-only disk file system.
+
+The DiskFileSystem is composed out of modules:
+
+* {Ftpd::DiskFileSystem::Base Base} - You will need this
+* {Ftpd::DiskFileSystem::Delete Delete} - File deletion
+* {Ftpd::DiskFileSystem::List List} - Directory listing
+* {Ftpd::DiskFileSystem::Mkdir Mkdir} - Directory creation
+* {Ftpd::DiskFileSystem::Read Read} - File reading
+* {Ftpd::DiskFileSystem::Rename Rename} - File renaming
+* {Ftpd::DiskFileSystem::Rmdir Rmdir} - Directory removal
+* {Ftpd::DiskFileSystem::Write Write} - File writing
+
+To create a customer file system that does not allow any file system
+modifications, include only the modules that allow reading:
+
+    class ReadOnlyDiskFileSystem
+      include DiskFileSystem::Base
+      include DiskFileSystem::List
+      include DiskFileSystem::Read
+    end
+
+    class Driver
+
+      ...
+
+      def file_system(user)
+        ReadOnlyDiskFileSystem('/var/lib/ftp')
+      end
+
+    end
+
 ## LIST output format
 
 By default, the LIST command uses Unix "ls -l" formatting:
