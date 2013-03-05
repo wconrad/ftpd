@@ -88,7 +88,7 @@ with "C" where FTPD complies, or "E" where compliance is not required.
 FEATURE                                    |SECTION        | | | |T|T|e
 -------------------------------------------|---------------|-|-|-|-|-|--
 Implement TYPE T if same as TYPE N         |4.1.2.2        | |x| | | |  
-File/Record transform invertible if poss.  |4.1.2.4        | |x| | | |  
+File/Record transform invertible if poss.  |4.1.2.4        | |x| | | |  C
 Server-FTP implement PASV                  |4.1.2.6        |x| | | | |  C
   PASV is per-transfer                     |4.1.2.6        |x| | | | |  C
 NLST reply usable in RETR cmds             |4.1.2.7        |x| | | | |  C

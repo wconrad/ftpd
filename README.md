@@ -155,7 +155,6 @@ RFC does not meet the following The following
 requirements, it would be "unconditionally compliant":
 
 * Implement TYPE T if same as TYPE N
-* File/Record transform invertible if poss.
 * SITE cmd for non-standard features
 * Idle timeout in server-FTP
 * Configurable idle timeout
