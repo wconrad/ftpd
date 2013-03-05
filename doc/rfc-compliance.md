@@ -93,7 +93,7 @@ Server-FTP implement PASV                  |4.1.2.6        |x| | | | |  C
   PASV is per-transfer                     |4.1.2.6        |x| | | | |  C
 NLST reply usable in RETR cmds             |4.1.2.7        |x| | | | |  C
 Implied type for LIST and NLST             |4.1.2.7        | |x| | | |  C
-SITE cmd for non-standard features         |4.1.2.8        | |x| | | |  
+SITE cmd for non-standard features         |4.1.2.8        | |x| | | |  C
 STOU cmd return pathname as specified      |4.1.2.9        |x| | | | |  C
 Use TCP READ boundaries on control conn.   |4.1.2.10       | | | | |x|  C
 Server-FTP send only correct reply format  |4.1.2.11       |x| | | | |  C
