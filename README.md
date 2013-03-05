@@ -137,6 +137,31 @@ Ftpd is not fully RFC compliant.  It does most of RFC969, and enough
 TLS to get by.  {file:doc/rfc.md Here} is a list of RFCs, indicating
 how much of each Ftpd complies with.
 
+RFC does not meet the following The following 
+[RFC-1123](http://tools.ietf.org/rfc/rfc1123.txt)
+"MUST" requrements.  If FTPD met these requirements, it would be
+"conditionally compliant":
+
+* Server-FTP handle Telnet options
+* Sender assume 110 replies are synchronous
+* Support TYPE "LOCAL 8"
+* Support command ACCT
+* Support command APPE
+* Support command STAT
+
+RFC does not meet the following The following 
+[RFC-1123](http://tools.ietf.org/rfc/rfc1123.txt)
+"SHOULD" requrements.  If FTPD met both the "MUST" and the "SHOULD"
+requirements, it would be "unconditionally compliant":
+
+* Implement TYPE T if same as TYPE N
+* File/Record transform invertible if poss.
+* SITE cmd for non-standard features
+* Idle timeout in server-FTP
+* Configurable idle timeout
+* Receiver checkpoint data at Restart Marker
+* Support TYPE ASCII - Telent (AT)
+
 ## RUBY COMPATABILITY
 
 The tests pass with these Rubies:
