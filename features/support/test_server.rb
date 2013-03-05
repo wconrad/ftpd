@@ -191,8 +191,7 @@ class TestServer
   include Ftpd::InsecureCertificate
   include TestServerFiles
 
-  def initialize(opts = {})
-    tls = opts[:tls] || :off
+  def initialize
     @temp_dir = Ftpd::TempDir.make
     @debug_file = Tempfile.new('ftp-server-debug-output')
     @debug_file.close
