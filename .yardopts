@@ -1,2 +1,4 @@
 -o doc-api
+--exclude '[~#]$'
+--readme README.md
 --files doc/*.md
