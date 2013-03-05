@@ -15,7 +15,7 @@ class TestFileTemplates
   end
 
   def read_template(filename)
-    File.open(template_path(filename), 'r', &:read)
+    File.open(template_path(filename), 'rb', &:read)
   end
 
   def template_path(filename)

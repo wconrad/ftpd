@@ -7,3 +7,8 @@ Then /^the local file "(.*?)" should have (unix|windows) line endings$/ do
   line_ending_type(@client.file_contents(local_path)).should ==
     line_ending_type.to_sym
 end
+
+Then /^the local file "(.*?)" should match its template$/ do |local_path|
+  @client.template(local_path).should ==
+    @client.file_contents(local_path)
+end

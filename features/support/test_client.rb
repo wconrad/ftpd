@@ -57,6 +57,10 @@ class TestClient
     end
   end
 
+  def template(path)
+    @templates[File.basename(path)]
+  end
+
   def file_contents(path)
     File.open(temp_path(path), 'rb', &:read)
   end
