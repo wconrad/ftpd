@@ -1,3 +1,9 @@
+### 0.3.2
+
+Enhancements
+
+* Improved driver and file-system documentation.
+
 ### 0.3.1
 
 API changes
