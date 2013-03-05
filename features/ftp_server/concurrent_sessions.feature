@@ -1,4 +1,4 @@
-Feature: Mode
+Feature: Concurrent Sessions
 
   As a client
   I want to start a session when there is another session

@@ -53,7 +53,7 @@ Feature: Make directory
     Then the server returns a not a directory error
 
   Scenario: Mkdir not enabled
-    Given the test server is started without mkdir
+    Given the test server lacks mkdir
     And a successful login
     When the client makes directory "foo"
     Then the server returns an unimplemented command error

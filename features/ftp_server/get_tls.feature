@@ -5,7 +5,8 @@ Feature: Get TLS
   So that I have it on my computer
 
   Background:
-    Given the test server is started with explicit TLS
+    Given the test server has TLS mode "explicit"
+    And the test server is started
 
   Scenario: TLS
     pending "TLS not supported in active mode (see README)"

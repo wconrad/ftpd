@@ -19,7 +19,6 @@ Feature: Command Errors
     Examples:
       | command |
       | ABOR    |
-      | ACCT    |
       | APPE    |
       | REIN    |
       | REST    |

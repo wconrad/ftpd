@@ -193,7 +193,6 @@ RFC does not meet the following The following
 
 * Server-FTP handle Telnet options
 * Support TYPE "LOCAL 8"
-* Support command ACCT
 * Support command APPE
 * Support command STAT
 

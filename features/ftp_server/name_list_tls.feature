@@ -6,7 +6,8 @@ Feature: Name List TLS
   And nobody else can
 
   Background:
-    Given the test server is started with explicit TLS
+    Given the test server has TLS mode "explicit"
+    And the test server is started
 
   Scenario: TLS
     pending "TLS not supported in active mode (see README)"

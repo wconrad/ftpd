@@ -31,6 +31,14 @@ module Ftpd
 
     attr_accessor :list_formatter
 
+    # @return [Integer] The authentication level
+    # One of:
+    # * Ftpd::AUTH_USER
+    # * Ftpd::AUTH_PASSWORD (default)
+    # * Ftpd::AUTH_ACCOUNT
+
+    attr_accessor :auth_level
+
     # Create a new FTP server.  The server won't start until the
     # #start method is called.
     #
@@ -38,15 +46,8 @@ module Ftpd
     #               authentication and file system access.
     #
     # The driver should expose these public methods:
-    #
-    #     # Return truthy if the user/password should be allowed to
-    #     # log in.
-    #     authenticate(user, password)
-    #     
-    #     # Return the file system to use for a user.  The file system
-    #     # should expose the same public methods as
-    #     # Ftpd::DiskFileSystem.
-    #     def file_system(user)
+    # * {Example::Driver#authenticate authenticate}
+    # * {Example::Driver#file_system file_system}
 
     def initialize(driver)
       super()
@@ -55,6 +56,7 @@ module Ftpd
       @debug = false
       @response_delay = 0
       @list_formatter = ListFormat::Ls
+      @auth_level = AUTH_PASSWORD
     end
 
     private
@@ -66,7 +68,8 @@ module Ftpd
                   :debug_path => debug_path,
                   :list_formatter => @list_formatter,
                   :response_delay => response_delay,
-                  :tls => @tls).run
+                  :tls => @tls,
+                  :auth_level => @auth_level).run
     end
 
   end

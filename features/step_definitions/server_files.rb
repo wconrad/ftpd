@@ -1,9 +1,9 @@
 Given /^the server has directory "(.*?)"$/ do |remote_path|
-  @server.add_directory remote_path
+  server.add_directory remote_path
 end
 
 Given /^the server has file "(.*?)"$/ do |remote_path|
-  @server.add_file remote_path
+  server.add_file remote_path
 end
 
 Then /^the server should( not)? have file "(.*?)"$/ do |neg, path|
@@ -12,7 +12,7 @@ Then /^the server should( not)? have file "(.*?)"$/ do |neg, path|
             else
               :be_true
             end
-  @server.has_file?(path).should send(matcher)
+  server.has_file?(path).should send(matcher)
 end
 
 Then /^the server should( not)? have directory "(.*?)"$/ do |neg, path|
@@ -21,21 +21,21 @@ Then /^the server should( not)? have directory "(.*?)"$/ do |neg, path|
             else
               :be_true
             end
-  @server.has_directory?(path).should send(matcher)
+  server.has_directory?(path).should send(matcher)
 end
 
 Then /^the remote file "(.*?)" should have (unix|windows) line endings$/ do
 |remote_path, line_ending_type|
-  line_ending_type(@server.file_contents(remote_path)).should ==
+  line_ending_type(server.file_contents(remote_path)).should ==
     line_ending_type.to_sym
 end
 
 Then /^the server should have a file with the contents of "(.*?)"$/ do
 |path|
-  @server.has_file_with_contents_of?(path).should be_true
+  server.has_file_with_contents_of?(path).should be_true
 end
 
 Then /^the server should have (\d+) files? with "(.*?)" in the name$/ do
 |count, name|
-  @server.files_named_like(name).size.should == count.to_i
+  server.files_named_like(name).size.should == count.to_i
 end

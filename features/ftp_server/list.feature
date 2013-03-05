@@ -79,7 +79,7 @@ Feature: List
     Then the server returns a not logged in error
 
   Scenario: List not enabled
-    Given the test server is started without list
+    Given the test server lacks list
     And a successful login
     When the client lists the directory
     Then the server returns an unimplemented command error

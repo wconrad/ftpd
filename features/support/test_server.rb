@@ -12,6 +12,7 @@ class TestServer
 
     USER = 'user'
     PASSWORD = 'password'
+    ACCOUNT = 'account'
 
     attr_accessor :delete
     attr_accessor :list
@@ -32,8 +33,10 @@ class TestServer
       @write = true
     end
 
-    def authenticate(user, password)
-      user == USER && password == PASSWORD
+    def authenticate(user, password, account)
+      user == USER &&
+        (password.nil? || password == PASSWORD) &&
+        (account.nil? || account == ACCOUNT)
     end
 
     def file_system(user)
@@ -204,6 +207,8 @@ class TestServer
     self.tls = :off
   end
 
+  def_delegator :@server, :'auth_level'
+  def_delegator :@server, :'auth_level='
   def_delegator :@server, :'debug='
   def_delegator :@server, :'tls='
 
@@ -237,6 +242,10 @@ class TestServer
 
   def password
     TestServerDriver::PASSWORD
+  end
+
+  def account
+    TestServerDriver::ACCOUNT
   end
 
   def port

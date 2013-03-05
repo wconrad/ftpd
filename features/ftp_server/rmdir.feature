@@ -55,7 +55,7 @@ Feature: Remove directory
     Then the server returns a not a directory error
 
   Scenario: Rmdir not enabled
-    Given the test server is started without rmdir
+    Given the test server lacks rmdir
     And a successful login
     When the client removes directory "foo"
     Then the server returns an unimplemented command error

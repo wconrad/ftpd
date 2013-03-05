@@ -72,7 +72,7 @@ Feature: Put
     Then the server returns an action not taken error
 
   Scenario: Write not enabled
-    Given the test server is started without write
+    Given the test server lacks write
     And a successful login
     And the client has file "foo"
     When the client puts text "foo"

@@ -5,7 +5,8 @@ Feature: Put TLS
   Because I must serve out-of-date clients
 
   Background:
-    Given the test server is started with implicit TLS
+    Given the test server has TLS mode "implicit"
+    And the test server is started
 
   Scenario: Get
     pending "TLS not supported in active mode (see README)"

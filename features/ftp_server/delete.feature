@@ -53,7 +53,7 @@ Feature: Delete
     Then the server returns a not logged in error
 
   Scenario: Delete not enabled
-    Given the test server is started without delete
+    Given the test server lacks delete
     And a successful login
     And the server has file "foo"
     When the client deletes "foo"

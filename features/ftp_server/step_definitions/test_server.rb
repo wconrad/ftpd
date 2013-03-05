@@ -1,23 +1,24 @@
+def server
+  @server ||= TestServer.new
+end
+
 Given /^the test server is started$/ do
-  @server = TestServer.new
-  @server.start
+  server.start
 end
 
-Given /^the test server is started with(?: (\w+) TLS)?$/ do |mode|
-  mode ||= 'explicit'
-  @server = TestServer.new
-  @server.tls = mode.to_sym
-  @server.start
+Given /^the test server has TLS mode "(\w+)"$/ do |mode|
+  server.tls = mode.to_sym
 end
 
-Given /^the test server is started with debug$/ do
-  @server = TestServer.new
-  @server.debug = true
-  @server.start
+Given /^the test server has debug (enabled|disabled)$/ do |state|
+  server.debug = state == 'enabled'
 end
 
-Given /^the test server is started without (\w+)$/ do |feature|
-  @server = TestServer.new
-  @server.send "#{feature}=", false
-  @server.start
+Given /^the test server lacks (\w+)$/ do |feature|
+  server.send "#{feature}=", false
+end
+
+Given /^the test server has auth level "(.*?)"$/ do |auth_level|
+  auth_level = Ftpd.const_get(auth_level)
+  server.auth_level = auth_level
 end

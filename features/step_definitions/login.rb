@@ -3,9 +3,9 @@ def logged_in?
   @error.nil?
 end
 
-def login(user, password, client_name = nil)
+def login(tokens, client_name = nil)
   capture_error do
-    client.login user, password
+    client(client_name).login *tokens
   end
 end
 
@@ -18,26 +18,31 @@ Given /^a successful login( with \w+ TLS)?$/ do |with_tls|
   step 'the client logs in'
 end
 
-Given /^the( \w+)? client connects and logs in$/ do |client_name|
-  step "the#{client_name} client connects"
-  step "the#{client_name} client logs in"
-end
-
 Given /^a failed login$/ do
   step 'the client connects'
-  step 'the client logs in with a bad password'
+  step 'the client logs in with bad user'
 end
 
-When /^the( \w+)? client logs in$/ do |client_name|
-  login @server.user, @server.password, client_name
-end
-
-When /^the client logs in with a bad password$/ do
-  login @server.user, 'the-wrong-password'
-end
-
-When /^the client logs in with a bad user$/ do
-  login 'the-wrong-user', @server.password
+When /^the(?: (\w+))? client logs in(?: with bad (\w+))?$/ do
+|client_name, bad|
+  tokens = [
+    if bad == 'user'
+      'bad_user'
+    else
+      @server.user
+    end,
+    if bad == 'password'
+      'bad_password'
+    else
+      @server.password
+    end,
+    if bad == 'account'
+      'bad_account'
+    else
+      @server.account
+    end,
+  ][0..server.auth_level]
+  login(tokens, client_name)
 end
 
 Then /^the client should( not)? be logged in$/ do |neg|
@@ -54,7 +59,7 @@ When /^the client sends a password( with no parameter)?$/ do |no_param|
     args = if no_param
              []
            else
-             [@server.password]
+             [server.password]
            end
     @client.raw 'PASS', *args
   end
@@ -65,8 +70,13 @@ When /^the client sends a user( with no parameter)?$/ do |no_param|
     args = if no_param
              []
            else
-             [@server.user]
+             [server.user]
            end
     @client.raw 'USER', *args
   end
+end
+
+Given /^the (\w+) client connects and logs in$/ do |client_name|
+  step "the #{client_name} client connects"
+  step "the #{client_name} client logs in"
 end

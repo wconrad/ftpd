@@ -5,7 +5,8 @@ Feature: Login
   So that I can transfer files
 
   Background:
-    Given the test server is started
+    Given the test server has auth level "AUTH_PASSWORD"
+    And the test server is started
 
   Scenario: Normal connection
     Given a successful login
@@ -14,13 +15,13 @@ Feature: Login
 
   Scenario: Bad user
     Given the client connects
-    When the client logs in with a bad user
+    When the client logs in with bad user
     Then the server returns a login incorrect error
     And the client should not be logged in
 
   Scenario: Bad password
     Given a successful connection
-    When the client logs in with a bad password
+    When the client logs in with bad password
     Then the server returns a login incorrect error
     And the client should not be logged in
 
@@ -49,11 +50,6 @@ Feature: Login
     Given a successful connection
     And the client sends a user
     When the client sends a password with no parameter
-    Then the server returns a syntax error
-
-  Scenario: USER without parameter
-    Given a successful connection
-    And the client sends a user with no parameter
     Then the server returns a syntax error
 
   Scenario: USER not followed by PASS

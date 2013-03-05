@@ -5,6 +5,20 @@ Enhancements
 * Improved driver and file-system documentation.
 * Added {Ftpd::ReadOnlyDiskFileSystem read only disk file system}
 * Example can be run with a read-only file system
+* Supports three different levels of authentication:
+  * User
+  * User + Password
+  * User + Password + Account
+* Added --auth switch to the example to select the authentication
+  level.
+
+API changes
+
+* {Example::Driver#authenticate authenticate} now takes three
+  parameters (user, password, account).  For compatability, it can be
+  defined to take only two, provided you are not doing account
+  authentication.
+* Added {Ftpd::FtpServer#auth_level} option
 
 ### 0.3.1
 

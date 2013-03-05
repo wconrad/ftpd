@@ -49,7 +49,7 @@ Feature: Put Unique
     Then the server returns a not logged in error
 
   Scenario: Write not enabled
-    Given the test server is started without write
+    Given the test server lacks write
     And a successful login
     And the client has file "foo"
     When the client stores unique "foo"

@@ -22,7 +22,7 @@ pyftpdlib is what every FTP library wants to be when it grows up.
 Commands supported:
 
     ABOR    No      ---     Abort transfer
-    ACCT    No      ---     Specify user's account
+    ACCT    Yes     dev     Specify user's account
     ALLO    Yes    0.2.0    Allocate storage space
                             Treated as a NOOP
     APPE    No      ---     Append to file
@@ -128,7 +128,7 @@ Support STRUCTURE:                         |               | | | | | |
 Support commands:                          |               | | | | | |
   USER                                     |4.1.2.13       |x| | | | |  C
   PASS                                     |4.1.2.13       |x| | | | |  C
-  ACCT                                     |4.1.2.13       |x| | | | |
+  ACCT                                     |4.1.2.13       |x| | | | |  C
   CWD                                      |4.1.2.13       |x| | | | |  C
   CDUP                                     |4.1.2.13       |x| | | | |  C
   SMNT                                     |959 5.3.1      | | |x| | |

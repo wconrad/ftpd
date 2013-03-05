@@ -4,5 +4,5 @@ Then /^the server should have written( no)? debug output$/ do |neg|
            else
              :should_not
            end
-  @server.debug_output.send(method) == ''
+  server.debug_output.send(method) == ''
 end

@@ -18,11 +18,13 @@ module Example
     attr_reader :port
     attr_reader :read_only
     attr_reader :tls
+    attr_reader :auth_level
 
     def initialize(argv)
       @interface = 'localhost'
       @tls = :explicit
       @port = 0
+      @auth_level = 'password'
       op = option_parser
       op.parse!(argv)
     rescue OptionParser::ParseError => e
@@ -41,7 +43,8 @@ module Example
           @interface = t
         end
         op.on('--tls [TYPE]', [:off, :explicit, :implicit],
-              'Select TLS support (off, explicit, implicit)') do |t|
+              'Select TLS support (off, explicit, implicit)',
+              'default = off') do |t|
           @tls = t
         end
         op.on('--eplf', 'LIST uses EPLF format') do |t|
@@ -49,6 +52,11 @@ module Example
         end 
         op.on('--read-only', 'Prohibit put, delete, rmdir, etc.') do |t|
           @read_only = t
+        end
+        op.on('--auth [LEVEL]', [:user, :password, :account],
+              'Set authorization level (user, password, account)',
+              'default = password') do |t|
+          @auth_level = t
         end
       end
     end
@@ -68,9 +76,10 @@ module Example
     # Your driver's initialize method can be anything you need.  Ftpd
     # does not create an instance of your driver.
 
-    def initialize(user, password, data_dir, read_only)
+    def initialize(user, password, account, data_dir, read_only)
       @user = user
       @password = password
+      @account = account
       @data_dir = data_dir
       @read_only = read_only
     end
@@ -78,10 +87,21 @@ module Example
     # Return true if the user should be allowed to log in.
     # @param user [String]
     # @param password [String]
+    # @param account [String]
     # @return [Boolean]
+    #
+    # Depending upon the server's auth_level, some of these parameters
+    # may be nil.  A parameter with a nil value is not required for
+    # authentication.  Here are the parameters that are non-nil for
+    # each auth_level:
+    # * :user (user)
+    # * :password (user, password)
+    # * :account (user, password, account)
 
-    def authenticate(user, password)
-      user == @user && password == @password
+    def authenticate(user, password, account)
+      user == @user &&
+        (password.nil? || password == @password) &&
+        (account.nil? || account == @account)
     end
 
     # Return the file system to use for a user.
@@ -108,7 +128,8 @@ module Example
       @args = Arguments.new(argv)
       @data_dir = Ftpd::TempDir.make
       create_files
-      @driver = Driver.new(user, password, @data_dir, @args.read_only)
+      @driver = Driver.new(user, password, account,
+                           @data_dir, @args.read_only)
       @server = Ftpd::FtpServer.new(@driver)
       @server.interface = @args.interface
       @server.port = @args.port
@@ -117,6 +138,7 @@ module Example
       if @args.eplf
         @server.list_formatter = Ftpd::ListFormat::Eplf
       end
+      @server.auth_level = auth_level
       @server.start
       display_connection_info
       create_connection_script
@@ -129,6 +151,10 @@ module Example
     private
 
     HOST = 'localhost'
+
+    def auth_level
+      Ftpd.const_get("AUTH_#{@args.auth_level.upcase}")
+    end
 
     def create_files
       create_file 'README',
@@ -148,7 +174,8 @@ module Example
       puts "Interface: #{@server.interface}"
       puts "Port: #{@server.bound_port}"
       puts "User: #{user}"
-      puts "Pass: #{password}"
+      puts "Pass: #{password}" if auth_level >= Ftpd::AUTH_PASSWORD
+      puts "Account: #{account}" if auth_level >= Ftpd::AUTH_ACCOUNT
       puts "TLS: #{@args.tls}"
       puts "Directory: #{@data_dir}"
       puts "URI: ftp://#{HOST}:#{@server.bound_port}"
@@ -180,6 +207,10 @@ module Example
 
     def password
       ''
+    end
+
+    def account
+      'account'
     end
 
   end

@@ -7,6 +7,7 @@ module Ftpd
 
     def initialize(opts)
       @driver = opts[:driver]
+      @auth_level = opts[:auth_level]
       @socket = opts[:socket]
       @tls = opts[:tls]
       if @tls == :implicit
@@ -65,19 +66,29 @@ module Ftpd
       syntax_error unless argument
       sequence_error if @logged_in
       @user = argument
-      reply "331 Password required"
-      expect 'pass'
+      if @auth_level > AUTH_USER
+        reply "331 Password required"
+        expect 'pass'
+      else
+        login(@user)
+      end
     end
 
     def cmd_pass(argument)
       syntax_error unless argument
-      password = argument
-      unless @driver.authenticate(@user, password)
-        error "530 Login incorrect"
+      @password = argument
+      if @auth_level > AUTH_PASSWORD
+        reply "332 Account required"
+        expect 'acct'
+      else
+        login(@user, @password)
       end
-      reply "230 Logged in"
-      set_file_system @driver.file_system(@user)
-      @logged_in = true
+    end
+
+    def cmd_acct(argument)
+      syntax_error unless argument
+      account = argument
+      login(@user, @password, account)
     end
 
     def cmd_quit(argument)
@@ -443,7 +454,6 @@ module Ftpd
     end
 
     unimplemented :abor
-    unimplemented :acct
     unimplemented :appe
     unimplemented :rein
     unimplemented :rest
@@ -674,6 +684,7 @@ module Ftpd
 
     def init_command_sequence_checker
       checker = CommandSequenceChecker.new
+      checker.must_expect 'acct'
       checker.must_expect 'pass'
       checker.must_expect 'rnto'
       checker
@@ -701,6 +712,22 @@ module Ftpd
         path = File.join(path, '*')
       end
       @file_system.dir(path).sort
+    end
+
+    def authenticate(*args)
+      while args.size < @driver.method(:authenticate).arity
+        args << nil
+      end
+      @driver.authenticate(*args)
+    end
+
+    def login(*auth_tokens)
+      unless authenticate(*auth_tokens)
+        error "530 Login incorrect"
+      end
+      reply "230 Logged in"
+      set_file_system @driver.file_system(@user)
+      @logged_in = true
     end
 
   end

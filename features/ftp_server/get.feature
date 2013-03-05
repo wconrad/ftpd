@@ -73,7 +73,7 @@ Feature: Get
     Then the server returns an action not taken error
 
   Scenario: Read not enabled
-    Given the test server is started without read
+    Given the test server lacks read
     And a successful login
     And the server has file "foo"
     When the client gets text "foo"

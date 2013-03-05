@@ -5,7 +5,8 @@ Feature: List TLS
   So that I can see what file to transfer
 
   Background:
-    Given the test server is started with explicit TLS
+    Given the test server has TLS mode "explicit"
+    And the test server is started
 
   Scenario: TLS
     pending "TLS not supported in active mode (see README)"

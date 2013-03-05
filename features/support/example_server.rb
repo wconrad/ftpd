@@ -39,6 +39,14 @@ class ExampleServer
     @output[/Pass: (.*)$/, 1]
   end
 
+  def account
+    @output[/Account: (.*)$/, 1]
+  end
+
+  def auth_level
+    Ftpd::AUTH_PASSWORD
+  end
+
   private
 
   def read_output

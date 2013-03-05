@@ -78,7 +78,7 @@ Feature: Rename
     Then the server returns a syntax error
 
   Scenario: Rename not enabled
-    Given the test server is started without rename
+    Given the test server lacks rename
     And a successful login
     And the server has file "foo"
     When the client renames "foo" to "bar"

@@ -28,4 +28,5 @@ module Ftpd
   autoload :TranslateExceptions,       'ftpd/translate_exceptions'
 end
 
+require 'ftpd/auth_levels'
 require 'ftpd/exceptions'
