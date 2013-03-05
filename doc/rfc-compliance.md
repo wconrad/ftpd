@@ -123,7 +123,7 @@ Support MODE:                              |               | | | | | |
 Support STRUCTURE:                         |               | | | | | |
   File                                     |4.1.2.13       |x| | | | |  C
   Record                                   |4.1.2.13       |x| | | | |3 E
-  Page                                     |4.1.2.3        | | | |x| |
+  Page                                     |4.1.2.3        | | | |x| |  C
                                            |               | | | | | |
 Support commands:                          |               | | | | | |
   USER                                     |4.1.2.13       |x| | | | |  C
