@@ -91,6 +91,28 @@ Here are the methods a file system may expose:
 * {Ftpd::DiskFileSystem::List#dir dir}
 * {Ftpd::DiskFileSystem::Rename#rename rename}
 
+## LIST output format
+
+By default, the LIST command uses Unix "ls -l" formatting:
+
+    -rw-r--r-- 1 user     group        1234 Mar  3 08:38 foo
+
+To switch to
+{http://cr.yp.to/ftp/list/eplf.html Easily Parsed LIST format (EPLF)}
+format:
+
+    ftp_server.list_formatter = Ftpd::ListFormat::Eplf
+
+To create your own custom formatter, create a class with these
+methods:
+
+* {Ftpd::ListFormat::Ls#initialize initialize}
+* {Ftpd::ListFormat::Ls#to_s to_s}
+
+And register your class with the ftp_server before starting it:
+
+    ftp_server.list_formatter = MyListFormatter
+
 ## DEBUGGING
 
 Ftpd can write debugging information (essentially a transcript of its
