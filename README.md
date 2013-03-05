@@ -5,6 +5,12 @@ explicit TLS, passive and active mode, and most of the commands
 specified in RFC 969.  It an be used as part of a test fixture or
 embedded in a program.
 
+## A note about this README
+
+This readme, and the other files, contains Yardoc markup, especially
+for links to the API docs.  You'll find a properly rendered version
+{http://rubydoc.info/gems/ftpd on rubydoc.info}
+
 ## HELLO WORLD
 
 This is examples/hello_world.rb, a bare minimum FTP server.  It allows
