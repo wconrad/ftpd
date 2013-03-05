@@ -38,6 +38,8 @@ module Ftpd
       # Return true if the path is accessible to the user.  This will be
       # called for put, get and directory lists, so the file or
       # directory named by the path may not exist.
+      # @param ftp_path [String] The virtual path
+      # @return [Boolean]
       #
       # Called for:
       # * STOR
@@ -55,6 +57,8 @@ module Ftpd
       end
 
       # Return true if the file or directory path exists.
+      # @param ftp_path [String] The virtual path
+      # @return [Boolean]
       #
       # Called for:
       # * STOR (with directory)
@@ -68,6 +72,8 @@ module Ftpd
       end
 
       # Return true if the path exists and is a directory.
+      # @param ftp_path [String] The virtual path
+      # @return [Boolean]
       #
       # Called for:
       # * CWD
@@ -89,6 +95,7 @@ module Ftpd
       include TranslateExceptions
 
       # Remove a file.
+      # @param ftp_path [String] The virtual path
       #
       # Called for:
       # * DELE
@@ -112,6 +119,7 @@ module Ftpd
       include TranslateExceptions
 
       # Read a file into memory.
+      # @param ftp_path [String] The virtual path
       #
       # Called for:
       # * RETR
@@ -135,6 +143,8 @@ module Ftpd
       include TranslateExceptions
 
       # Write a file to disk.
+      # @param ftp_path [String] The virtual path
+      # @contents [String] The file's contents
       #
       # Called for:
       # * STOR
@@ -161,6 +171,7 @@ module Ftpd
       include TranslateExceptions
 
       # Create a directory.
+      # @param ftp_path [String] The virtual path
       #
       # Called for:
       # * MKD
@@ -185,6 +196,7 @@ module Ftpd
       include TranslateExceptions
 
       # Remove a directory.
+      # @param ftp_path [String] The virtual path
       #
       # Called for:
       # * RMD
@@ -209,20 +221,20 @@ module Ftpd
       include TranslateExceptions
 
       # Get information about a single file or directory.
+      # @param ftp_path [String] The virtual path
+      # @return [FileInfo]
       #
       # Should follow symlinks (per
       # {http://cr.yp.to/ftp/list/eplf.html}, "lstat() is not a good
       # idea for FTP directory listings").
-      #
-      # @return [FileInfo]
       #
       # Called for:
       # * LIST
       #
       # If missing, then these commands are not supported.
 
-      def file_info(path)
-        stat = File.stat(expand_ftp_path(path))
+      def file_info(ftp_path)
+        stat = File.stat(expand_ftp_path(ftp_path))
         FileInfo.new(:ftype => stat.ftype,
                      :group => gid_name(stat.gid),
                      :identifier => identifier(stat),
@@ -230,20 +242,15 @@ module Ftpd
                      :mtime => stat.mtime,
                      :nlink => stat.nlink,
                      :owner => uid_name(stat.uid),
-                     :path => path,
+                     :path => ftp_path,
                      :size => stat.size)
       end
       translate_exceptions :file_info
 
       # Expand a path that may contain globs into a list of paths of
       # matching files and directories.
-      #
-      # * If the path matches no files, returns an empty list.
-      #
-      # * If the path has no glob and matches a directory, then the
-      #   list contains only that directory.
-      #
-      # * If the patch has a glob, it may return multiple entries.
+      # @param ftp_path [String] The virtual path
+      # @return [Array<String>]
       #
       # The paths returned are fully qualified, relative to the root
       # of the virtual file system.
@@ -269,8 +276,8 @@ module Ftpd
       #
       # If missing, then these commands are not supported.
 
-      def dir(path)
-        Dir[expand_ftp_path(path)].map do |path|
+      def dir(ftp_path)
+        Dir[expand_ftp_path(ftp_path)].map do |path|
           path.sub(/^#{@data_dir}/, '')
         end
       end

@@ -58,7 +58,7 @@ driver will do.  Here are the methods your driver needs:
 
 ## FILE SYSTEM
 
-The file system object that the driver supplies to Ftpd is Ftpds
+The file system object that the driver supplies to Ftpd is Ftpd's
 gateway to the logical file system.  Ftpd doesn't know or care whether
 it's serving files from disk, memory, or any other means.
 
@@ -69,7 +69,21 @@ not supported and causes a "502 Command not implemented" response to
 the client.
 
 The canonical and commented example of an Ftpd file system is
-{Ftpd::DiskFileSystem}.
+{Ftpd::DiskFileSystem}.  You can use it as a template for creating
+your own, and its comments are the official specification for an Ftpd
+file system.
+
+Here are the methods a file system may expose:
+
+* {Ftpd::DiskFileSystem::Accessors#accessible? accessible?}
+* {Ftpd::DiskFileSystem::Accessors#exists? exists?}
+* {Ftpd::DiskFileSystem::Accessors#directory? directory?}
+* {Ftpd::DiskFileSystem::Write#write write}
+* {Ftpd::DiskFileSystem::Mkdir#mkdir mkdir}
+* {Ftpd::DiskFileSystem::Rmdir#rmdir rmdir}
+* {Ftpd::DiskFileSystem::List#file_info file_info}
+* {Ftpd::DiskFileSystem::List#dir dir}
+* {Ftpd::DiskFileSystem::Rename#rename rename}
 
 ## DEBUGGING
 
