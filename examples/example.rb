@@ -16,6 +16,7 @@ module Example
     attr_reader :eplf
     attr_reader :interface
     attr_reader :port
+    attr_reader :read_only
     attr_reader :tls
 
     def initialize(argv)
@@ -45,6 +46,9 @@ module Example
         end
         op.on('--eplf', 'LIST uses EPLF format') do |t|
           @eplf = t
+        end 
+        op.on('--read-only', 'Prohibit put, delete, rmdir, etc.') do |t|
+          @read_only = t
         end
       end
     end
@@ -64,10 +68,11 @@ module Example
     # Your driver's initialize method can be anything you need.  Ftpd
     # does not create an instance of your driver.
 
-    def initialize(user, password, data_dir)
+    def initialize(user, password, data_dir, read_only)
       @user = user
       @password = password
       @data_dir = data_dir
+      @read_only = read_only
     end
 
     # Return true if the user should be allowed to log in.
@@ -84,7 +89,11 @@ module Example
     # @return A file system driver that quacks like {Ftpd::DiskFileSystem}
 
     def file_system(user)
-      Ftpd::DiskFileSystem.new(@data_dir)
+      if @read_only
+        Ftpd::ReadOnlyDiskFileSystem
+      else
+        Ftpd::DiskFileSystem
+      end.new(@data_dir)
     end
 
   end
@@ -99,7 +108,7 @@ module Example
       @args = Arguments.new(argv)
       @data_dir = Ftpd::TempDir.make
       create_files
-      @driver = Driver.new(user, password, @data_dir)
+      @driver = Driver.new(user, password, @data_dir, @args.read_only)
       @server = Ftpd::FtpServer.new(@driver)
       @server.interface = @args.interface
       @server.port = @args.port

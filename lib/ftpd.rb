@@ -20,6 +20,7 @@ module Ftpd
   autoload :FileSystemMethodMissing,   'ftpd/file_system_method_missing'
   autoload :FtpServer,                 'ftpd/ftp_server'
   autoload :InsecureCertificate,       'ftpd/insecure_certificate'
+  autoload :ReadOnlyDiskFileSystem,    'ftpd/read_only_disk_file_system'
   autoload :Server,                    'ftpd/server'
   autoload :Session,                   'ftpd/session'
   autoload :TempDir,                   'ftpd/temp_dir'

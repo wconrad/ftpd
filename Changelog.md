@@ -1,8 +1,10 @@
-### 0.3.2
+### dev
 
 Enhancements
 
 * Improved driver and file-system documentation.
+* Added {Ftpd::ReadOnlyDiskFileSystem read only disk file system}
+* Example can be run with a read-only file system
 
 ### 0.3.1
 

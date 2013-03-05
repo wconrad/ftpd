@@ -106,8 +106,8 @@ Ftpd includes a disk based file system:
     end
 
 *Warning*: The DiskFileSystem allows file and directory modification
-including writing, renaming, deleting, etc.  See below for how to
-create a read-only disk file system.
+including writing, renaming, deleting, etc.  If you want a read-only
+file system, then use {Ftpd::ReadOnlyDiskFileSystem} instead.
 
 The DiskFileSystem is composed out of modules:
 
@@ -120,13 +120,14 @@ The DiskFileSystem is composed out of modules:
 * {Ftpd::DiskFileSystem::Rmdir Rmdir} - Directory removal
 * {Ftpd::DiskFileSystem::Write Write} - File writing
 
-To create a customer file system that does not allow any file system
-modifications, include only the modules that allow reading:
+For example, to create a custom file system that allows reading and
+writing only, then:
 
-    class ReadOnlyDiskFileSystem
+    class CustomDiskFileSystem
       include DiskFileSystem::Base
       include DiskFileSystem::List
       include DiskFileSystem::Read
+      include DiskFileSystem::Write
     end
 
     class Driver
@@ -134,7 +135,7 @@ modifications, include only the modules that allow reading:
       ...
 
       def file_system(user)
-        ReadOnlyDiskFileSystem('/var/lib/ftp')
+        CustomDiskFileSystem('/var/lib/ftp')
       end
 
     end
