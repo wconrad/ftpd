@@ -87,7 +87,7 @@ with "C" where FTPD complies, or "E" where compliance is not required.
                                            |               |T|D|Y|O|O|t
 FEATURE                                    |SECTION        | | | |T|T|e
 -------------------------------------------|---------------|-|-|-|-|-|--
-Implement TYPE T if same as TYPE N         |4.1.2.2        | |x| | | |  
+Implement TYPE T if same as TYPE N         |4.1.2.2        | |x| | | |  C
 File/Record transform invertible if poss.  |4.1.2.4        | |x| | | |  C
 Server-FTP implement PASV                  |4.1.2.6        |x| | | | |  C
   PASV is per-transfer                     |4.1.2.6        |x| | | | |  C
@@ -109,7 +109,7 @@ Sender assume 110 replies are synchronous  |4.1.3.4        | | | | |x|
                                            |               | | | | | |
 Support TYPE:                              |               | | | | | |
   ASCII - Non-Print (AN)                   |4.1.2.13       |x| | | | |  C
-  ASCII - Telnet (AT) -- if same as AN     |4.1.2.2        | |x| | | |
+  ASCII - Telnet (AT) -- if same as AN     |4.1.2.2        | |x| | | |  C
   ASCII - Carriage Control (AC)            |959 3.1.1.5.2  | | |x| | |
   EBCDIC - (any form)                      |959 3.1.1.2    | | |x| | |
   IMAGE                                    |4.1.2.1        |x| | | | |  C

@@ -12,6 +12,7 @@ Enhancements
 * Added --auth switch to the example to select the authentication
   level.
 * Support APPE
+* Support TYPE A T (ASCII/Telnet)
 
 API changes
 

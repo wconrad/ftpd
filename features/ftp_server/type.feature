@@ -7,9 +7,17 @@ Feature: Representation Type
   Background:
     Given the test server is started
 
-  Scenario: Type ASCII
+  Scenario: ASCII/default
     Given a successful login
     Then the client successfully sets type "A"
+
+  Scenario: ASCII/Non-print
+    Given a successful login
+    Then the client successfully sets type "A N"
+
+  Scenario: ASCII/Telnet
+    Given a successful login
+    When the client successfully sets type "A T"
 
   Scenario: Type IMAGE
     Given a successful login
@@ -29,11 +37,6 @@ Feature: Representation Type
     Given a successful login
     When the client sets type "*"
     Then the server returns an invalid type error
-
-  Scenario: Format Telnet
-    Given a successful login
-    When the client sets type "A T"
-    Then the server returns a format not implemented error
 
   Scenario: Format Carriage Control
     Given a successful login

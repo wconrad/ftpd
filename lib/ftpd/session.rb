@@ -492,7 +492,7 @@ module Ftpd
 
     FORMAT_TYPES = {
       'N'=>['Non-print', true],
-      'T'=>['Telnet format effectors', false],
+      'T'=>['Telnet format effectors', true],
       'C'=>['Carriage Control (ASA)', false],
     }
 
