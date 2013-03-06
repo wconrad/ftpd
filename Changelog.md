@@ -14,6 +14,10 @@ Enhancements
 * Support APPE
 * Support TYPE "A T" (ASCII/Telnet)
 * Support TYPE "LOCAL 8"
+* Added switches to example to set authentication values
+  * --user
+  * --password
+  * --account
 
 API changes
 

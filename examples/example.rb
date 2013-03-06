@@ -13,18 +13,24 @@ module Example
 
   class Arguments
 
+    attr_reader :account
+    attr_reader :auth_level
     attr_reader :eplf
     attr_reader :interface
+    attr_reader :password
     attr_reader :port
     attr_reader :read_only
     attr_reader :tls
-    attr_reader :auth_level
+    attr_reader :user
 
     def initialize(argv)
       @interface = 'localhost'
       @tls = :explicit
       @port = 0
       @auth_level = 'password'
+      @user = ENV['LOGNAME']
+      @password = ''
+      @account = ''
       op = option_parser
       op.parse!(argv)
     rescue OptionParser::ParseError => e
@@ -57,6 +63,18 @@ module Example
               'Set authorization level (user, password, account)',
               'default = password') do |t|
           @auth_level = t
+        end
+        op.on('-U', '--user NAME', 'User for authentication',
+              'defaults to current user') do |t|
+          @user = t
+        end
+        op.on('-P', '--password PW', 'Password for authentication',
+              'defaults to empty string') do |t|
+          @password = t
+        end
+        op.on('-A', '--account PW', 'Account for authentication',
+              'defaults to empty string') do |t|
+          @account = t
         end
       end
     end
@@ -202,15 +220,15 @@ module Example
     end
 
     def user
-      ENV['LOGNAME']
+      @args.user
     end
 
     def password
-      ''
+      @args.password
     end
 
     def account
-      'account'
+      @args.account
     end
 
   end
