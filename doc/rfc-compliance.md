@@ -22,10 +22,10 @@ pyftpdlib is what every FTP library wants to be when it grows up.
 Commands supported:
 
     ABOR    No      ---     Abort transfer
-    ACCT    Yes     dev     Specify user's account
+    ACCT    Yes    0.4.0    Specify user's account
     ALLO    Yes    0.2.0    Allocate storage space
                             Treated as a NOOP
-    APPE    Yes     dev     Append to file
+    APPE    Yes    0.4.0    Append to file
     CDUP    Yes    0.1.0    Change to parent directory    
     CWD     Yes    0.1.0    Change working directory    
     DELE    Yes    0.1.0    Delete file    
