@@ -113,7 +113,7 @@ Support TYPE:                              |               | | | | | |
   ASCII - Carriage Control (AC)            |959 3.1.1.5.2  | | |x| | |
   EBCDIC - (any form)                      |959 3.1.1.2    | | |x| | |
   IMAGE                                    |4.1.2.1        |x| | | | |  C
-  LOCAL 8                                  |4.1.2.1        |x| | | | |
+  LOCAL 8                                  |4.1.2.1        |x| | | | |  C
   LOCAL m                                  |4.1.2.1        | | |x| | |2
                                            |               | | | | | |
 Support MODE:                              |               | | | | | |

@@ -19,7 +19,6 @@ module Ftpd
       @list_formatter = opts[:list_formatter]
       @data_type = 'A'
       @mode = 'S'
-      @format = 'N'
       @structure = 'F'
       @response_delay = opts[:response_delay]
       @data_channel_protection_level = :clear
@@ -215,24 +214,18 @@ module Ftpd
       syntax_error unless argument =~ /^(\S)(?: (\S+))?$/
       type_code = $1
       format_code = $2
-      set_type(type_code)
-      set_format(format_code)
+      unless argument =~ /^([AEI]( [NTC])?|L .*)$/
+        error '504 Invalid type code'
+      end
+      case argument
+      when /^A( [NT])?$/
+        @data_type = 'A'
+      when /^(I|L 8)$/
+        @data_type = 'I'
+      else
+        error '504 Type not implemented'
+      end
       reply "200 Type set to #{@data_type}"
-    end
-
-    def set_type(type_code)
-      name, implemented = DATA_TYPES[type_code]
-      error "504 Invalid type code" unless name
-      error "504 Type not implemented" unless implemented
-      @data_type = type_code
-    end
-
-    def set_format(format_code)
-      format_code ||= 'N'
-      name, implemented = FORMAT_TYPES[format_code]
-      error "504 Invalid format code" unless name
-      error "504 Format not implemented" unless implemented
-      @data_format = format_code
     end
 
     def cmd_mode(argument)

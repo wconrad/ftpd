@@ -193,7 +193,6 @@ If FTPD met these requirements, but did not meet the "SHOULD"
 requirements, it would be "conditionally compliant":
 
 * Server-FTP handle Telnet options
-* Support TYPE "LOCAL 8"
 * Support command STAT
 
 RFC does not meet the following

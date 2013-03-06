@@ -41,12 +41,12 @@ Feature: Representation Type
   Scenario: Format Carriage Control
     Given a successful login
     When the client sets type "A C"
-    Then the server returns a format not implemented error
+    Then the server returns a type not implemented error
 
   Scenario: Invalid Format
     Given a successful login
     When the client sets type "A *"
-    Then the server returns an invalid format error
+    Then the server returns an invalid type error
 
   Scenario: Not logged in
     Given a successful connection
