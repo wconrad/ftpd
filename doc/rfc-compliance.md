@@ -98,7 +98,7 @@ STOU cmd return pathname as specified      |4.1.2.9        |x| | | | |  C
 Use TCP READ boundaries on control conn.   |4.1.2.10       | | | | |x|  C
 Server-FTP send only correct reply format  |4.1.2.11       |x| | | | |  C
 Server-FTP use defined reply code if poss. |4.1.2.11       | |x| | | |  C
-  New reply code following Section 4.2     |4.1.2.11       | | |x| | |
+  New reply code following Section 4.2     |4.1.2.11       | | |x| | |  E
 Default data port same IP addr as ctl conn |4.1.2.12       |x| | | | |  C
 Server-FTP handle Telnet options           |4.1.2.12       |x| | | | |
 Handle "Experimental" directory cmds       |4.1.3.1        | |x| | | |  C
@@ -110,20 +110,20 @@ Sender assume 110 replies are synchronous  |4.1.3.4        | | | | |x|
 Support TYPE:                              |               | | | | | |
   ASCII - Non-Print (AN)                   |4.1.2.13       |x| | | | |  C
   ASCII - Telnet (AT) -- if same as AN     |4.1.2.2        | |x| | | |  C
-  ASCII - Carriage Control (AC)            |959 3.1.1.5.2  | | |x| | |
-  EBCDIC - (any form)                      |959 3.1.1.2    | | |x| | |
+  ASCII - Carriage Control (AC)            |959 3.1.1.5.2  | | |x| | |  E
+  EBCDIC - (any form)                      |959 3.1.1.2    | | |x| | |  E
   IMAGE                                    |4.1.2.1        |x| | | | |  C
   LOCAL 8                                  |4.1.2.1        |x| | | | |  C
-  LOCAL m                                  |4.1.2.1        | | |x| | |2
+  LOCAL m                                  |4.1.2.1        | | |x| | |2 E
                                            |               | | | | | |
 Support MODE:                              |               | | | | | |
   Stream                                   |4.1.2.13       |x| | | | |  C
-  Block                                    |959 3.4.2      | | |x| | |
+  Block                                    |959 3.4.2      | | |x| | |  E
                                            |               | | | | | |
 Support STRUCTURE:                         |               | | | | | |
   File                                     |4.1.2.13       |x| | | | |  C
   Record                                   |4.1.2.13       |x| | | | |3 E
-  Page                                     |4.1.2.3        | | | |x| |  C
+  Page                                     |4.1.2.3        | | | |x| |  E
                                            |               | | | | | |
 Support commands:                          |               | | | | | |
   USER                                     |4.1.2.13       |x| | | | |  C
@@ -131,8 +131,8 @@ Support commands:                          |               | | | | | |
   ACCT                                     |4.1.2.13       |x| | | | |  C
   CWD                                      |4.1.2.13       |x| | | | |  C
   CDUP                                     |4.1.2.13       |x| | | | |  C
-  SMNT                                     |959 5.3.1      | | |x| | |
-  REIN                                     |959 5.3.1      | | |x| | |
+  SMNT                                     |959 5.3.1      | | |x| | |  E
+  REIN                                     |959 5.3.1      | | |x| | |  E
   QUIT                                     |4.1.2.13       |x| | | | |  C
                                            |               | | | | | |
   PORT                                     |4.1.2.13       |x| | | | |  C
@@ -146,17 +146,17 @@ Support commands:                          |               | | | | | |
   STOU                                     |959 5.3.1      | | |x| | |  C
   APPE                                     |4.1.2.13       |x| | | | |  C
   ALLO                                     |959 5.3.1      | | |x| | |  C
-  REST                                     |959 5.3.1      | | |x| | |
+  REST                                     |959 5.3.1      | | |x| | |  E
   RNFR                                     |4.1.2.13       |x| | | | |  C
   RNTO                                     |4.1.2.13       |x| | | | |  C
-  ABOR                                     |959 5.3.1      | | |x| | |
+  ABOR                                     |959 5.3.1      | | |x| | |  E
   DELE                                     |4.1.2.13       |x| | | | |  C
   RMD                                      |4.1.2.13       |x| | | | |  C
   MKD                                      |4.1.2.13       |x| | | | |  C
   PWD                                      |4.1.2.13       |x| | | | |  C
   LIST                                     |4.1.2.13       |x| | | | |  C
   NLST                                     |4.1.2.13       |x| | | | |  C
-  SITE                                     |4.1.2.8        | | |x| | |
+  SITE                                     |4.1.2.8        | | |x| | |  E
   STAT                                     |4.1.2.13       |x| | | | |
   SYST                                     |4.1.2.13       |x| | | | |  C
   HELP                                     |4.1.2.13       |x| | | | |  C
