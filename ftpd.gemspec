@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "ftpd"
-  s.version = "0.3.2"
+  s.version = "0.4.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Wayne Conrad"]
-  s.date = "2013-03-05"
+  s.date = "2013-03-06"
   s.description = "ftpd is a pure Ruby FTP server library.  It supports implicit and explicit TLS, passive and active mode, and most of the commands specified in RFC 969.  It an be used as part of a test fixture or embedded in a program."
   s.email = "wconrad@yagni.com"
   s.extra_rdoc_files = [
@@ -31,8 +31,10 @@ Gem::Specification.new do |s|
     "examples/hello_world.rb",
     "features/example/eplf.feature",
     "features/example/example.feature",
+    "features/example/read_only.feature",
     "features/example/step_definitions/example_server.rb",
     "features/ftp_server/allo.feature",
+    "features/ftp_server/append.feature",
     "features/ftp_server/cdup.feature",
     "features/ftp_server/command_errors.feature",
     "features/ftp_server/concurrent_sessions.feature",
@@ -44,9 +46,12 @@ Gem::Specification.new do |s|
     "features/ftp_server/get_tls.feature",
     "features/ftp_server/help.feature",
     "features/ftp_server/implicit_tls.feature",
+    "features/ftp_server/invertability.feature",
     "features/ftp_server/list.feature",
     "features/ftp_server/list_tls.feature",
-    "features/ftp_server/login.feature",
+    "features/ftp_server/login_auth_level_account.feature",
+    "features/ftp_server/login_auth_level_password.feature",
+    "features/ftp_server/login_auth_level_user.feature",
     "features/ftp_server/mkdir.feature",
     "features/ftp_server/mode.feature",
     "features/ftp_server/name_list.feature",
@@ -64,6 +69,7 @@ Gem::Specification.new do |s|
     "features/ftp_server/syntax_errors.feature",
     "features/ftp_server/syst.feature",
     "features/ftp_server/type.feature",
+    "features/step_definitions/append.rb",
     "features/step_definitions/client.rb",
     "features/step_definitions/client_and_server_files.rb",
     "features/step_definitions/client_files.rb",
@@ -107,6 +113,7 @@ Gem::Specification.new do |s|
     "ftpd.gemspec",
     "insecure-test-cert.pem",
     "lib/ftpd.rb",
+    "lib/ftpd/auth_levels.rb",
     "lib/ftpd/command_sequence_checker.rb",
     "lib/ftpd/disk_file_system.rb",
     "lib/ftpd/error.rb",
@@ -118,6 +125,7 @@ Gem::Specification.new do |s|
     "lib/ftpd/insecure_certificate.rb",
     "lib/ftpd/list_format/eplf.rb",
     "lib/ftpd/list_format/ls.rb",
+    "lib/ftpd/read_only_disk_file_system.rb",
     "lib/ftpd/server.rb",
     "lib/ftpd/session.rb",
     "lib/ftpd/temp_dir.rb",
