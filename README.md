@@ -8,7 +8,8 @@ embedded in a program.
 ## A note about this README
 
 This readme, and the other files, contains Yardoc markup, especially
-for links to the API docs.  You'll find a properly rendered version
+for links to the API docs; those links don't display properly on
+github.  You'll find a properly rendered version
 {http://rubydoc.info/gems/ftpd on rubydoc.info}
 
 ## HELLO WORLD
@@ -186,7 +187,7 @@ Ftpd is not fully RFC compliant.  It does most of RFC969, and enough
 TLS to get by.  {file:doc/rfc.md Here} is a list of RFCs, indicating
 how much of each Ftpd complies with.
 
-RFC does not meet the following The following 
+RFC does not meet the following 
 [RFC-1123](http://tools.ietf.org/rfc/rfc1123.txt)
 "MUST" requrements.  If FTPD met these requirements, it would be
 "conditionally compliant":
@@ -196,7 +197,7 @@ RFC does not meet the following The following
 * Support command APPE
 * Support command STAT
 
-RFC does not meet the following The following 
+RFC does not meet the following
 [RFC-1123](http://tools.ietf.org/rfc/rfc1123.txt)
 "SHOULD" requrements.  If FTPD met both the "MUST" and the "SHOULD"
 requirements, it would be "unconditionally compliant":
