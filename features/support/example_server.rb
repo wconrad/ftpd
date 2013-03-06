@@ -32,15 +32,15 @@ class ExampleServer
   end
 
   def user
-    @output[/User: (.*)$/, 1]
+    @output[/User: "(.*)"$/, 1]
   end
 
   def password
-    @output[/Pass: (.*)$/, 1]
+    @output[/Pass: "(.*)"$/, 1]
   end
 
   def account
-    @output[/Account: (.*)$/, 1]
+    @output[/Account: "(.*)"$/, 1]
   end
 
   def auth_level

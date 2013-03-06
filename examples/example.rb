@@ -173,9 +173,9 @@ module Example
     def display_connection_info
       puts "Interface: #{@server.interface}"
       puts "Port: #{@server.bound_port}"
-      puts "User: #{user}"
-      puts "Pass: #{password}" if auth_level >= Ftpd::AUTH_PASSWORD
-      puts "Account: #{account}" if auth_level >= Ftpd::AUTH_ACCOUNT
+      puts "User: #{user.inspect}"
+      puts "Pass: #{password.inspect}" if auth_level >= Ftpd::AUTH_PASSWORD
+      puts "Acctount: #{account.inspect}" if auth_level >= Ftpd::AUTH_ACCOUNT
       puts "TLS: #{@args.tls}"
       puts "Directory: #{@data_dir}"
       puts "URI: ftp://#{HOST}:#{@server.bound_port}"
