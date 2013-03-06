@@ -1,7 +1,7 @@
 -o doc-api
 --exclude '[~#]$'
 --readme README.md
---readme Changelog.md
+--files Changelog.md
 --files doc/*.md
 lib/**/*.rb
 examples/example.rb
