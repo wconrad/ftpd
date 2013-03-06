@@ -194,7 +194,6 @@ RFC does not meet the following
 
 * Server-FTP handle Telnet options
 * Support TYPE "LOCAL 8"
-* Support command APPE
 * Support command STAT
 
 RFC does not meet the following

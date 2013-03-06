@@ -14,6 +14,7 @@ class TestServer
     PASSWORD = 'password'
     ACCOUNT = 'account'
 
+    attr_accessor :append
     attr_accessor :delete
     attr_accessor :list
     attr_accessor :mkdir
@@ -24,6 +25,7 @@ class TestServer
 
     def initialize(temp_dir)
       @temp_dir = temp_dir
+      @append = true
       @delete = true
       @list = true
       @mkdir = true
@@ -41,6 +43,7 @@ class TestServer
 
     def file_system(user)
       TestServerFileSystem.new(@temp_dir,
+                               :append => @append,
                                :delete => @delete,
                                :list => @list,
                                :mkdir => @mkdir,
@@ -138,6 +141,11 @@ class TestServer
 
         include Ftpd::DiskFileSystem::Base
 
+        if opts[:append]
+          include Ftpd::DiskFileSystem::Append
+          raise_on_file_system_error :append
+        end
+
         if opts[:delete]
           include Ftpd::DiskFileSystem::Delete
           raise_on_file_system_error :delete
@@ -212,6 +220,7 @@ class TestServer
   def_delegator :@server, :'debug='
   def_delegator :@server, :'tls='
 
+  def_delegator :@driver, :'append='
   def_delegator :@driver, :'delete='
   def_delegator :@driver, :'list='
   def_delegator :@driver, :'mkdir='
@@ -250,6 +259,10 @@ class TestServer
 
   def port
     @server.bound_port
+  end
+
+  def template(path)
+    @templates[File.basename(path)]
   end
 
   private

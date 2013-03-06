@@ -164,6 +164,36 @@ module Ftpd
 
     end
 
+    describe '#append' do
+
+      let(:contents) {'file contents'}
+
+      context '(destination missing)' do
+        let(:path) {'file_path'}
+        specify do
+          disk_file_system.append(path, contents)
+          read_file(path).should == contents
+        end
+      end
+
+      context '(destination exists)' do
+        let(:path) {'file'}
+        specify do
+          disk_file_system.append(path, contents)
+          read_file(path).should == canned_contents(path) + contents
+        end
+      end
+
+      context '(error)' do
+        specify do
+          expect {
+            disk_file_system.append('dir', contents)
+          }.to raise_error *is_a_directory_error
+        end
+      end
+
+    end
+
     describe '#mkdir' do
 
       context '(success)' do

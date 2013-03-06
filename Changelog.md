@@ -11,6 +11,7 @@ Enhancements
   * User + Password + Account
 * Added --auth switch to the example to select the authentication
   level.
+* Support APPE
 
 API changes
 
@@ -19,6 +20,7 @@ API changes
   defined to take only two, provided you are not doing account
   authentication.
 * Added {Ftpd::FtpServer#auth_level} option
+* Added {Ftpd::DiskFileSystem::Append}
 
 ### 0.3.1
 

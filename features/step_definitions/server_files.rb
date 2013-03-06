@@ -39,3 +39,16 @@ Then /^the server should have (\d+) files? with "(.*?)" in the name$/ do
 |count, name|
   server.files_named_like(name).size.should == count.to_i
 end
+
+Then /^the remote file "(.*?)" should match "(\w+)" \+ "(\w+)"$/ do
+|remote_path, template1, template2|
+  expected = @server.template(template1) + @server.template(template2)
+  actual = @server.file_contents(remote_path)
+  actual.should == expected
+end
+
+Then /^the remote file "(.*?)" should match "(\w+)"$/ do |remote_path, template|
+  expected = @server.template(template)
+  actual = @server.file_contents(remote_path)
+  actual.should == expected
+end

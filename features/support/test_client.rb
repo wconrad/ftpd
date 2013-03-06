@@ -77,6 +77,20 @@ class TestClient
     end
   end
 
+  def append_binary(local_path, remote_path)
+    command = ['APPE', remote_path].compact.join(' ')
+    File.open(temp_path(local_path), 'rb') do |file|
+      @ftp.storbinary command, file, Net::FTP::DEFAULT_BLOCKSIZE
+    end
+  end
+
+  def append_text(local_path, remote_path)
+    command = ['APPE', remote_path].compact.join(' ')
+    File.open(temp_path(local_path), 'rb') do |file|
+      @ftp.storlines command, file
+    end
+  end
+
   private
 
   RAW_METHOD_REGEX = /^send_(.*)$/

@@ -40,14 +40,6 @@ module Ftpd
       # directory named by the path may not exist.
       # @param ftp_path [String] The virtual path
       # @return [Boolean]
-      #
-      # Called for:
-      # * STOR
-      # * RETR
-      # * DELE
-      # * CWD
-      # * MKD
-      # * RMD
 
       def accessible?(ftp_path)
         # The server should never try to access a path outside of the
@@ -59,13 +51,6 @@ module Ftpd
       # Return true if the file or directory path exists.
       # @param ftp_path [String] The virtual path
       # @return [Boolean]
-      #
-      # Called for:
-      # * STOR (with directory)
-      # * RETR
-      # * DELE
-      # * CWD
-      # * MKD
 
       def exists?(ftp_path)
         File.exists?(expand_ftp_path(ftp_path))
@@ -74,10 +59,6 @@ module Ftpd
       # Return true if the path exists and is a directory.
       # @param ftp_path [String] The virtual path
       # @return [Boolean]
-      #
-      # Called for:
-      # * CWD
-      # * MKD
 
       def directory?(ftp_path)
         File.directory?(expand_ftp_path(ftp_path))
@@ -158,6 +139,33 @@ module Ftpd
         end
       end
       translate_exceptions :write
+
+    end
+  end
+
+  class DiskFileSystem
+
+    # DiskFileSystem mixin providing file appending
+
+    module Append
+
+      include TranslateExceptions
+
+      # Append to a file.  If the file does not exist, create it.
+      # @param ftp_path [String] The virtual path
+      # @contents [String] The file's contents
+      #
+      # Called for:
+      # * APPE
+      #
+      # If missing, then these commands are not supported.
+
+      def append(ftp_path, contents)
+        File.open(expand_ftp_path(ftp_path), 'ab') do |file|
+          file.write contents
+        end
+      end
+      translate_exceptions :append
 
     end
   end
@@ -360,6 +368,7 @@ module Ftpd
     # can be safely left out with the only effect being to make One or
     # more commands be unimplemented.
 
+    include DiskFileSystem::Append
     include DiskFileSystem::Delete
     include DiskFileSystem::List
     include DiskFileSystem::Mkdir

@@ -25,7 +25,7 @@ Commands supported:
     ACCT    Yes     dev     Specify user's account
     ALLO    Yes    0.2.0    Allocate storage space
                             Treated as a NOOP
-    APPE    No      ---     Append to file
+    APPE    Yes     dev     Append to file
     CDUP    Yes    0.1.0    Change to parent directory    
     CWD     Yes    0.1.0    Change working directory    
     DELE    Yes    0.1.0    Delete file    
@@ -144,7 +144,7 @@ Support commands:                          |               | | | | | |
   RETR                                     |4.1.2.13       |x| | | | |  C
   STOR                                     |4.1.2.13       |x| | | | |  C
   STOU                                     |959 5.3.1      | | |x| | |  C
-  APPE                                     |4.1.2.13       |x| | | | |
+  APPE                                     |4.1.2.13       |x| | | | |  C
   ALLO                                     |959 5.3.1      | | |x| | |  C
   REST                                     |959 5.3.1      | | |x| | |
   RNFR                                     |4.1.2.13       |x| | | | |  C
