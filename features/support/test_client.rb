@@ -91,6 +91,15 @@ class TestClient
     end
   end
 
+  def connected?
+    begin
+      @ftp.noop
+      true
+    rescue EOFError
+      false
+    end
+  end
+
   private
 
   RAW_METHOD_REGEX = /^send_(.*)$/

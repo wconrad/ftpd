@@ -4,7 +4,12 @@ Bug fixes
 
 * Replies are sent with the correct line ending ("\r\n" instead of
   "\n")
-	
+
+Enhancements
+
+* Configurable session timeout (see {Ftpd::FtpServer#session_timeout}).
+  Defaults to 5 minutes.
+
 ### 0.4.0
 
 Enhancements

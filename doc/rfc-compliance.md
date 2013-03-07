@@ -102,8 +102,8 @@ Server-FTP use defined reply code if poss. |4.1.2.11       | |x| | | |  C
 Default data port same IP addr as ctl conn |4.1.2.12       |x| | | | |  C
 Server-FTP handle Telnet options           |4.1.2.12       |x| | | | |
 Handle "Experimental" directory cmds       |4.1.3.1        | |x| | | |  C
-Idle timeout in server-FTP                 |4.1.3.2        | |x| | | |
-    Configurable idle timeout              |4.1.3.2        | |x| | | |
+Idle timeout in server-FTP                 |4.1.3.2        | |x| | | |  C
+    Configurable idle timeout              |4.1.3.2        | |x| | | |  C
 Receiver checkpoint data at Restart Marker |4.1.3.4        | |x| | | |
 Sender assume 110 replies are synchronous  |4.1.3.4        | | | | |x|
                                            |               | | | | | |

@@ -41,11 +41,11 @@ module Ftpd
 
     # The session timeout.  When a session is awaiting a command, if
     # one is not received in this many seconds, the session is
-    # disconnected.  Defaults to 300 seconds (5 minutes).
+    # disconnected.  Defaults to 300 seconds (5 minutes).  If nil,
+    # then timeout is disabled.
     # @return [Numeric]
 
     attr_accessor :session_timeout
-
 
     # Create a new FTP server.  The server won't start until the
     # #start method is called.

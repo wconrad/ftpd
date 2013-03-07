@@ -651,8 +651,7 @@ module Ftpd
     end
 
     def gets_with_timeout(socket)
-      timeout = @session_timeout
-      ready = IO.select([@socket], nil, nil, timeout)
+      ready = IO.select([@socket], nil, nil, @session_timeout)
       if ready.nil?
         throw :done
       else

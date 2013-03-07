@@ -218,6 +218,7 @@ class TestServer
   def_delegator :@server, :'auth_level'
   def_delegator :@server, :'auth_level='
   def_delegator :@server, :'debug='
+  def_delegator :@server, :'session_timeout='
   def_delegator :@server, :'tls='
 
   def_delegator :@driver, :'append='

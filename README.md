@@ -187,25 +187,16 @@ output without having to change any code.
 
 ## LIMITATIONS
 
-Ftpd is not fully RFC compliant.  It does most of RFC969, and enough
-TLS to get by.  {file:doc/rfc.md Here} is a list of RFCs, indicating
-how much of each Ftpd complies with.
+Ftpd is not fully RFC compliant, but it's close.  {file:doc/rfc.md
+Here} is a list of RFCs, indicating how much of each Ftpd complies
+with.
 
-RFC does not meet the following
-[RFC-1123](http://tools.ietf.org/rfc/rfc1123.txt) "MUST" requrements.
-If FTPD met these requirements, but did not meet the "SHOULD"
-requirements, it would be "conditionally compliant":
+In order to be "unconditionally compliant," Ftpd needs to meet the
+following [RFC-1123](http://tools.ietf.org/rfc/rfc1123.txt) "MUST"
+requrements (it already meets all of the "SHOULD" requrements):
 
 * Server-FTP handle Telnet options
 * Support command STAT
-
-RFC does not meet the following
-[RFC-1123](http://tools.ietf.org/rfc/rfc1123.txt)
-"SHOULD" requrements.  If FTPD met both the "MUST" and the "SHOULD"
-requirements, it would be "unconditionally compliant":
-
-* Idle timeout in server-FTP
-* Configurable idle timeout
 
 ## RUBY COMPATABILITY
 
