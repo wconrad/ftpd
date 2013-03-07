@@ -9,6 +9,8 @@ Enhancements
 
 * Configurable session timeout (see {Ftpd::FtpServer#session_timeout}).
   Defaults to 5 minutes.
+* Disable Nagle algorithm on control connection to decrease latency.
+  This makes the tests run much faster.
 
 ### 0.4.0
 
