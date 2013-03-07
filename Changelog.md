@@ -1,9 +1,9 @@
 ### 0.4.1
 
-Enhancements
+Bug fixes
 
-* Disable Nagle algorithm on control connection to decrease latency.
-  This makes the tests run much faster.
+* Replies are sent with the correct line ending ("\r\n" instead of
+  "\n")
 	
 ### 0.4.0
 
