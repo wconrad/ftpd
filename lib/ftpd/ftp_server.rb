@@ -39,6 +39,14 @@ module Ftpd
 
     attr_accessor :auth_level
 
+    # The session timeout.  When a session is awaiting a command, if
+    # one is not received in this many seconds, the session is
+    # disconnected.  Defaults to 300 seconds (5 minutes).
+    # @return [Numeric]
+
+    attr_accessor :session_timeout
+
+
     # Create a new FTP server.  The server won't start until the
     # #start method is called.
     #
@@ -57,6 +65,7 @@ module Ftpd
       @response_delay = 0
       @list_formatter = ListFormat::Ls
       @auth_level = AUTH_PASSWORD
+      @session_timeout = 300
     end
 
     private
@@ -69,7 +78,8 @@ module Ftpd
                   :list_formatter => @list_formatter,
                   :response_delay => response_delay,
                   :tls => @tls,
-                  :auth_level => @auth_level).run
+                  :auth_level => @auth_level,
+                  :session_timeout => @session_timeout).run
     end
 
   end

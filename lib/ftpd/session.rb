@@ -23,6 +23,7 @@ module Ftpd
       @response_delay = opts[:response_delay]
       @data_channel_protection_level = :clear
       @command_sequence_checker = init_command_sequence_checker
+      @session_timeout = opts[:session_timeout]
       @logged_in = false
     end
 
@@ -642,11 +643,21 @@ module Ftpd
     end
 
     def get_command
-      s = @socket.gets
+      s = gets_with_timeout(@socket)
       throw :done if s.nil?
       s = s.chomp
       debug(s)
       s
+    end
+
+    def gets_with_timeout(socket)
+      timeout = @session_timeout
+      ready = IO.select([@socket], nil, nil, timeout)
+      if ready.nil?
+        throw :done
+      else
+        ready[0].first.gets
+      end
     end
 
     def reply(s)
