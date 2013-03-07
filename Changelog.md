@@ -1,3 +1,10 @@
+### 0.4.1
+
+Enhancements
+
+* Disable Nagle algorithm on control connection to decrease latency.
+  This makes the tests run much faster.
+	
 ### 0.4.0
 
 Enhancements

@@ -24,6 +24,7 @@ module Ftpd
       @data_channel_protection_level = :clear
       @command_sequence_checker = init_command_sequence_checker
       @logged_in = false
+      disable_nagle(@socket)
     end
 
     def run
@@ -734,6 +735,10 @@ module Ftpd
       reply "230 Logged in"
       set_file_system @driver.file_system(@user)
       @logged_in = true
+    end
+
+    def disable_nagle(socket)
+      socket.setsockopt(Socket::IPPROTO_TCP, Socket::TCP_NODELAY, 1)
     end
 
   end
