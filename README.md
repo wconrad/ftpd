@@ -83,14 +83,17 @@ file system.
 Here are the methods a file system may expose:
 
 * {Ftpd::DiskFileSystem::Accessors#accessible? accessible?}
-* {Ftpd::DiskFileSystem::Accessors#exists? exists?}
 * {Ftpd::DiskFileSystem::Accessors#directory? directory?}
-* {Ftpd::DiskFileSystem::Write#write write}
-* {Ftpd::DiskFileSystem::Mkdir#mkdir mkdir}
-* {Ftpd::DiskFileSystem::Rmdir#rmdir rmdir}
-* {Ftpd::DiskFileSystem::List#file_info file_info}
+* {Ftpd::DiskFileSystem::Accessors#exists? exists?}
+* {Ftpd::DiskFileSystem::Append#append append}
+* {Ftpd::DiskFileSystem::Delete#delete delete}
 * {Ftpd::DiskFileSystem::List#dir dir}
+* {Ftpd::DiskFileSystem::List#file_info file_info}
+* {Ftpd::DiskFileSystem::Mkdir#mkdir mkdir}
+* {Ftpd::DiskFileSystem::Read#read read}
 * {Ftpd::DiskFileSystem::Rename#rename rename}
+* {Ftpd::DiskFileSystem::Rmdir#rmdir rmdir}
+* {Ftpd::DiskFileSystem::Write#write write}
 
 ### DiskFileSystem
 
@@ -113,6 +116,7 @@ file system, then use {Ftpd::ReadOnlyDiskFileSystem} instead.
 The DiskFileSystem is composed out of modules:
 
 * {Ftpd::DiskFileSystem::Base Base} - You will need this
+* {Ftpd::DiskFileSystem::Append Append} - File appending
 * {Ftpd::DiskFileSystem::Delete Delete} - File deletion
 * {Ftpd::DiskFileSystem::List List} - Directory listing
 * {Ftpd::DiskFileSystem::Mkdir Mkdir} - Directory creation
