@@ -23,4 +23,3 @@ Feature: Command Errors
       | REST    |
       | SITE    |
       | SMNT    |
-      | STAT    |

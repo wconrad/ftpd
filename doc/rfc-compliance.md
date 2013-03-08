@@ -50,7 +50,7 @@ Commands supported:
     RNTO    Yes    0.2.1    Rename file (to)    
     SITE    No      ---     Site specific commands
     SMNT    No      ---     Structure Mount    
-    STAT    No      ---     Server status    
+    STAT    Yes    0.5.0    Server status    
     STOR    Yes    0.1.0    Store file    
     STOU    Yes    0.2.2    Store with unique name    
     STRU    Yes    0.1.0    Set file structure
@@ -157,7 +157,7 @@ Support commands:                          |               | | | | | |
   LIST                                     |4.1.2.13       |x| | | | |  C
   NLST                                     |4.1.2.13       |x| | | | |  C
   SITE                                     |4.1.2.8        | | |x| | |  E
-  STAT                                     |4.1.2.13       |x| | | | |
+  STAT                                     |4.1.2.13       |x| | | | |  C
   SYST                                     |4.1.2.13       |x| | | | |  C
   HELP                                     |4.1.2.13       |x| | | | |  C
   NOOP                                     |4.1.2.13       |x| | | | |  C

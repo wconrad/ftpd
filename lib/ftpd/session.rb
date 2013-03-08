@@ -6,6 +6,8 @@ module Ftpd
     include Error
 
     def initialize(opts)
+      @server_name = opts[:server_name]
+      @server_version = opts[:server_version]
       @driver = opts[:driver]
       @auth_level = opts[:auth_level]
       @socket = opts[:socket]
@@ -25,7 +27,7 @@ module Ftpd
       @command_sequence_checker = init_command_sequence_checker
       @session_timeout = opts[:session_timeout]
       @logged_in = false
-      disable_nagle(@socket)
+      set_socket_options
     end
 
     def run
@@ -454,6 +456,12 @@ module Ftpd
       end
     end
 
+    def cmd_stat(argument)
+      ensure_logged_in
+      syntax_error if argument
+      reply "211 #{@server_name} #{@server_version}"
+    end
+
     def self.unimplemented(command)
       method_name = "cmd_#{command}"
       define_method method_name do |arguments|
@@ -467,7 +475,6 @@ module Ftpd
     unimplemented :rest
     unimplemented :site
     unimplemented :smnt
-    unimplemented :stat
 
     def supported_commands
       private_methods.map do |method|
@@ -747,8 +754,17 @@ module Ftpd
       @logged_in = true
     end
 
+    def set_socket_options
+      disable_nagle @socket
+      receive_oob_data_inline @socket
+    end
+
     def disable_nagle(socket)
       socket.setsockopt(Socket::IPPROTO_TCP, Socket::TCP_NODELAY, 1)
+    end
+
+    def receive_oob_data_inline(socket)
+      socket.setsockopt(Socket::SOL_SOCKET, Socket::SO_OOBINLINE, 1)
     end
 
   end

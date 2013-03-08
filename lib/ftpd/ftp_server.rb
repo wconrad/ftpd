@@ -3,6 +3,9 @@
 module Ftpd
   class FtpServer < TlsServer
 
+    DEFAULT_SERVER_NAME = 'wconrad/ftpd'
+    DEFAULT_SESSION_TIMEOUT = 300 # seconds
+
     # If truthy, emit debug information (such as replies received and
     # responses sent) to the file named by #debug_path.
     #
@@ -41,11 +44,21 @@ module Ftpd
 
     # The session timeout.  When a session is awaiting a command, if
     # one is not received in this many seconds, the session is
-    # disconnected.  Defaults to 300 seconds (5 minutes).  If nil,
+    # disconnected.  Defaults to {DEFAULT_SESSION_TIMEOUT}.  If nil,
     # then timeout is disabled.
     # @return [Numeric]
 
     attr_accessor :session_timeout
+
+    # The server's name, sent in a STAT reply.  Defaults to
+    # {DEFAULT_SERVER_NAME}.
+
+    attr_accessor :server_name
+
+    # The server's version, sent in a STAT reply.  Defaults to the
+    # contents of the VERSION file.
+
+    attr_accessor :server_version
 
     # Create a new FTP server.  The server won't start until the
     # #start method is called.
@@ -66,6 +79,8 @@ module Ftpd
       @list_formatter = ListFormat::Ls
       @auth_level = AUTH_PASSWORD
       @session_timeout = 300
+      @server_name = DEFAULT_SERVER_NAME
+      @server_version = read_version_file
     end
 
     private
@@ -79,7 +94,17 @@ module Ftpd
                   :response_delay => response_delay,
                   :tls => @tls,
                   :auth_level => @auth_level,
-                  :session_timeout => @session_timeout).run
+                  :session_timeout => @session_timeout,
+                  :server_name => @server_name,
+                  :server_version => @server_version).run
+    end
+
+    def read_version_file
+      File.open(version_file_path, 'r', &:read).strip
+    end
+
+    def version_file_path
+      File.expand_path('../../VERSION', File.dirname(__FILE__))
     end
 
   end

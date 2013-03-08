@@ -30,9 +30,10 @@ class TestClient
   :noop,
   :passive=,
   :pwd,
+  :quit,
   :rename,
   :rmdir,
-  :quit,
+  :status,
   :system
 
   def raw(*command)

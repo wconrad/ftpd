@@ -196,7 +196,6 @@ following [RFC-1123](http://tools.ietf.org/rfc/rfc1123.txt) "MUST"
 requrements (it already meets all of the "SHOULD" requrements):
 
 * Server-FTP handle Telnet options
-* Support command STAT
 
 ## RUBY COMPATABILITY
 

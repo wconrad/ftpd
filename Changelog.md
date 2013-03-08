@@ -1,9 +1,10 @@
-### 0.4.1
+### 0.5.0
 
 Bug fixes
 
 * Replies are sent with the correct line ending ("\r\n" instead of
   "\n")
+* Do not hang on out-of-band commands.
 
 Enhancements
 
@@ -11,6 +12,7 @@ Enhancements
   Defaults to 5 minutes.
 * Disable Nagle algorithm on control connection to decrease latency.
   This makes the tests run much faster.
+* Support STAT (server status).
 
 ### 0.4.0
 
