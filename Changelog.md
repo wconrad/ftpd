@@ -14,6 +14,11 @@ Enhancements
   This makes the tests run much faster.
 * Support STAT (server status).
 
+API Changes
+
+* Added {Ftpd::FtpServer#server_name}
+* Added {Ftpd::FtpServer#server_version}
+
 ### 0.4.0
 
 Enhancements
