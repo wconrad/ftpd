@@ -9,15 +9,24 @@ Copyright (c) 2008 James Healy_
 There are a range of RFCs that together specify the FTP protocol. In
 chronological order, the more useful ones are:
 
-* {http://tools.ietf.org/rfc/rfc959.txt RFC-959} - File Transfer Protocol
-* {http://tools.ietf.org/rfc/rfc1123.txt RFC-1123} - Requirements for Internet Hosts
-* {http://tools.ietf.org/rfc/rfc2228.txt RFC-2228} - FTP Security Extensions
-* {http://tools.ietf.org/rfc/rfc2389.txt RFC-2389} - Feature negotiation mechanism for the File Transfer Protocol
-* {http://tools.ietf.org/rfc/rfc2428.txt RFC-2428} - FTP Extensions for IPv6 and NATs
-* {http://tools.ietf.org/rfc/rfc2577.txt RFC-2577} - FTP Security Considerations
-* {http://tools.ietf.org/rfc/rfc2640.txt RFC-2640} - Internationalization of the File Transfer Protocol
-* {http://tools.ietf.org/rfc/rfc3659.txt RFC-3659} - Extensions to FTP
-* {http://tools.ietf.org/rfc/rfc4217.txt RFC-4217} - Internationalization of the File Transfer Protocol
+* [RFC-959](http://tools.ietf.org/rfc/rfc959.txt) - File Transfer
+  Protocol
+* [RFC-1123](http://tools.ietf.org/rfc/rfc1123.txt) - Requirements for
+  Internet Hosts
+* [RFC-2228](http://tools.ietf.org/rfc/rfc2228.txt) - FTP Security
+  Extensions
+* [RFC-2389](http://tools.ietf.org/rfc/rfc2389.txt) - Feature
+  negotiation mechanism for the File Transfer Protocol
+* [RFC-2428](http://tools.ietf.org/rfc/rfc2428.txt) - FTP Extensions
+  for IPv6 and NATs
+* [RFC-2577](http://tools.ietf.org/rfc/rfc2577.txt) - FTP Security
+  Considerations
+* [RFC-2640](http://tools.ietf.org/rfc/rfc2640.txt) -
+  Internationalization of the File Transfer Protocol
+* [RFC-3659](http://tools.ietf.org/rfc/rfc3659.txt) - Extensions to
+  FTP
+* [RFC-4217](http://tools.ietf.org/rfc/rfc4217.txt) -
+  Internationalization of the File Transfer Protocol
 
 For an english summary that's somewhat more legible than the RFCs, and
 provides some commentary on what features are actually useful or
@@ -29,11 +38,11 @@ For a history lesson, check out Appendix III of RCF959. It lists the
 preceding (obsolete) RFC documents that relate to file transfers,
 including the ye old RFC114 from 1971, "A File Transfer Protocol"
 
-There is a {http://secureftp-test.com public test server} which is
+There is a [public test server](http://secureftp-test.com) which is
 very handy for checking out clients, and seeing how at least one
 server behaves.
 
 ## LIST output format
 
-* {http://www.gnu.org/software/coreutils/manual/html_node/What-information-is-listed.html#What-information-is-listed GNU docs for ls}
-* {http://cr.yp.to/ftp/list/eplf.html Easily Parsed LIST format (EPLF)}
+* [GNU docs for ls](http://www.gnu.org/software/coreutils/manual/html_node/What-information-is-listed.html#What-information-is-listed)
+* [Easily Parsed LIST format (EPLF)](http://cr.yp.to/ftp/list/eplf.html)

@@ -10,7 +10,7 @@ embedded in a program.
 This readme, and the other files, contains Yardoc markup, especially
 for links to the API docs; those links don't display properly on
 github.  You'll find a properly rendered version
-{http://rubydoc.info/gems/ftpd on rubydoc.info}
+[on rubydoc.info](http://rubydoc.info/gems/ftpd)
 
 ## HELLO WORLD
 
@@ -152,7 +152,7 @@ By default, the LIST command uses Unix "ls -l" formatting:
     -rw-r--r-- 1 user     group        1234 Mar  3 08:38 foo
 
 To switch to
-{http://cr.yp.to/ftp/list/eplf.html Easily Parsed LIST format (EPLF)}
+[Easily Parsed LIST format (EPLF)](http://cr.yp.to/ftp/list/eplf.html)
 format:
 
     ftp_server.list_formatter = Ftpd::ListFormat::Eplf
