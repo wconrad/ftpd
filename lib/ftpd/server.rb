@@ -72,15 +72,24 @@ module Ftpd
     def start_session_thread(socket)
       Thread.new do
         begin
-          session(socket)
+          session socket
         ensure
-          socket.close
+          close_socket socket
         end
       end
     end
 
     def accept
       @server_socket.accept
+    end
+
+    def close_socket(socket)
+      if socket.respond_to?(:shutdown)
+        socket.shutdown
+        socket.read
+      end
+    ensure
+      socket.close
     end
 
   end

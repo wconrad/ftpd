@@ -665,6 +665,7 @@ module Ftpd
     end
 
     def timeout
+      reply '421 Control connection timed out.'
       throw :done
     end
 

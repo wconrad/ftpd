@@ -96,6 +96,8 @@ class TestClient
     begin
       @ftp.noop
       true
+    rescue Net::FTPTempError => e
+      !!e.to_s =~ /^421/
     rescue EOFError
       false
     end

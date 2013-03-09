@@ -42,6 +42,10 @@ There is a [public test server](http://secureftp-test.com) which is
 very handy for checking out clients, and seeing how at least one
 server behaves.
 
+## How to reliably close a socket (and not lose data)
+
+[Why is my TCP not reliable](http://ia600609.us.archive.org/22/items/TheUltimateSo_lingerPageOrWhyIsMyTcpNotReliable/the-ultimate-so_linger-page-or-why-is-my-tcp-not-reliable.html) by Bert Hubert
+
 ## LIST output format
 
 * [GNU docs for ls](http://www.gnu.org/software/coreutils/manual/html_node/What-information-is-listed.html#What-information-is-listed)
