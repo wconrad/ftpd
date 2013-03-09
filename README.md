@@ -259,3 +259,4 @@ and granted permission to donate it to the community.
 * {file:Changelog.md}
 * {file:doc/rfc-compliance.md RFC compliance}
 * {file:doc/references.md}
+* {file:doc/benchmarks.md}
