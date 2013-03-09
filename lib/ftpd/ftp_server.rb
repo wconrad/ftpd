@@ -51,6 +51,14 @@ module Ftpd
 
     attr_accessor :log
 
+    # Allow PORT command to specify data ports below 1024.  Defaults
+    # to false.  Setting this to true makes it easier for an attacker
+    # to use the server to attack another server.  See RFC 2577
+    # section 3.
+    # @return [Boolean]
+
+    attr_accessor :allow_low_data_ports
+
     # Create a new FTP server.  The server won't start until the
     # #start method is called.
     #
@@ -70,6 +78,7 @@ module Ftpd
       @session_timeout = 300
       @server_name = DEFAULT_SERVER_NAME
       @server_version = read_version_file
+      @allow_low_data_ports = false
       @log = nil
     end
 
@@ -85,7 +94,8 @@ module Ftpd
                   :session_timeout => @session_timeout,
                   :server_name => @server_name,
                   :server_version => @server_version,
-                  :log => log).run
+                  :log => log,
+                  :allow_low_data_ports => allow_low_data_ports).run
     end
 
     def read_version_file

@@ -215,6 +215,7 @@ class TestServer
     self.tls = :off
   end
 
+  def_delegator :@server, :'allow_low_data_ports='
   def_delegator :@server, :'auth_level'
   def_delegator :@server, :'auth_level='
   def_delegator :@server, :'server_name'

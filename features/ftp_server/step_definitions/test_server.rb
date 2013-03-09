@@ -31,3 +31,11 @@ end
 Given /^the test server has session timeout disabled$/ do
   server.session_timeout = nil
 end
+
+Given /^the test server disallows low data ports$/ do
+  server.allow_low_data_ports = false
+end
+
+Given /^the test server allows low data ports$/ do
+  server.allow_low_data_ports = true
+end

@@ -7,6 +7,7 @@ module Ftpd
 
     def initialize(opts)
       @log = opts[:log] || NullLogger.new
+      @allow_low_data_ports = opts[:allow_low_data_ports]
       @server_name = opts[:server_name]
       @server_version = opts[:server_version]
       @driver = opts[:driver]
@@ -114,8 +115,13 @@ module Ftpd
         syntax_error unless (0..255) === i
         i
       end
-      @data_hostname = pieces[0..3].join('.')
-      @data_port = pieces[4] << 8 | pieces[5]
+      hostname = pieces[0..3].join('.')
+      port = pieces[4] << 8 | pieces[5]
+      if port < 1024 && !@allow_low_data_ports
+        error "504 Command not implemented for that parameter"
+      end
+      @data_hostname = hostname
+      @data_port = port
       reply "200 PORT command successful"
     end
 

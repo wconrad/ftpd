@@ -15,6 +15,8 @@ Enhancements
 * Support STAT (server status).
 * Example has --timeout option for session idle timeout.
 * Write log to Logger (see {Ftpd::FtpServer#log}).
+* Disallow active-mode connections to privileged ports (configurable).
+  See RFC 2577 section 3.
 
 API Changes
 
@@ -22,6 +24,7 @@ API Changes
 * Added {Ftpd::FtpServer#server_version}
 * Removed #debug and #debug_path from Ftpd::FtpServer.  They have been
   replaced with #log
+# Added {Ftpd::FtpServer#allow_low_data_ports}
 
 ### 0.4.0
 

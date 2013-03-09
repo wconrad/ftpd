@@ -73,6 +73,11 @@ Then /^the server returns a format not implemented error$/ do
   step 'the server returns a "504 Format not implemented" error'
 end
 
+Then /^the server returns an unimplemented parameter error$/ do
+  step('the server returns a "504 Command not '\
+       'implemented for that parameter" error')
+end
+
 Then /^the server returns a command unrecognized error$/ do
   step 'the server returns a "500 Syntax error, command unrecognized" error'
 end
