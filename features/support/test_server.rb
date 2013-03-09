@@ -1,5 +1,6 @@
 require 'fileutils'
 require 'forwardable'
+require 'stringio'
 require 'tempfile'
 
 require File.expand_path('test_server_files',
@@ -202,22 +203,20 @@ class TestServer
   include Ftpd::InsecureCertificate
   include TestServerFiles
 
+  attr_writer :logging
+
   def initialize
     @temp_dir = Ftpd::TempDir.make
-    @debug_file = Tempfile.new('ftp-server-debug-output')
-    @debug_file.close
+    @log_device = StringIO.new
     @driver = TestServerDriver.new(@temp_dir)
     @server = Ftpd::FtpServer.new(@driver)
     @server.certfile_path = insecure_certfile_path
-    @server.debug_path = @debug_file.path
     @templates = TestFileTemplates.new
-    self.debug = false
     self.tls = :off
   end
 
   def_delegator :@server, :'auth_level'
   def_delegator :@server, :'auth_level='
-  def_delegator :@server, :'debug='
   def_delegator :@server, :'server_name'
   def_delegator :@server, :'server_name='
   def_delegator :@server, :'session_timeout='
@@ -232,16 +231,17 @@ class TestServer
   def_delegator :@driver, :'rename='
   def_delegator :@driver, :'write='
 
+  def log_output
+    @log_device.string
+  end
+
   def start
+    @server.log = make_log
     @server.start
   end
 
   def stop
     @server.stop
-  end
-
-  def debug_output
-    IO.read(@debug_file.path)
   end
 
   def host
@@ -272,6 +272,16 @@ class TestServer
 
   def temp_dir
     @temp_dir
+  end
+
+  def make_log
+    if @logging
+      Logger.new(@log_device)
+    elsif ENV['FTPD_DEBUG'].to_i != 0
+      Logger.new($stdout)
+    else
+      nil
+    end
   end
 
 end

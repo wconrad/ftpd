@@ -229,6 +229,10 @@ To run the stand-alone example:
 
     $ examples/example.rb
 
+To force features to write the server log to stdout:
+
+    $ FTPD_DEBUG=1 rake test:features
+
 The example prints its port, username and password to the console.
 You can connect to the stand-alone example with any FTP client.  This
 is useful when testing how the server responds to a given FTP client.

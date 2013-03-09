@@ -6,6 +6,7 @@ module Ftpd
     include Error
 
     def initialize(opts)
+      @log = opts[:log] || NullLogger.new
       @server_name = opts[:server_name]
       @server_version = opts[:server_version]
       @driver = opts[:driver]
@@ -16,8 +17,6 @@ module Ftpd
         @socket.encrypt
       end
       @name_prefix = '/'
-      @debug_path = opts[:debug_path]
-      @debug = opts[:debug]
       @list_formatter = opts[:list_formatter]
       @data_type = 'A'
       @mode = 'S'
@@ -530,7 +529,7 @@ module Ftpd
       open_data_connection do |data_socket|
         contents = unix_to_nvt_ascii(contents) if data_type == 'A'
         data_socket.write(contents)
-        debug("Sent #{contents.size} bytes")
+        @log.debug "Sent #{contents.size} bytes"
         reply "226 Transfer complete"
       end
     end
@@ -539,7 +538,7 @@ module Ftpd
       open_data_connection(path_to_advertise) do |data_socket|
         contents = data_socket.read
         contents = nvt_ascii_to_unix(contents) if @data_type == 'A'
-        debug("Received #{contents.size} bytes")
+        @log.debug "Received #{contents.size} bytes"
         contents
       end
     end
@@ -654,7 +653,7 @@ module Ftpd
       s = gets_with_timeout(@socket)
       throw :done if s.nil?
       s = s.chomp
-      debug(s)
+      @log.debug s
       s
     end
 
@@ -671,10 +670,10 @@ module Ftpd
 
     def reply(s)
       if @response_delay.to_i != 0
-        debug "#{@response_delay} second delay before replying"
+        @log.warn "#{@response_delay} second delay before replying"
         sleep @response_delay
       end
-      debug(s)
+      @log.debug s
       @socket.print(s + "\r\n")
     end
 
@@ -695,17 +694,6 @@ module Ftpd
       8.times.map do
         set[rand(set.size)]
       end.join
-    end
-
-    def debug(*s)
-      return unless debug?
-      File.open(@debug_path, 'a') do |file|
-        file.puts(*s)
-      end
-    end
-
-    def debug?
-      @debug || ENV['FTPD_DEBUG'].to_i != 0
     end
 
     def init_command_sequence_checker

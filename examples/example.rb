@@ -15,6 +15,7 @@ module Example
 
     attr_reader :account
     attr_reader :auth_level
+    attr_reader :debug
     attr_reader :eplf
     attr_reader :interface
     attr_reader :password
@@ -33,6 +34,7 @@ module Example
       @password = ''
       @account = ''
       @session_timeout = default_session_timeout
+      @log = nil
       op = option_parser
       op.parse!(argv)
     rescue OptionParser::ParseError => e
@@ -81,6 +83,9 @@ module Example
         op.on('--timeout SEC', Integer, 'Session idle timeout',
               "defaults to #{default_session_timeout}") do |t|
           @session_timeout = t
+        end
+        op.on('-d', '--debug', 'Write server debug log to stdout') do |t|
+          @debug = t
         end
       end
     end
@@ -168,6 +173,7 @@ module Example
       end
       @server.auth_level = auth_level
       @server.session_timeout = @args.session_timeout
+      @server.log = make_log
       @server.start
       display_connection_info
       create_connection_script
@@ -240,6 +246,10 @@ module Example
 
     def account
       @args.account
+    end
+
+    def make_log
+      @args.debug && Logger.new($stdout)
     end
 
   end

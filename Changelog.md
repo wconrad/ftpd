@@ -13,12 +13,15 @@ Enhancements
 * Disable Nagle algorithm on control connection to decrease latency.
   This makes the tests run much faster.
 * Support STAT (server status).
-* Example has --timeout option for session idle timeout
+* Example has --timeout option for session idle timeout.
+* Write log to Logger (see {Ftpd::FtpServer#log}).
 
 API Changes
 
 * Added {Ftpd::FtpServer#server_name}
 * Added {Ftpd::FtpServer#server_version}
+* Removed #debug and #debug_path from Ftpd::FtpServer.  They have been
+  replaced with #log
 
 ### 0.4.0
 

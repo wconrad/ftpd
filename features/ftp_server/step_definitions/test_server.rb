@@ -10,8 +10,8 @@ Given /^the test server has TLS mode "(\w+)"$/ do |mode|
   server.tls = mode.to_sym
 end
 
-Given /^the test server has debug (enabled|disabled)$/ do |state|
-  server.debug = state == 'enabled'
+Given /^the test server has logging (enabled|disabled)$/ do |state|
+  server.logging = state == 'enabled'
 end
 
 Given /^the test server lacks (\w+)$/ do |feature|
