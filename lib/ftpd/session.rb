@@ -534,7 +534,9 @@ module Ftpd
     def transmit_file(contents, data_type = @data_type)
       open_data_connection do |data_socket|
         contents = unix_to_nvt_ascii(contents) if data_type == 'A'
-        data_socket.write(contents)
+        handle_data_disconnect do
+          data_socket.write(contents)
+        end
         @log.debug "Sent #{contents.size} bytes"
         reply "226 Transfer complete"
       end
@@ -542,11 +544,19 @@ module Ftpd
 
     def receive_file(path_to_advertise = nil)
       open_data_connection(path_to_advertise) do |data_socket|
-        contents = data_socket.read
+        contents = handle_data_disconnect do
+          data_socket.read
+        end
         contents = nvt_ascii_to_unix(contents) if @data_type == 'A'
         @log.debug "Received #{contents.size} bytes"
         contents
       end
+    end
+
+    def handle_data_disconnect
+      return yield
+    rescue Errno::ECONNRESET, Errno::EPIPE
+      reply "426 Connection closed; transfer aborted."
     end
 
     def unix_to_nvt_ascii(s)

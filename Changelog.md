@@ -5,6 +5,8 @@ Bug fixes
 * Replies are sent with the correct line ending ("\r\n" instead of
   "\n")
 * Do not hang on out-of-band commands.
+* When data connection disconnects, send "426 Connection closed"
+  response instead of ending the session.
 
 Enhancements
 
