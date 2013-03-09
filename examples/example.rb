@@ -20,6 +20,7 @@ module Example
     attr_reader :password
     attr_reader :port
     attr_reader :read_only
+    attr_reader :session_timeout
     attr_reader :tls
     attr_reader :user
 
@@ -31,6 +32,7 @@ module Example
       @user = ENV['LOGNAME']
       @password = ''
       @account = ''
+      @session_timeout = default_session_timeout
       op = option_parser
       op.parse!(argv)
     rescue OptionParser::ParseError => e
@@ -76,7 +78,15 @@ module Example
               'defaults to empty string') do |t|
           @account = t
         end
+        op.on('--timeout SEC', Integer, 'Session idle timeout',
+              "defaults to #{default_session_timeout}") do |t|
+          @session_timeout = t
+        end
       end
+    end
+
+    def default_session_timeout
+      Ftpd::FtpServer::DEFAULT_SESSION_TIMEOUT
     end
 
   end
@@ -157,6 +167,7 @@ module Example
         @server.list_formatter = Ftpd::ListFormat::Eplf
       end
       @server.auth_level = auth_level
+      @server.session_timeout = @args.session_timeout
       @server.start
       display_connection_info
       create_connection_script

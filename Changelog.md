@@ -13,6 +13,7 @@ Enhancements
 * Disable Nagle algorithm on control connection to decrease latency.
   This makes the tests run much faster.
 * Support STAT (server status).
+* Example has --timeout option for session idle timeout
 
 API Changes
 
