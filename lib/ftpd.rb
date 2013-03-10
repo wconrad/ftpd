@@ -25,6 +25,7 @@ module Ftpd
   autoload :ReadOnlyDiskFileSystem,    'ftpd/read_only_disk_file_system'
   autoload :Server,                    'ftpd/server'
   autoload :Session,                   'ftpd/session'
+  autoload :Telnet,                    'ftpd/telnet'
   autoload :TempDir,                   'ftpd/temp_dir'
   autoload :TlsServer,                 'ftpd/tls_server'
   autoload :TranslateExceptions,       'ftpd/translate_exceptions'

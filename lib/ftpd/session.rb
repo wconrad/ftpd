@@ -36,6 +36,7 @@ module Ftpd
         loop do
           begin
             s = get_command
+            s = process_telnet_sequences(s)
             syntax_error unless s =~ /^(\w+)(?: (.*))?$/
             command, argument = $1.downcase, $2
             method = 'cmd_' + command
@@ -771,6 +772,14 @@ module Ftpd
 
     def receive_oob_data_inline(socket)
       socket.setsockopt(Socket::SOL_SOCKET, Socket::SO_OOBINLINE, 1)
+    end
+
+    def process_telnet_sequences(s)
+      telnet = Telnet.new(s)
+      unless telnet.reply.empty?
+        @socket.write telnet.reply
+      end
+      telnet.plain
     end
 
   end

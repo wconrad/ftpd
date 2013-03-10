@@ -10,6 +10,7 @@ Bug fixes
 
 Enhancements
 
+* Now unconditionally compliant
 * Configurable session timeout (see {Ftpd::FtpServer#session_timeout}).
   Defaults to 5 minutes.
 * Disable Nagle algorithm on control connection to decrease latency.
@@ -20,6 +21,7 @@ Enhancements
 * Disallow active-mode connections to privileged ports (configurable).
   See RFC 2577 section 3.
 * Added benchmarks.
+* Support telnet sequences.
 
 API Changes
 

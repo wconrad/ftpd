@@ -1,8 +1,8 @@
 # FTPD
 
 ftpd is a pure Ruby FTP server library.  It supports implicit and
-explicit TLS, passive and active mode, and most of the commands
-specified in RFC 969.  It an be used as part of a test fixture or
+explicit TLS, passive and active mode, and is unconditionally
+complaint per RFC-1123.  It an be used as part of a test fixture or
 embedded in a program.
 
 ## A note about this README
@@ -185,17 +185,15 @@ Debug output can also be enabled by setting the environment variable
 FTPD_DEBUG to a non-zero value.  This is a convenient way to get debug
 output without having to change any code.
 
-## LIMITATIONS
+## STANDARDS COMPLIANCE
 
-Ftpd is not fully RFC compliant, but it's close.  {file:doc/rfc.md
-Here} is a list of RFCs, indicating how much of each Ftpd complies
-with.
+Ftpd is fully unconditionally compliant per [RFC-1123 Requirements for
+Internet Hosts](http://tools.ietf.org/rfc/rfc1123.txt).
 
-In order to be "unconditionally compliant," Ftpd needs to meet the
-following [RFC-1123](http://tools.ietf.org/rfc/rfc1123.txt) "MUST"
-requrements (it already meets all of the "SHOULD" requrements):
+Ftpd implements enough of [RFC-4217 Securing FTP with
+TLS](http://tools.ietf.org/rfc/rfc4217.txt) to get by.
 
-* Server-FTP handle Telnet options
+See [RFC Compliance](doc/rfc-compliance.md) for details
 
 ## RUBY COMPATABILITY
 

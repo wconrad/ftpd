@@ -9,22 +9,36 @@ Copyright (c) 2008 James Healy_
 There are a range of RFCs that together specify the FTP protocol. In
 chronological order, the more useful ones are:
 
+* [RFC-854](http://tools.ietf.org/rfc/rfc854.txt) - Telnet Protocol
+  Specification
+
 * [RFC-959](http://tools.ietf.org/rfc/rfc959.txt) - File Transfer
   Protocol
+
 * [RFC-1123](http://tools.ietf.org/rfc/rfc1123.txt) - Requirements for
   Internet Hosts
+
+* [RFC-1143](http://tools.ietf.org/rfc/rfc1143.txt) - The Q Method of
+  Implementing TELNET Option Negotation
+
 * [RFC-2228](http://tools.ietf.org/rfc/rfc2228.txt) - FTP Security
   Extensions
+
 * [RFC-2389](http://tools.ietf.org/rfc/rfc2389.txt) - Feature
   negotiation mechanism for the File Transfer Protocol
+
 * [RFC-2428](http://tools.ietf.org/rfc/rfc2428.txt) - FTP Extensions
   for IPv6 and NATs
+
 * [RFC-2577](http://tools.ietf.org/rfc/rfc2577.txt) - FTP Security
   Considerations
+
 * [RFC-2640](http://tools.ietf.org/rfc/rfc2640.txt) -
   Internationalization of the File Transfer Protocol
+
 * [RFC-3659](http://tools.ietf.org/rfc/rfc3659.txt) - Extensions to
   FTP
+
 * [RFC-4217](http://tools.ietf.org/rfc/rfc4217.txt) -
   Internationalization of the File Transfer Protocol
 

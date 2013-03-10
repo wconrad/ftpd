@@ -100,7 +100,7 @@ Server-FTP send only correct reply format  |4.1.2.11       |x| | | | |  C
 Server-FTP use defined reply code if poss. |4.1.2.11       | |x| | | |  C
   New reply code following Section 4.2     |4.1.2.11       | | |x| | |  E
 Default data port same IP addr as ctl conn |4.1.2.12       |x| | | | |  C
-Server-FTP handle Telnet options           |4.1.2.12       |x| | | | |
+Server-FTP handle Telnet options           |4.1.2.12       |x| | | | |  C
 Handle "Experimental" directory cmds       |4.1.3.1        | |x| | | |  C
 Idle timeout in server-FTP                 |4.1.3.2        | |x| | | |  C
     Configurable idle timeout              |4.1.3.2        | |x| | | |  C
