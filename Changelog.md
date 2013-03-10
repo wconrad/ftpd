@@ -19,6 +19,7 @@ Enhancements
 * Write log to Logger (see {Ftpd::FtpServer#log}).
 * Disallow active-mode connections to privileged ports (configurable).
   See RFC 2577 section 3.
+* Added benchmarks.
 
 API Changes
 
