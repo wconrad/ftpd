@@ -109,7 +109,7 @@ Ftpd includes a disk based file system:
 
     end
 
-*Warning*: The DiskFileSystem allows file and directory modification
+**Warning**: The DiskFileSystem allows file and directory modification
 including writing, renaming, deleting, etc.  If you want a read-only
 file system, then use {Ftpd::ReadOnlyDiskFileSystem} instead.
 
@@ -125,24 +125,20 @@ The DiskFileSystem is composed out of modules:
 * {Ftpd::DiskFileSystem::Rmdir Rmdir} - Directory removal
 * {Ftpd::DiskFileSystem::Write Write} - File writing
 
-For example, to create a custom file system that allows reading and
-writing only, then:
+You can use these modules to create a custom disk file system that
+allows only the operations you want, or which mixes the predefined
+modules with your customizations, as in this silly example that allows
+uploads but then throws them away.
+
+    class BlackHole
+      def write(ftp_path, contents)
+      end
+    end
 
     class CustomDiskFileSystem
       include DiskFileSystem::Base
-      include DiskFileSystem::List
       include DiskFileSystem::Read
-      include DiskFileSystem::Write
-    end
-
-    class Driver
-
-      ...
-
-      def file_system(user)
-        CustomDiskFileSystem('/var/lib/ftp')
-      end
-
+      include BlackHole
     end
 
 ## LIST output format
