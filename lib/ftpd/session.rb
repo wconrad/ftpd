@@ -690,7 +690,7 @@ module Ftpd
         sleep @response_delay
       end
       @log.debug s
-      @socket.print(s + "\r\n")
+      @socket.write s + "\r\n"
     end
 
     def unique_path(path)
