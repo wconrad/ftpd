@@ -256,7 +256,7 @@ and granted permission to donate it to the community.
 
 ## See also
 
-* {file:Changelog.md}
-* {file:doc/rfc-compliance.md RFC compliance}
-* {file:doc/references.md}
-* {file:doc/benchmarks.md}
+* [Changelog](Changelog.md)
+* [RFC compliance](doc/rfc-compliance.md)
+* [References](doc/references.md)
+* [Benchmarks](doc/benchmarks.md)
