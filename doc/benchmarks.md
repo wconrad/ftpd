@@ -75,7 +75,7 @@ proftpd or pyftpdlib.
 
 ### Benchmark command
 
-    $ python /tmp/bench.py  -u <USER> -p <PASS> -H localhost -p <PORT> -b all -n 200 -k <PID>
+    $ python bench.py  -u <USER> -p <PASS> -H localhost -p <PORT> -b all -n 200 -k <PID>
 
 ### Proftpd
 
