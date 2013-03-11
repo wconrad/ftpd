@@ -147,9 +147,12 @@ By default, the LIST command uses Unix "ls -l" formatting:
 
     -rw-r--r-- 1 user     group        1234 Mar  3 08:38 foo
 
-To switch to
-[Easily Parsed LIST format (EPLF)](http://cr.yp.to/ftp/list/eplf.html)
-format:
+An alternative to "ls -l" formatting is [Easily Parsed LIST format
+(EPLF)](http://cr.yp.to/ftp/list/eplf.html) format:
+
+    +r,s1234,m1362325080\tfoo
+
+to configure Ftpd for EPLF formatting:
 
     ftp_server.list_formatter = Ftpd::ListFormat::Eplf
 
@@ -183,7 +186,7 @@ output without having to change any code.
 
 ## STANDARDS COMPLIANCE
 
-Ftpd is fully unconditionally compliant per [RFC-1123 Requirements for
+Ftpd is unconditionally compliant per [RFC-1123 Requirements for
 Internet Hosts](http://tools.ietf.org/rfc/rfc1123.txt).
 
 Ftpd implements enough of [RFC-4217 Securing FTP with
