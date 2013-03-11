@@ -12,6 +12,22 @@ for links to the API docs; those links don't display properly on
 github.  You'll find a properly rendered version
 [on rubydoc.info](http://rubydoc.info/gems/ftpd)
 
+## The state of this library
+
+Ftpd has been used for many years to test FTP clients, and is stable
+and reliable for that purpose.  However, it was not originally
+intended to be part of a publically accessible FTP server.  I would be
+cautious in using it in an untrusted environment due to the
+probability that it contains critical flaws (or even security
+vulnarabilities) that have not been discovered in its use as a test
+harness.
+
+In this 0.X.X release, the API is changing at last a little with
+almost every release.  If you need to keep those changes from
+impacting you (or at least want to let many of them build up before
+you have to deal with them), then lock your Gemfile down to a minor
+release (e.g. :version => '~> 0.5.0').
+
 ## HELLO WORLD
 
 This is examples/hello_world.rb, a bare minimum FTP server.  It allows
