@@ -70,10 +70,10 @@ rewritten.  It no longer shells out to ls, which removes potential
 command injection security holes, and improves prospects for
 portability.
 
-* Removed {Ftpd::DiskFileSystem::Ls}
-* Removed {Ftpd::DiskFileSystem::NameList}.  NLIST now uses the
+* Removed Ftpd::DiskFileSystem::Ls
+* Removed Ftpd::DiskFileSystem::NameList.  NLIST now uses the
   functions in {Ftpd::DiskFileSystem::List}.
-* Removed {Ftpd::DiskFileSystem::List#list}.  The formatting of
+* Removed Ftpd::DiskFileSystem::List#list.  The formatting of
   directory output is now done by ftpd, not by the file system driver.
 * Added {Ftpd::DiskFileSystem::List#file_info}, used by LIST.
 * Added {Ftpd::DiskFileSystem::List#dir}, used by LIST and NLST.

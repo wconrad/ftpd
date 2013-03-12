@@ -125,7 +125,7 @@ module Ftpd
 
       # Write a file to disk.
       # @param ftp_path [String] The virtual path
-      # @contents [String] The file's contents
+      # @param contents [String] The file's contents
       #
       # Called for:
       # * STOR
@@ -153,7 +153,7 @@ module Ftpd
 
       # Append to a file.  If the file does not exist, create it.
       # @param ftp_path [String] The virtual path
-      # @contents [String] The file's contents
+      # @param contents [String] The file's contents
       #
       # Called for:
       # * APPE
