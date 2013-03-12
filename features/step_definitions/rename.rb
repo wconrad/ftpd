@@ -7,5 +7,5 @@ end
 
 When /^the client successfully renames "(.*?)" to "(.*?)"$/ do
 |from_path, to_path|
-  @client.rename(from_path, to_path)
+  client.rename(from_path, to_path)
 end

@@ -3,9 +3,9 @@ When /^the client is idle for (\S+) seconds$/ do |seconds|
 end
 
 Then /^the client is connected$/ do
-  @client.should be_connected
+  client.should be_connected
 end
 
 Then /^the client is not connected$/ do
-  @client.should_not be_connected
+  client.should_not be_connected
 end

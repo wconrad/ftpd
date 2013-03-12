@@ -1,5 +1,5 @@
 When /^the client successfully quits$/ do
-  @client.quit
+  client.quit
 end
 
 When /^the client quits$/ do
@@ -10,6 +10,6 @@ end
 
 When /^the client quits with a parameter$/ do
   capture_error do
-    @client.raw 'QUIT', 'foo'
+    client.raw 'QUIT', 'foo'
   end
 end

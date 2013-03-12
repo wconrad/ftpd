@@ -1,14 +1,28 @@
-def client_variable_name(client_name)
-  var = '@' + [
-    client_name,
-    'client',
-  ].compact.map(&:strip).join('_')
-end
+require 'singleton'
 
-def set_client(client_name, client)
-  instance_variable_set client_variable_name(client_name), client
+class Clients
+
+  include Singleton
+
+  def initialize
+    @clients = {}
+  end
+
+  def [](client_name)
+    @clients[client_name] ||= TestClient.new
+  end
+
+  def close
+    @clients.values.each(&:close)
+  end
+
 end
 
 def client(client_name = nil)
-  instance_variable_get(client_variable_name(client_name))
+  client_name ||= 'client'
+  Clients.instance[client_name]
+end
+
+After do
+  Clients.instance.close
 end

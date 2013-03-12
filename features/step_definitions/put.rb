@@ -1,6 +1,6 @@
 When /^the client successfully puts (text|binary) "(.*?)"$/ do
 |mode, local_path|
-  @client.put mode, local_path
+  client.put mode, local_path
 end
 
 When /^the client puts (\S+) "(.*?)"$/ do |mode, path|
@@ -11,13 +11,13 @@ end
 
 When /^the client puts with no path$/ do
   capture_error do
-    @client.raw 'STOR'
+    client.raw 'STOR'
   end
 end
 
 When /^the client successfully stores unique "(.*?)"(?: to "(.*?)")?$/ do
 |local_path, remote_path|
-  @client.store_unique local_path, remote_path
+  client.store_unique local_path, remote_path
 end
 
 When /^the client stores unique "(.*?)"( to ".*?")?$/ do

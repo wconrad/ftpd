@@ -1,5 +1,5 @@
 When /^the client successfully requests status$/ do
-  @status = @client.status
+  @status = client.status
 end
 
 When /^the client requests status$/ do

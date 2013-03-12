@@ -5,5 +5,5 @@ When /^the client makes directory "(.*?)"$/ do |path|
 end
 
 When /^the client successfully makes directory "(.*?)"$/ do |path|
-  mkdir_response = @client.mkdir path
+  mkdir_response = client.mkdir path
 end

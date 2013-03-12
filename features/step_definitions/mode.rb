@@ -1,5 +1,5 @@
 When /^the client successfully sets mode "(.*?)"$/ do |mode|
-  @client.raw 'MODE', mode
+  client.raw 'MODE', mode
 end
 
 When /^the client sets mode "(.*?)"$/ do |mode|
@@ -10,6 +10,6 @@ end
 
 When /^the client sets mode with no parameter$/ do
   capture_error do
-    @client.raw 'MODE'
+    client.raw 'MODE'
   end
 end

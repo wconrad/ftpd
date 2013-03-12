@@ -1,6 +1,6 @@
 When /^the client successfully sets file structure "(.*?)"$/ do
 |file_structure|
-  @client.raw 'STRU', file_structure
+  client.raw 'STRU', file_structure
 end
 
 When /^the client sets file structure "(.*?)"$/ do |file_structure|
@@ -11,6 +11,6 @@ end
 
 When /^the client sets file structure with no parameter$/ do
   capture_error do
-    @client.raw 'STRU'
+    client.raw 'STRU'
   end
 end

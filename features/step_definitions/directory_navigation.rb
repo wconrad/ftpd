@@ -10,17 +10,17 @@ end
 # ensure that CDUP is sent and therefore tested.
 
 When /^the client successfully cd's up$/ do
-  @client.raw 'CDUP'
+  client.raw 'CDUP'
 end
 
 When /^the client successfully cd's to "(.*?)"$/ do |path|
-  @client.chdir path
+  client.chdir path
 end
 
 Then /^the current directory should be "(.*?)"$/ do |path|
-  @client.pwd.should == path
+  client.pwd.should == path
 end
 
 Then /^the XPWD directory should be "(.*?)"$/ do |path|
-  @client.xpwd.should == path
+  client.xpwd.should == path
 end

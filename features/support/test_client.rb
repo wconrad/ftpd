@@ -6,14 +6,20 @@ class TestClient
   extend Forwardable
   include FileUtils
 
-  def initialize(opts = {})
+  attr_accessor :tls_mode
+
+  def initialize
+    @tls_mode = :off
     @temp_dir = Ftpd::TempDir.make
-    @ftp = make_ftp(opts)
     @templates = TestFileTemplates.new
   end
 
+  def start
+    @ftp = make_ftp
+  end
+
   def close
-    @ftp.close
+    @ftp.close if @ftp
   end
 
   def_delegators :@ftp,
@@ -115,9 +121,8 @@ class TestClient
     File.expand_path(path, @temp_dir)
   end
 
-  def make_ftp(opts)
-    tls_mode = opts[:tls] || :off
-    case tls_mode
+  def make_ftp
+    case @tls_mode
     when :off
       make_non_tls_ftp
     when :implicit
@@ -125,7 +130,7 @@ class TestClient
     when :explicit
       make_tls_ftp(:explicit)
     else
-      raise "Unknown TLS mode: #{tls_mode}"
+      raise "Unknown TLS mode: #{@tls_mode}"
     end
   end
 

@@ -1,5 +1,5 @@
 When /^the client successfully sends "(.*?)"$/ do |command|
-  @reply = @client.raw command
+  @reply = client.raw command
 end
 
 When /^the client sends "(.*?)"$/ do |command|

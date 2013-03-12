@@ -61,7 +61,7 @@ When /^the client sends a password( with no parameter)?$/ do |no_param|
            else
              [server.password]
            end
-    @client.raw 'PASS', *args
+    client.raw 'PASS', *args
   end
 end
 
@@ -72,7 +72,7 @@ When /^the client sends a user( with no parameter)?$/ do |no_param|
            else
              [server.user]
            end
-    @client.raw 'USER', *args
+    client.raw 'USER', *args
   end
 end
 

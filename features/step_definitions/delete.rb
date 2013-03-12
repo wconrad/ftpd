@@ -5,11 +5,11 @@ When /^the client deletes "(.*?)"$/ do |path|
 end
 
 When /^the client successfully deletes "(.*?)"$/ do |path|
-  @client.delete path
+  client.delete path
 end
 
 When /^the client deletes with no path$/ do
   capture_error do
-    @client.raw 'DELE'
+    client.raw 'DELE'
   end
 end

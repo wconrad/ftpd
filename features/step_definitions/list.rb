@@ -31,7 +31,7 @@ class FileList
 end
 
 When /^the client successfully lists the directory(?: "(.*?)")?$/ do |directory|
-  @list = FileList.new(@client.ls(*[directory].compact))
+  @list = FileList.new(client.ls(*[directory].compact))
 end
 
 When /^the client lists the directory( "(?:.*?)")?$/ do |directory|
@@ -42,7 +42,7 @@ end
 
 When /^the client successfully name-lists the directory(?: "(.*?)")?$/ do
 |directory|
-  @list = FileList.new(@client.nlst(*[directory].compact))
+  @list = FileList.new(client.nlst(*[directory].compact))
 end
 
 When /^the client name-lists the directory( "(?:.*?)")?$/ do |directory|

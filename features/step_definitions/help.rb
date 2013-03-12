@@ -1,6 +1,6 @@
 When /^the client successfully asks for help(?: for "(.*?)")?$/ do
 |command|
-  @help_reply = @client.help(command)
+  @help_reply = client.help(command)
 end
 
 Then /^the server should return a list of commands$/ do
