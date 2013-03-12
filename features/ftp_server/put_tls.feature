@@ -8,7 +8,7 @@ Feature: Put TLS
     Given the test server has TLS mode "explicit"
     And the test server is started
 
-  Scenario: TLS
+  Scenario: TLS, Active
     pending "TLS not supported in active mode (see README)"
 
   Scenario: TLS, Passive
