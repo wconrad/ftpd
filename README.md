@@ -157,7 +157,27 @@ uploads but then throws them away.
       include BlackHole
     end
 
-## LIST output format
+## Configuration
+
+Configuration is done via accessors on {Ftpd::FtpServer}.  For
+example, to set the session timeout to 10 minute:
+
+      server = Ftpd::FtpServer.new(driver)
+      server.session_timeout = 10 * 60
+      server.start
+
+You can set any of these items before starting the server:
+
+* {Ftpd::FtpServer#allow_low_data_ports}
+* {Ftpd::FtpServer#auth_level}
+* {Ftpd::FtpServer#list_formatter}
+* {Ftpd::FtpServer#log}
+* {Ftpd::FtpServer#response_delay}
+* {Ftpd::FtpServer#server_name}
+* {Ftpd::FtpServer#server_version}
+* {Ftpd::FtpServer#session_timeout}
+
+### LIST output format
 
 By default, the LIST command uses Unix "ls -l" formatting:
 
