@@ -10,13 +10,14 @@ module Ftpd
     # testing, when you need to test, for example, client timeouts.
     # Defaults to 0 (no delay).
     #
-    # Change to this attribute only take effect for new sessions.
+    # Set this before calling #start.
 
     attr_accessor :response_delay
 
     # The class for formatting for LIST output.  Defaults to
-    # {Ftpd::ListFormat::Ls}.  Changes to this attribute only take
-    # effect for new sessions.
+    # {Ftpd::ListFormat::Ls}.
+    #
+    # Set this before calling #start.
 
     attr_accessor :list_formatter
 
@@ -33,21 +34,29 @@ module Ftpd
     # disconnected.  Defaults to {DEFAULT_SESSION_TIMEOUT}.  If nil,
     # then timeout is disabled.
     # @return [Numeric]
+    #
+    # Set this before calling #start.
 
     attr_accessor :session_timeout
 
     # The server's name, sent in a STAT reply.  Defaults to
     # {DEFAULT_SERVER_NAME}.
+    #
+    # Set this before calling #start.
 
     attr_accessor :server_name
 
     # The server's version, sent in a STAT reply.  Defaults to the
     # contents of the VERSION file.
+    #
+    # Set this before calling #start.
 
     attr_accessor :server_version
 
     # The logger.  Defaults to nil (no logging).
     # @return [Logger]
+    #
+    # Set this before calling #start.
 
     attr_accessor :log
 
@@ -56,6 +65,8 @@ module Ftpd
     # to use the server to attack another server.  See RFC 2577
     # section 3.
     # @return [Boolean]
+    #
+    # Set this before calling #start.
 
     attr_accessor :allow_low_data_ports
 

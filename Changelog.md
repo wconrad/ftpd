@@ -1,3 +1,11 @@
+### 0.6.0
+
+API Changes
+
+* Changes to {Ftpd::FtpServer} attributes should now only be made
+  before calling #start.  The effect of setting these attributes
+  after #start is undefined.
+
 ### 0.5.0
 
 Bug fixes
