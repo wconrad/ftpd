@@ -7,10 +7,10 @@ embedded in a program.
 
 ## A note about this README
 
-This readme, and the other files, contains Yardoc markup, especially
-for links to the API docs; those links don't display properly on
-github.  You'll find a properly rendered version
-[on rubydoc.info](http://rubydoc.info/gems/ftpd)
+This readme, and other files, contains Yardoc markup, especially for
+links to the API docs; those links don't display properly on github.
+You'll find a properly rendered version [on
+rubydoc.info](http://rubydoc.info/gems/ftpd)
 
 ## The state of this library
 
@@ -22,7 +22,7 @@ probability that it contains critical flaws (or even security
 vulnarabilities) that have not been discovered in its use as a test
 harness.
 
-In this 0.X.X release, the API is changing at last a little with
+In this 0.X.X release, the API is changing at least a little with
 almost every release.  If you need to keep those changes from
 impacting you (or at least want to let many of them build up before
 you have to deal with them), then lock your Gemfile down to a minor
