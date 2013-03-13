@@ -5,6 +5,7 @@ require 'openssl'
 require 'pathname'
 require 'shellwords'
 require 'socket'
+require 'thread'
 require 'tmpdir'
 
 module Ftpd
