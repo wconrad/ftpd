@@ -13,6 +13,7 @@ module Ftpd
     autoload :Ls,                      'ftpd/list_format/ls'
   end
   autoload :CommandSequenceChecker,    'ftpd/command_sequence_checker'
+  autoload :ConnectionTracker,         'ftpd/connection_tracker'
   autoload :DiskFileSystem,            'ftpd/disk_file_system'
   autoload :Error,                     'ftpd/error'
   autoload :ExceptionTranslator,       'ftpd/exception_translator'

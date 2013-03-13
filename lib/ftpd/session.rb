@@ -6,6 +6,7 @@ module Ftpd
     include Error
 
     def initialize(opts)
+      @connection_tracker = opts[:connection_tracker]
       @log = opts[:log] || NullLogger.new
       @allow_low_data_ports = opts[:allow_low_data_ports]
       @server_name = opts[:server_name]

@@ -172,6 +172,7 @@ You can set any of these items before starting the server:
 * {Ftpd::FtpServer#auth_level}
 * {Ftpd::FtpServer#list_formatter}
 * {Ftpd::FtpServer#log}
+* {Ftpd::FtpServer#max_connections}
 * {Ftpd::FtpServer#response_delay}
 * {Ftpd::FtpServer#server_name}
 * {Ftpd::FtpServer#server_version}

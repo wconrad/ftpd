@@ -3,6 +3,7 @@
 module Ftpd
   class FtpServer < TlsServer
 
+    DEFAULT_MAX_CONNECTIONS = 100
     DEFAULT_SERVER_NAME = 'wconrad/ftpd'
     DEFAULT_SESSION_TIMEOUT = 300 # seconds
 
@@ -70,6 +71,15 @@ module Ftpd
 
     attr_accessor :allow_low_data_ports
 
+    # The maximum number of connections the server will allow, or nil
+    # if there is no limit.
+    # Defaults to {DEFAULT_MAX_CONNECTIONS}.
+    # @return [Integer]
+    #
+    # Set this before calling #start.
+
+    attr_accessor :max_connections
+
     # Create a new FTP server.  The server won't start until the
     # #start method is called.
     #
@@ -93,20 +103,31 @@ module Ftpd
       @log = nil
     end
 
+    def start
+      super
+      @connection_tracker = ConnectionTracker.new(@max_connections)
+    end
+
     private
 
     def session(socket)
-      Session.new(:socket => socket,
+      @connection_tracker.track(socket) do
+        start_session socket
+      end
+    end
+
+    def start_session(socket)
+      Session.new(:allow_low_data_ports => allow_low_data_ports,
+                  :auth_level => @auth_level,
                   :driver => @driver,
                   :list_formatter => @list_formatter,
+                  :log => log,
                   :response_delay => response_delay,
-                  :tls => @tls,
-                  :auth_level => @auth_level,
-                  :session_timeout => @session_timeout,
                   :server_name => @server_name,
                   :server_version => @server_version,
-                  :log => log,
-                  :allow_low_data_ports => allow_low_data_ports).run
+                  :session_timeout => @session_timeout,
+                  :socket => socket,
+                  :tls => @tls).run
     end
 
     def read_version_file

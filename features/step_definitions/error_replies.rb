@@ -13,6 +13,10 @@ Then /^the server returns a "(.*?)" error$/ do |error_message|
   (@error || '').should include error_message
 end
 
+Then /^the server returns a too many connections error$/ do
+  step 'the server returns a "421 Too many connections" error'
+end
+
 Then /^the server returns a not a directory error$/ do
   step 'the server returns a "550 Not a directory" error'
 end

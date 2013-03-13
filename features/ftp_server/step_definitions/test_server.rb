@@ -39,3 +39,7 @@ end
 Given /^the test server allows low data ports$/ do
   server.allow_low_data_ports = true
 end
+
+Given /^the test server has max_connections set to (\d+)$/ do |s|
+  server.max_connections = s.to_i
+end

@@ -5,6 +5,11 @@ API Changes
 * Changes to {Ftpd::FtpServer} attributes should now only be made
   before calling #start.  The effect of setting these attributes
   after #start is undefined.
+* Added {Ftpd::FtpServer#max_connections}
+
+Enhancements
+
+* Configurable maximum connections (defaults to 100).
 
 ### 0.5.0
 
