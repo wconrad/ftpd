@@ -257,13 +257,18 @@ To force features to write the server log to stdout:
 
 ### Example
 
-To run the stand-alone example:
+The stand-alone example is good for manually testing Ftpd with an
+arbitrary FTP client.  To run the stand-alone example:
 
     $ examples/example.rb
 
 The example prints its port, username and password to the console.
 You can connect to the stand-alone example with any FTP client.  This
 is useful when testing how the server responds to a given FTP client.
+
+example.rb has many options.  To see them:
+
+    $ examples/example.rb -h
 
 ## Origin
 
