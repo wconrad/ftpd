@@ -1,4 +1,4 @@
-# FTPD
+# Ftpd
 
 ftpd is a pure Ruby FTP server library.  It supports implicit and
 explicit TLS, passive and active mode, and is unconditionally
@@ -28,7 +28,7 @@ impacting you (or at least want to let many of them build up before
 you have to deal with them), then lock your Gemfile down to a minor
 release (e.g. :version => '~> 0.5.0').
 
-## HELLO WORLD
+## Hello World
 
 This is examples/hello_world.rb, a bare minimum FTP server.  It allows
 any user/password, and serves files in a temporary directory.  It
@@ -64,7 +64,7 @@ binds to an ephemeral port on the local interface:
 A more full-featured example that allows TLS and takes options is in
 examples/example.rb
 
-## DRIVER
+## Driver
 
 Ftpd's dynamic behavior such as authentication and file retrieval is
 controlled by a driver that you supply.  The Driver class in the
@@ -79,7 +79,7 @@ driver will do.  Here are the methods your driver needs:
 * {Example::Driver#authenticate authenticate}
 * {Example::Driver#file_system file_system}
 
-## FILE SYSTEM
+## File System
 
 The file system object that the driver supplies to Ftpd is Ftpd's
 gateway to the logical file system.  Ftpd doesn't know or care whether
@@ -182,7 +182,7 @@ And register your class with the ftp_server before starting it:
 
     ftp_server.list_formatter = MyListFormatter
 
-## DEBUGGING
+## Debugging
 
 Ftpd can write debugging information (essentially a transcript of its
 conversation with a client) to a file.  If you turn the debug flag on,
@@ -200,7 +200,7 @@ Debug output can also be enabled by setting the environment variable
 FTPD_DEBUG to a non-zero value.  This is a convenient way to get debug
 output without having to change any code.
 
-## STANDARDS COMPLIANCE
+## Standards Compliance
 
 Ftpd is unconditionally compliant per [RFC-1123 Requirements for
 Internet Hosts](http://tools.ietf.org/rfc/rfc1123.txt).
@@ -210,7 +210,7 @@ TLS](http://tools.ietf.org/rfc/rfc4217.txt) to get by.
 
 See [RFC Compliance](doc/rfc-compliance.md) for details
 
-## RUBY COMPATABILITY
+## Ruby Compatability
 
 The tests pass with these Rubies:
 
@@ -218,9 +218,9 @@ The tests pass with these Rubies:
 * ruby-1.9.3-p392
 * ruby-2.0.0-p0
 
-## DEVELOPMENT
+## Development
 
-### TESTS
+### Tests
 
 To run the cucumber (functional) tests:
 
@@ -252,17 +252,17 @@ The example prints its port, username and password to the console.
 You can connect to the stand-alone example with any FTP client.  This
 is useful when testing how the server responds to a given FTP client.
 
-## ORIGIN
+## Origin
 
 I created ftpd to support the test framework I wrote for Databill,
 LLC, which has given its kind permission to donate it to the
 community.
 
-## WHOAMI
+## Whoami
 
 Wayne Conrad <wconrad@yagni.com>
 
-## CREDITS
+## Credits
 
 Thanks to Databill, LLC, which supported the creation of this library,
 and granted permission to donate it to the community.
