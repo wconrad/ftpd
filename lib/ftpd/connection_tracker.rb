@@ -1,38 +1,49 @@
 module Ftpd
 
-  # This class rejects new connections when there are too many.
+  # This class keeps track of connections
 
   class ConnectionTracker
 
-    # @param max_connections [Integer] The maximum number of
-    #   connections to accept
-
-    def initialize(max_connections)
-      @max_connections = max_connections
+    def initialize
       @mutex = Mutex.new
       @connections = 0
     end
 
-    # Accept or reject a connection.
-    # * If the connection is accepted, yield.
-    # * If the connection is not accepted, write a 421 response and do
-    #   not yield.
+    # Return the total number of connections
+
+    def connections
+      @mutex.synchronize do
+        @connections
+      end
+    end
+
+    # Track a connection.  Yields to a block; the connection is
+    # tracked until the block returns.
 
     def track(socket)
-      @mutex.lock
-      if @max_connections && @connections >= @max_connections
-        @mutex.unlock
-        socket.write "421 Too many connections\n\r"
-      else
-        begin
-          @connections += 1
-          @mutex.unlock
-          yield
-        ensure
-          @mutex.synchronize do
-            @connections -= 1
-          end
-        end
+      start_track socket
+      begin
+        yield
+      ensure
+        stop_track socket
+      end
+    end
+
+    private
+
+    # Start tracking a connection
+
+    def start_track(socket)
+      @mutex.synchronize do
+        @connections += 1
+      end
+    end
+
+    # Stop tracking a connection
+
+    def stop_track(socket)
+      @mutex.synchronize do
+        @connections -= 1
       end
     end
 

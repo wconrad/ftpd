@@ -61,12 +61,28 @@ module Ftpd
               sleep(0.2)
               retry
             end
-            start_session_thread socket
+            start_session socket
           rescue IOError
             break
           end
         end
       end
+    end
+
+    def start_session(socket)
+      if allow_session?(socket)
+        start_session_thread socket
+      else
+        deny_session socket
+        close_socket socket
+      end
+    end
+
+    def allow_session?(socket)
+      true
+    end
+
+    def deny_session socket
     end
 
     def start_session_thread(socket)
