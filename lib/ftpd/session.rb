@@ -32,24 +32,26 @@ module Ftpd
     end
 
     def run
-      reply "220 ftpd"
       catch :done do
-        loop do
-          begin
-            s = get_command
-            s = process_telnet_sequences(s)
-            syntax_error unless s =~ /^(\w+)(?: (.*))?$/
-            command, argument = $1.downcase, $2
-            method = 'cmd_' + command
-            unless respond_to?(method, true)
-              unrecognized_error s
+        begin
+          reply "220 ftpd"
+          loop do
+            begin
+              s = get_command
+              s = process_telnet_sequences(s)
+              syntax_error unless s =~ /^(\w+)(?: (.*))?$/
+              command, argument = $1.downcase, $2
+              method = 'cmd_' + command
+              unless respond_to?(method, true)
+                unrecognized_error s
+              end
+              @command_sequence_checker.check command
+              send(method, argument)
+            rescue CommandError => e
+              reply e.message
             end
-            @command_sequence_checker.check command
-            send(method, argument)
-          rescue CommandError => e
-            reply e.message
-          rescue Errno::ECONNRESET, Errno::EPIPE
           end
+        rescue Errno::ECONNRESET, Errno::EPIPE
         end
       end
     end
