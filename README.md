@@ -202,23 +202,16 @@ And register your class with the ftp_server before starting it:
 
     ftp_server.list_formatter = MyListFormatter
 
-## Debugging
+### Logging
 
-Ftpd can write debugging information (essentially a transcript of its
-conversation with a client) to a file.  If you turn the debug flag on,
-the server will write debug information to stdout:
+Ftpd can write to an instance of {Logger} that you provide.  To log to
+standard out:
 
-    server = Ftpd::FtpServer.new(driver)
-    server.debug = true
+    server.log = Logger.new($stdout)
 
-If you want to send the debug output to somewhere else, set
-debug_path:
+To log to a file:
 
-    server.debug_path = '/tmp/ftp_session'
-
-Debug output can also be enabled by setting the environment variable
-FTPD_DEBUG to a non-zero value.  This is a convenient way to get debug
-output without having to change any code.
+    server.log = Logger.new('/tmp/ftpd.log')
 
 ## Standards Compliance
 
