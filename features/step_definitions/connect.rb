@@ -15,3 +15,15 @@ When /^the (\d+)rd client tries to connect$/ do |client_name|
     client(client_name).connect(server.host, server.port)
   end
 end
+
+When /^the (\S+) client connects from (\S+)$/ do
+|client_name, source_ip|
+  client(client_name).connect_from(source_ip, server.host, server.port)
+end
+
+When /^the (\S+) client tries to connect from (\S+)$/ do
+|client_name, source_ip|
+  capture_error do
+    step "the #{client_name} client connects from #{source_ip}"
+  end
+end

@@ -43,3 +43,7 @@ end
 Given /^the test server has max_connections set to (\d+)$/ do |s|
   server.max_connections = s.to_i
 end
+
+Given /^the test server has max_connections_per_ip set to (\d+)$/ do |s|
+  server.max_connections_per_ip = s.to_i
+end

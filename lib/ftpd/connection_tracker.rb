@@ -6,14 +6,23 @@ module Ftpd
 
     def initialize
       @mutex = Mutex.new
-      @connections = 0
+      @connections = {}
     end
 
     # Return the total number of connections
 
     def connections
       @mutex.synchronize do
-        @connections
+        @connections.values.inject(0, &:+)
+      end
+    end
+
+    # Return the number of connections for a socket
+
+    def connections_for(socket)
+      @mutex.synchronize do
+        ip = peer_ip(socket)
+        @connections[ip] || 0
       end
     end
 
@@ -35,7 +44,9 @@ module Ftpd
 
     def start_track(socket)
       @mutex.synchronize do
-        @connections += 1
+        ip = peer_ip(socket)
+        @connections[ip] ||= 0
+        @connections[ip] += 1
       end
     end
 
@@ -43,9 +54,42 @@ module Ftpd
 
     def stop_track(socket)
       @mutex.synchronize do
-        @connections -= 1
+        ip = peer_ip(socket)
+        @connections[ip] -= 1
       end
     end
+
+    # Obtain the IP that the client connected _from_.
+    #
+    # How this is done depends upon which type of socket (SSL or not)
+    # and what version of Ruby.
+    #
+    # * SSL socket
+    #   * #peeraddr.  Uses BasicSocket.do_not_reverse_lookup.
+    # * Ruby 1.8.7
+    #   * #peeraddr, which does not take the "reverse lookup"
+    #     argument, relying instead using
+    #     BasicSocket.do_not_reverse_lookup.
+    #   * #getpeername, which does not do a reverse lookup.  It is a
+    #     little uglier than #peeraddr.
+    # * Ruby >=1.9.3
+    #   * #peeraddr, which takes the "reverse lookup" argument.
+    #   * #getpeername - same as 1.8.7
+
+    # @return [String] IP address
+
+    def peer_ip(socket)
+      if socket.respond_to?(:getpeername)
+        # Non SSL
+        sockaddr = socket.getpeername
+        port, host = Socket.unpack_sockaddr_in(sockaddr)
+        host
+      else
+        # SSL
+        BasicSocket.do_not_reverse_lookup = true
+        socket.peeraddr.last
+      end
+     end
 
   end
 

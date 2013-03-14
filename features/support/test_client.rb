@@ -19,7 +19,8 @@ class TestClient
   end
 
   def close
-    @ftp.close if @ftp
+    return unless @ftp
+    @ftp.close
   end
 
   def_delegators :@ftp,
@@ -41,6 +42,20 @@ class TestClient
   :rmdir,
   :status,
   :system
+
+  # Make a connection from a specific IP.  Net::FTP doesn't have a way
+  # to force the local IP, so fake it here.
+
+  def connect_from(source_ip, host, port)
+    in_addr = Socket.pack_sockaddr_in(0, source_ip)
+    out_addr = Socket.pack_sockaddr_in(port, host)
+    socket = Socket.open(Socket::AF_INET, Socket::SOCK_STREAM, 0)
+    socket.bind(in_addr)
+    socket.connect(out_addr)
+    decorate_socket socket
+    @ftp = make_ftp
+    @ftp.set_socket(socket)
+  end
 
   def raw(*command)
     @ftp.sendcmd command.compact.join(' ')
@@ -146,6 +161,37 @@ class TestClient
 
   def make_non_tls_ftp
     Net::FTP.new
+  end
+
+  # Ruby 2.0's Ftp class is expecting a TCPSocket, not a Socket.  The
+  # trouble comes with Ftp#close, which closes sockets by first doing
+  # a shutdown, setting the read timeout, and doing a read.  Plain
+  # Socket doesn't have those methods, so fake it.
+  #
+  # Plain socket _does_ have #close, but we short-circuit it, too,
+  # because it takes a few seconds.  We're in a hurry when running
+  # tests, and can afford to be a little sloppy when cleaning up.
+
+  def decorate_socket(sock)
+
+    def sock.shutdown(how)
+      @shutdown = true
+    end
+
+    def sock.read_timeout=(seconds)
+    end
+
+    # Skip read after shutdown.  Prevents 2.0 from hanging in
+    # Ftp#close
+
+    def sock.read(*args)
+      return if @shutdown
+      super(*args)
+    end
+
+    def close
+    end
+
   end
 
 end

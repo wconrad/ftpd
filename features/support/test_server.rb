@@ -218,11 +218,12 @@ class TestServer
   def_delegator :@server, :'allow_low_data_ports='
   def_delegator :@server, :'auth_level'
   def_delegator :@server, :'auth_level='
+  def_delegator :@server, :'max_connections='
+  def_delegator :@server, :'max_connections_per_ip='
   def_delegator :@server, :'server_name'
   def_delegator :@server, :'server_name='
   def_delegator :@server, :'session_timeout='
   def_delegator :@server, :'tls='
-  def_delegator :@server, :'max_connections='
 
   def_delegator :@driver, :'append='
   def_delegator :@driver, :'delete='

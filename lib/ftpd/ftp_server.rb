@@ -72,16 +72,28 @@ module Ftpd
 
     attr_accessor :allow_low_data_ports
 
-    # The maximum number of connections the server will allow, or nil
-    # if there is no limit.
+    # The maximum number of connections the server will allow
     # Defaults to {ConnectionThrottle::DEFAULT_MAX_CONNECTIONS}.
-    # @return [Integer]
     #
     # Set this before calling #start.
+    #
     # @!attribute max_connections
+    # @return [Integer]
 
     def_delegator :@connection_throttle, :'max_connections'
     def_delegator :@connection_throttle, :'max_connections='
+
+    # The maximum number of connections the server will allow from a
+    # given IP.
+    # Defaults to {ConnectionThrottle::DEFAULT_MAX_CONNECTIONS_PER_IP}.
+    #
+    # Set this before calling #start.
+    #
+    # @!attribute max_connections_per_ip
+    # @return [Integer]
+
+    def_delegator :@connection_throttle, :'max_connections_per_ip'
+    def_delegator :@connection_throttle, :'max_connections_per_ip='
 
     # Create a new FTP server.  The server won't start until the
     # #start method is called.
