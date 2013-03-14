@@ -4,7 +4,7 @@ module Ftpd
 
   class ConnectionThrottle
 
-    DEFAULT_MAX_CONNECTIONS = 100
+    DEFAULT_MAX_CONNECTIONS = 200
     DEFAULT_MAX_CONNECTIONS_PER_IP = 5
 
     # The maximum number of connections.

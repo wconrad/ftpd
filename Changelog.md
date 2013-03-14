@@ -10,7 +10,7 @@ API Changes
 
 Enhancements
 
-* Configurable maximum connections (defaults to 100).
+* Configurable maximum connections (defaults to 200).
 * Configurable maximum connections per IP (defaults to 5).
 
 ### 0.5.0
