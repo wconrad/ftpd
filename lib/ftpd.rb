@@ -1,4 +1,5 @@
 require 'fileutils'
+require 'forwardable'
 require 'logger'
 require 'memoizer'
 require 'openssl'
