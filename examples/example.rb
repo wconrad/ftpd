@@ -214,6 +214,7 @@ module Example
       puts "TLS: #{@args.tls}"
       puts "Directory: #{@data_dir}"
       puts "URI: ftp://#{HOST}:#{@server.bound_port}"
+      puts "PID: #{$$}"
     end
 
     def create_connection_script
