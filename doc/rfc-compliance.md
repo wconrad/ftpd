@@ -104,10 +104,10 @@ Server-FTP handle Telnet options           |4.1.2.12       |x| | | | |  C
 Handle "Experimental" directory cmds       |4.1.3.1        | |x| | | |  C
 Idle timeout in server-FTP                 |4.1.3.2        | |x| | | |  C
     Configurable idle timeout              |4.1.3.2        | |x| | | |  C
-Receiver checkpoint data at Restart Marker |4.1.3.4        | |x| | | |
-Sender assume 110 replies are synchronous  |4.1.3.4        | | | | |x|
-                                           |               | | | | | |
-Support TYPE:                              |               | | | | | |
+Receiver checkpoint data at Restart Marker |4.1.3.4        | |x| | | |  E
+Sender assume 110 replies are synchronous  |4.1.3.4        | | | | |x|  E
+                                           |               | | | | | |  -
+Support TYPE:                              |               | | | | | |  -
   ASCII - Non-Print (AN)                   |4.1.2.13       |x| | | | |  C
   ASCII - Telnet (AT) -- if same as AN     |4.1.2.2        | |x| | | |  C
   ASCII - Carriage Control (AC)            |959 3.1.1.5.2  | | |x| | |  E
@@ -115,17 +115,17 @@ Support TYPE:                              |               | | | | | |
   IMAGE                                    |4.1.2.1        |x| | | | |  C
   LOCAL 8                                  |4.1.2.1        |x| | | | |  C
   LOCAL m                                  |4.1.2.1        | | |x| | |2 E
-                                           |               | | | | | |
-Support MODE:                              |               | | | | | |
+                                           |               | | | | | |  -
+Support MODE:                              |               | | | | | |  -
   Stream                                   |4.1.2.13       |x| | | | |  C
   Block                                    |959 3.4.2      | | |x| | |  E
-                                           |               | | | | | |
-Support STRUCTURE:                         |               | | | | | |
+                                           |               | | | | | |  -
+Support STRUCTURE:                         |               | | | | | |  -
   File                                     |4.1.2.13       |x| | | | |  C
   Record                                   |4.1.2.13       |x| | | | |3 E
   Page                                     |4.1.2.3        | | | |x| |  E
-                                           |               | | | | | |
-Support commands:                          |               | | | | | |
+                                           |               | | | | | |  -
+Support commands:                          |               | | | | | |  -
   USER                                     |4.1.2.13       |x| | | | |  C
   PASS                                     |4.1.2.13       |x| | | | |  C
   ACCT                                     |4.1.2.13       |x| | | | |  C
@@ -134,13 +134,13 @@ Support commands:                          |               | | | | | |
   SMNT                                     |959 5.3.1      | | |x| | |  E
   REIN                                     |959 5.3.1      | | |x| | |  E
   QUIT                                     |4.1.2.13       |x| | | | |  C
-                                           |               | | | | | |
+                                           |               | | | | | |  -
   PORT                                     |4.1.2.13       |x| | | | |  C
   PASV                                     |4.1.2.6        |x| | | | |  C
   TYPE                                     |4.1.2.13       |x| | | | |1 C
   STRU                                     |4.1.2.13       |x| | | | |1 C
   MODE                                     |4.1.2.13       |x| | | | |1 C
-                                           |               | | | | | |
+                                           |               | | | | | |  -
   RETR                                     |4.1.2.13       |x| | | | |  C
   STOR                                     |4.1.2.13       |x| | | | |  C
   STOU                                     |959 5.3.1      | | |x| | |  C
@@ -233,7 +233,7 @@ FTP bounce protection
 Restrict PASV/PORT to non-priv. ports     Yes    0.5.0
 Disconnect after so many wrong auths.     No      ---
 Delay on invalid password                 No      ---
-Per-source IP limit                       No      ---
+Per-source IP limit                       Yes    0.6.0
 Do not reject wrong usernames             Yes    0.1.0
 Port stealing protection                  No      ---
 </pre>
