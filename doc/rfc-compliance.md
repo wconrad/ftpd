@@ -199,7 +199,7 @@ Introduces the new FEAT and OPTS commands.
 
 <pre>
 FEAT    Yes    0.6.0    List new supported commands
-OPTS    No      ---     Set options for certain commands
+OPTS    Yes    0.6.0    Set options for certain commands
 </pre>
 
 ## RFC-2428 - FTP Extensions for IPv6 and NATs

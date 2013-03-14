@@ -491,6 +491,11 @@ module Ftpd
       reply '211 END'
     end
 
+    def cmd_opts(argument)
+      syntax_error unless argument
+      error '501 Unsupported option'
+    end
+
     unimplemented :abor
     unimplemented :rein
     unimplemented :rest

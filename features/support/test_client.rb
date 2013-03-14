@@ -124,6 +124,10 @@ class TestClient
     end
   end
 
+  def set_option(option)
+    raw "OPTS #{option}"
+  end
+
   private
 
   RAW_METHOD_REGEX = /^send_(.*)$/

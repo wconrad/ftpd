@@ -230,6 +230,9 @@ To log to a file:
   [RFC-2577](http://tools.ietf.org/rfc/rfc2577.txt) (FTP Security
   Considerations).
 
+* Implements [RFC-2389](http://tools.ietf.org/rfc/rfc2389.txt)
+  (Feature negotiation mechanism for the File Transfer Protocol)
+
 * Implements enough of
   [RFC-4217](http://tools.ietf.org/rfc/rfc4217.txt) (Securing FTP with
   TLS) to get by.

@@ -49,6 +49,10 @@ Then /^the server returns a syntax error$/ do
   step 'the server returns a "501 Syntax error" error'
 end
 
+Then /^the server returns a bad option error$/ do
+  step 'the server returns a "501 Unsupported option" error'
+end
+
 Then /^the server returns a mode not implemented error$/ do
   step 'the server returns a "504 Mode not implemented" error'
 end

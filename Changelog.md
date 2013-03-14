@@ -17,6 +17,7 @@ API Changes
 * Added {Ftpd::FtpServer#max_failed_logins}
 * Added {Ftpd::FtpServer#failed_login_delay}
 * Support FEAT (feature list)
+* Support OPTS (set options)
 
 ### 0.5.0
 
