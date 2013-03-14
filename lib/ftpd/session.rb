@@ -482,11 +482,32 @@ module Ftpd
       private method_name
     end
 
+    def cmd_feat(argument)
+      syntax_error if argument
+      reply '211-Extensions supported:'
+      extensions.each do |extension|
+        reply " #{extension}"
+      end
+      reply '211 END'
+    end
+
     unimplemented :abor
     unimplemented :rein
     unimplemented :rest
     unimplemented :site
     unimplemented :smnt
+
+    def extensions
+      [
+        (TLS_EXTENSIONS if tls_enabled?)
+      ].flatten.compact
+    end
+
+    TLS_EXTENSIONS = [
+      'AUTH TLS',
+      'PBSZ',
+      'PROT'
+    ]
 
     def supported_commands
       private_methods.map do |method|

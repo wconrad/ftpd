@@ -1,5 +1,12 @@
 ### 0.6.0
 
+Enhancements
+
+* Configurable maximum connections (defaults to 200).
+* Configurable maximum connections per IP (defaults to 5).
+* Disconnect after too many failed login attempts (configurable).
+* Delay after failed login (configurable).
+
 API Changes
 
 * Changes to {Ftpd::FtpServer} attributes should now only be made
@@ -9,13 +16,7 @@ API Changes
 * Added {Ftpd::FtpServer#max_connections_per_ip}
 * Added {Ftpd::FtpServer#max_failed_logins}
 * Added {Ftpd::FtpServer#failed_login_delay}
-
-Enhancements
-
-* Configurable maximum connections (defaults to 200).
-* Configurable maximum connections per IP (defaults to 5).
-* Disconnect after too many failed login attempts (configurable).
-* Delay after failed login (configurable).
+* Support FEAT (feature list)
 
 ### 0.5.0
 

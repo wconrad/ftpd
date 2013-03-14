@@ -198,7 +198,7 @@ Introduces the new FEAT and OPTS commands.
 * [link](http://tools.ietf.org/rfc/rfc2389.txt)
 
 <pre>
-FEAT    No      ---     List new supported commands
+FEAT    Yes    0.6.0    List new supported commands
 OPTS    No      ---     Set options for certain commands
 </pre>
 
