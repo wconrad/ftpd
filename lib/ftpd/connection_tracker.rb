@@ -38,6 +38,16 @@ module Ftpd
       end
     end
 
+    # Return the number of known IPs.  This exists for the benefit of
+    # the test, so that it can know the tracker has properly forgotten
+    # about an IP with no connections.
+
+    def known_ip_count
+      @mutex.synchronize do
+        @connections.size
+      end
+    end
+
     private
 
     # Start tracking a connection
@@ -55,7 +65,9 @@ module Ftpd
     def stop_track(socket)
       @mutex.synchronize do
         ip = peer_ip(socket)
-        @connections[ip] -= 1
+        if (@connections[ip] -= 1) == 0
+          @connections.delete(ip)
+        end
       end
     end
 

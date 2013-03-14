@@ -88,6 +88,20 @@ module Ftpd
 
     end
 
+    describe '#known_ip_count' do
+
+      let(:socket) {socket_bound_to('127.0.0.1')}
+
+      it 'should forget about an IP that has no connection' do
+        connection_tracker.known_ip_count.should == 0
+        connector.connect socket
+        connection_tracker.known_ip_count.should == 1
+        connector.disconnect
+        connection_tracker.known_ip_count.should == 0
+      end
+
+    end
+
   end
 
 end
