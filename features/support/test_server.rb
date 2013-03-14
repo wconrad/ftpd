@@ -218,6 +218,7 @@ class TestServer
   def_delegator :@server, :'allow_low_data_ports='
   def_delegator :@server, :'auth_level'
   def_delegator :@server, :'auth_level='
+  def_delegator :@server, :'failed_login_delay='
   def_delegator :@server, :'max_connections='
   def_delegator :@server, :'max_connections_per_ip='
   def_delegator :@server, :'max_failed_logins='

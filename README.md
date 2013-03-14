@@ -170,6 +170,7 @@ You can set any of these attributes before starting the server:
 
 * {Ftpd::FtpServer#allow_low_data_ports}
 * {Ftpd::FtpServer#auth_level}
+* {Ftpd::FtpServer#failed_login_delay}
 * {Ftpd::FtpServer#list_formatter}
 * {Ftpd::FtpServer#log}
 * {Ftpd::FtpServer#max_connections_per_ip}
@@ -222,12 +223,16 @@ To log to a file:
 
 ## Standards Compliance
 
-Ftpd is unconditionally compliant per [RFC-1123][1] (Requirements for
-Internet Hosts).
+* Unconditionally compliant per [RFC-1123][1] (Requirements for
+  Internet Hosts).
 
-Ftpd implements enough of
-[RFC-4217](http://tools.ietf.org/rfc/rfc4217.txt) (Securing FTP with
-TLS) to get by.
+* Implements all of the security recommendations in
+  [RFC-2577](http://tools.ietf.org/rfc/rfc2577.txt) (FTP Security
+  Considerations).
+
+* Implements enough of
+  [RFC-4217](http://tools.ietf.org/rfc/rfc4217.txt) (Securing FTP with
+  TLS) to get by.
 
 See [RFC Compliance](doc/rfc-compliance.md) for details
 

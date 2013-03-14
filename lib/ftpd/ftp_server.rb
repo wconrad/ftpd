@@ -29,6 +29,12 @@ module Ftpd
 
     attr_accessor :auth_level
 
+    # The delay (in seconds) after a failed login.  Defaults to 0.
+    # Setting this makes brute force password guessing less efficient
+    # for the attacker.  RFC-2477 suggests a delay of 5 seconds.
+
+    attr_accessor :failed_login_delay
+
     # The class for formatting for LIST output.  Defaults to
     # {Ftpd::ListFormat::Ls} (unix "ls -l" style).
     #
@@ -137,6 +143,7 @@ module Ftpd
       @server_name = DEFAULT_SERVER_NAME
       @server_version = read_version_file
       @allow_low_data_ports = false
+      @failed_login_delay = 0
       @log = nil
       @connection_tracker = ConnectionTracker.new
       @connection_throttle = ConnectionThrottle.new(@connection_tracker)
@@ -162,6 +169,7 @@ module Ftpd
       Session.new(:allow_low_data_ports => allow_low_data_ports,
                   :auth_level => @auth_level,
                   :driver => @driver,
+                  :failed_login_delay => @failed_login_delay,
                   :list_formatter => @list_formatter,
                   :log => log,
                   :max_failed_logins => @max_failed_logins,

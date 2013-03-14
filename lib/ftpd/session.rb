@@ -6,6 +6,7 @@ module Ftpd
     include Error
 
     def initialize(opts)
+      @failed_login_delay = opts[:failed_login_delay]
       @connection_tracker = opts[:connection_tracker]
       @max_failed_logins = opts[:max_failed_logins]
       @log = opts[:log] || NullLogger.new
@@ -795,6 +796,7 @@ module Ftpd
 
     def failed_auth
       @failed_auths += 1
+      sleep @failed_login_delay
       if @max_failed_logins && @failed_auths >= @max_failed_logins
         reply "421 server unavailable"
         throw :done

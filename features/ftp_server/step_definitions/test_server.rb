@@ -55,3 +55,7 @@ end
 Given /^the test server has a max of (\d+) failed login attempts$/ do |s|
   server.max_failed_logins = s.to_i
 end
+
+Given /^the test server has a failed login delay of (\S+) seconds$/ do |s|
+  server.failed_login_delay = s.to_f
+end
