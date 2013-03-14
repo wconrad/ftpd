@@ -22,7 +22,3 @@ def client(client_name = nil)
   client_name ||= 'client'
   Clients.instance[client_name]
 end
-
-After do
-  Clients.instance.close
-end
