@@ -235,7 +235,7 @@ Disconnect after so many wrong auths.     No      ---
 Delay on invalid password                 No      ---
 Per-source IP limit                       Yes    0.6.0
 Do not reject wrong usernames             Yes    0.1.0
-Port stealing protection                  No      ---
+Port stealing protection                  Yes    0.1.0
 </pre>
 
 ## RFC-2640 - Internationalization of the File Transfer Protocol
