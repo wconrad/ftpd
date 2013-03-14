@@ -2,7 +2,7 @@
 
 ftpd is a pure Ruby FTP server library.  It supports implicit and
 explicit TLS, passive and active mode, and is unconditionally
-compliant per RFC-1123.  It an be used as part of a test fixture or
+compliant per [RFC-1123][1].  It an be used as part of a test fixture or
 embedded in a program.
 
 ## A note about this README
@@ -160,7 +160,7 @@ uploads but then throws them away.
 ## Configuration
 
 Configuration is done via accessors on {Ftpd::FtpServer}.  For
-example, to set the session timeout to 10 minute:
+example, to set the session timeout to 10 minutes:
 
       server = Ftpd::FtpServer.new(driver)
       server.session_timeout = 10 * 60
@@ -173,6 +173,7 @@ You can set any of these items before starting the server:
 * {Ftpd::FtpServer#list_formatter}
 * {Ftpd::FtpServer#log}
 * {Ftpd::FtpServer#max_connections}
+* {Ftpd::FtpServer#max_connections_per_ip}
 * {Ftpd::FtpServer#response_delay}
 * {Ftpd::FtpServer#server_name}
 * {Ftpd::FtpServer#server_version}
@@ -216,11 +217,12 @@ To log to a file:
 
 ## Standards Compliance
 
-Ftpd is unconditionally compliant per [RFC-1123 Requirements for
-Internet Hosts](http://tools.ietf.org/rfc/rfc1123.txt).
+Ftpd is unconditionally compliant per [RFC-1123][1] (Requirements for
+Internet Hosts).
 
-Ftpd implements enough of [RFC-4217 Securing FTP with
-TLS](http://tools.ietf.org/rfc/rfc4217.txt) to get by.
+Ftpd implements enough of
+[RFC-4217](http://tools.ietf.org/rfc/rfc4217.txt) (Securing FTP with
+TLS) to get by.
 
 See [RFC Compliance](doc/rfc-compliance.md) for details
 
@@ -258,14 +260,13 @@ To force features to write the server log to stdout:
 
 ### Example
 
-The stand-alone example is good for manually testing Ftpd with an
-arbitrary FTP client.  To run the stand-alone example:
+The stand-alone example is good for manually testing Ftpd with any FTP
+client.  To run the stand-alone example:
 
     $ examples/example.rb
 
 The example prints its port, username and password to the console.
-You can connect to the stand-alone example with any FTP client.  This
-is useful when testing how the server responds to a given FTP client.
+You can connect to the stand-alone example with any FTP client.
 
 example.rb has many options.  To see them:
 
@@ -300,3 +301,5 @@ and granted permission to donate it to the community.
 * [RFC compliance](doc/rfc-compliance.md)
 * [References](doc/references.md)
 * [Benchmarks](doc/benchmarks.md)
+
+[1]: http://tools.ietf.org/rfc/rfc1123.txt
