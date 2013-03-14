@@ -166,18 +166,22 @@ example, to set the session timeout to 10 minutes:
       server.session_timeout = 10 * 60
       server.start
 
-You can set any of these items before starting the server:
+You can set any of these attributes before starting the server:
 
+* {Ftpd::TlsServer#certfile_path}
+* {Ftpd::TlsServer#tls}
 * {Ftpd::FtpServer#allow_low_data_ports}
 * {Ftpd::FtpServer#auth_level}
 * {Ftpd::FtpServer#list_formatter}
 * {Ftpd::FtpServer#log}
-* {Ftpd::FtpServer#max_connections}
 * {Ftpd::FtpServer#max_connections_per_ip}
+* {Ftpd::FtpServer#max_connections}
 * {Ftpd::FtpServer#response_delay}
 * {Ftpd::FtpServer#server_name}
 * {Ftpd::FtpServer#server_version}
 * {Ftpd::FtpServer#session_timeout}
+* {Ftpd::Server#interface}
+* {Ftpd::Server#port}
 
 ### LIST output format
 

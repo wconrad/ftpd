@@ -8,15 +8,21 @@ module Ftpd
     # * :explicit
     # * :implicit
     #
-    # Defaults to :off
+    # Notes:
+    # * Defaults to :off
+    # * Set this before calling #start.
+    # * If other than :off, then #certfile_path must be set.
     #
-    # Changes made after #start have no effect.  If TLS is enabled,
-    # then #certfile_path must be set.
+    # @return [Symbol]
 
     attr_accessor :tls
 
-    # The path of the SSL certificate to use for TLS.
-    # Changes made after #start have no effect.
+    # The path of the SSL certificate to use for TLS.  Defaults to nil
+    # (no SSL certificate).
+    #
+    # Set this before calling #start.
+    #
+    # @return [String]
 
     attr_accessor :certfile_path
 

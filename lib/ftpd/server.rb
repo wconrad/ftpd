@@ -5,14 +5,20 @@ module Ftpd
 
     # The interface to bind to (e.g. "127.0.0.1", "0.0.0.0",
     # "10.0.0.12", etc.).  Defaults to "localhost"
-    # Changes made after #start have no effect.
+    #
+    # Set this before calling #start.
+    #
+    # @return [String]
 
     attr_accessor :interface
 
     # The port to bind to.  Defaults to 0, which causes an ephemeral
     # port to be used.  When bound to an ephemeral port, use
     # #bound_port to find out which port was actually bound to.
-    # Changes made after #start have no effect.
+    #
+    # Set this before calling #start.
+    #
+    # @return [String]
 
     attr_accessor :port
 
@@ -23,6 +29,8 @@ module Ftpd
 
     # The port the server is bound to.  Must not be called until after
     # #start is called.
+    #
+    # @return [Integer]
 
     def bound_port
       @server_socket.addr[1]

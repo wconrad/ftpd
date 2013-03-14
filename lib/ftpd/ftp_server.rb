@@ -8,39 +8,44 @@ module Ftpd
     DEFAULT_SERVER_NAME = 'wconrad/ftpd'
     DEFAULT_SESSION_TIMEOUT = 300 # seconds
 
-    # Allow PORT command to specify data ports below 1024.  Defaults
-    # to false.  Setting this to true makes it easier for an attacker
-    # to use the server to attack another server.  See RFC 2577
-    # section 3.
-    # @return [Boolean]
+    # If true, allow the PORT command to specify privileged data ports
+    # (those below 1024).  Defaults to false.  Setting this to true
+    # makes it easier for an attacker to use the server to attack
+    # another server.  See RFC 2577 section 3.
     #
     # Set this before calling #start.
+    #
+    # @return [Boolean]
 
     attr_accessor :allow_low_data_ports
 
-    # @return [Integer] The authentication level
-    # One of:
+    # The authentication level.  One of:
+    #
     # * Ftpd::AUTH_USER
     # * Ftpd::AUTH_PASSWORD (default)
     # * Ftpd::AUTH_ACCOUNT
+    #
+    # @return [Integer] The authentication level
 
     attr_accessor :auth_level
 
     # The class for formatting for LIST output.  Defaults to
-    # {Ftpd::ListFormat::Ls}.
+    # {Ftpd::ListFormat::Ls} (unix "ls -l" style).
     #
     # Set this before calling #start.
+    # @return [class that quacks like Ftpd::ListFormat::Ls]
 
     attr_accessor :list_formatter
 
     # The logger.  Defaults to nil (no logging).
-    # @return [Logger]
     #
     # Set this before calling #start.
+    #
+    # @return [Logger]
 
     attr_accessor :log
 
-    # The maximum number of connections the server will allow
+    # The maximum number of connections the server will allow.
     # Defaults to {ConnectionThrottle::DEFAULT_MAX_CONNECTIONS}.
     #
     # Set this before calling #start.
@@ -52,8 +57,8 @@ module Ftpd
     def_delegator :@connection_throttle, :'max_connections='
 
     # The maximum number of connections the server will allow from a
-    # given IP.
-    # Defaults to {ConnectionThrottle::DEFAULT_MAX_CONNECTIONS_PER_IP}.
+    # given IP.  Defaults to
+    # {ConnectionThrottle::DEFAULT_MAX_CONNECTIONS_PER_IP}.
     #
     # Set this before calling #start.
     #
@@ -68,6 +73,8 @@ module Ftpd
     # Defaults to 0 (no delay).
     #
     # Set this before calling #start.
+    #
+    # @return [Numeric]
 
     attr_accessor :response_delay
 
@@ -75,6 +82,8 @@ module Ftpd
     # {DEFAULT_SERVER_NAME}.
     #
     # Set this before calling #start.
+    #
+    # @return [String]
 
     attr_accessor :server_name
 
@@ -82,6 +91,8 @@ module Ftpd
     # contents of the VERSION file.
     #
     # Set this before calling #start.
+    #
+    # @return [String]
 
     attr_accessor :server_version
 
@@ -89,9 +100,10 @@ module Ftpd
     # one is not received in this many seconds, the session is
     # disconnected.  Defaults to {DEFAULT_SESSION_TIMEOUT}.  If nil,
     # then timeout is disabled.
-    # @return [Numeric]
     #
     # Set this before calling #start.
+    #
+    # @return [Numeric]
 
     attr_accessor :session_timeout
 
