@@ -231,7 +231,7 @@ attempts and third-party "proxy FTP" transfers, which can be used in
 <pre>
 FTP bounce protection
 Restrict PASV/PORT to non-priv. ports     Yes    0.5.0
-Disconnect after so many wrong auths.     No      ---
+Disconnect after so many wrong auths.     Yes    0.6.0
 Delay on invalid password                 No      ---
 Per-source IP limit                       Yes    0.6.0
 Do not reject wrong usernames             Yes    0.1.0

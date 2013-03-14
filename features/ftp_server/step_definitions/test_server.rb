@@ -47,3 +47,11 @@ end
 Given /^the test server has max_connections_per_ip set to (\d+)$/ do |s|
   server.max_connections_per_ip = s.to_i
 end
+
+Given /^the test server has no max failed login attempts$/ do
+  server.max_failed_logins = nil
+end
+
+Given /^the test server has a max of (\d+) failed login attempts$/ do |s|
+  server.max_failed_logins = s.to_i
+end

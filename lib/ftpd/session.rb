@@ -7,6 +7,7 @@ module Ftpd
 
     def initialize(opts)
       @connection_tracker = opts[:connection_tracker]
+      @max_failed_logins = opts[:max_failed_logins]
       @log = opts[:log] || NullLogger.new
       @allow_low_data_ports = opts[:allow_low_data_ports]
       @server_name = opts[:server_name]
@@ -29,6 +30,7 @@ module Ftpd
       @session_timeout = opts[:session_timeout]
       @logged_in = false
       set_socket_options
+      reset_failed_auths
     end
 
     def run
@@ -757,11 +759,13 @@ module Ftpd
 
     def login(*auth_tokens)
       unless authenticate(*auth_tokens)
+        failed_auth
         error "530 Login incorrect"
       end
       reply "230 Logged in"
       set_file_system @driver.file_system(@user)
       @logged_in = true
+      reset_failed_auths
     end
 
     def set_socket_options
@@ -783,6 +787,18 @@ module Ftpd
         @socket.write telnet.reply
       end
       telnet.plain
+    end
+
+    def reset_failed_auths
+      @failed_auths = 0
+    end
+
+    def failed_auth
+      @failed_auths += 1
+      if @max_failed_logins && @failed_auths >= @max_failed_logins
+        reply "421 server unavailable"
+        throw :done
+      end
     end
 
   end

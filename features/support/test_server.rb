@@ -220,6 +220,7 @@ class TestServer
   def_delegator :@server, :'auth_level='
   def_delegator :@server, :'max_connections='
   def_delegator :@server, :'max_connections_per_ip='
+  def_delegator :@server, :'max_failed_logins='
   def_delegator :@server, :'server_name'
   def_delegator :@server, :'server_name='
   def_delegator :@server, :'session_timeout='

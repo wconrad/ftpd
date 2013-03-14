@@ -7,11 +7,13 @@ API Changes
   after #start is undefined.
 * Added {Ftpd::FtpServer#max_connections}
 * Added {Ftpd::FtpServer#max_connections_per_ip}
+* Added {Ftpd::FtpServer#max_failed_logins}
 
 Enhancements
 
 * Configurable maximum connections (defaults to 200).
 * Configurable maximum connections per IP (defaults to 5).
+* Disconnect after too many failed login attempts (configurable).
 
 ### 0.5.0
 

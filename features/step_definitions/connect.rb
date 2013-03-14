@@ -27,3 +27,11 @@ When /^the (\S+) client tries to connect from (\S+)$/ do
     step "the #{client_name} client connects from #{source_ip}"
   end
 end
+
+Then /^the client should be connected$/ do
+  client.should be_connected
+end
+
+Then /^the client should not be connected$/ do
+  client.should_not be_connected
+end

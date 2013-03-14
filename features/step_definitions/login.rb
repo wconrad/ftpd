@@ -42,7 +42,7 @@ When /^the(?: (\w+))? client logs in(?: with bad (\w+))?$/ do
       @server.account
     end,
   ][0..server.auth_level]
-  login(tokens, client_name)
+  @error = login(tokens, client_name)
 end
 
 Then /^the client should( not)? be logged in$/ do |neg|

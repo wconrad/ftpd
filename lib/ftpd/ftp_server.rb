@@ -68,6 +68,16 @@ module Ftpd
     def_delegator :@connection_throttle, :'max_connections_per_ip'
     def_delegator :@connection_throttle, :'max_connections_per_ip='
 
+    # The maximum number of failed login attempts before disconnecting
+    # the user.  Defaults to nil (no maximum).  When set, this may
+    # makes brute-force password guessing attack less efficient.
+    #
+    # Set this before calling #start.
+    #
+    # @return [Integer]
+
+    attr_accessor :max_failed_logins
+
     # The number of seconds to delay before replying.  This is for
     # testing, when you need to test, for example, client timeouts.
     # Defaults to 0 (no delay).
@@ -154,6 +164,7 @@ module Ftpd
                   :driver => @driver,
                   :list_formatter => @list_formatter,
                   :log => log,
+                  :max_failed_logins => @max_failed_logins,
                   :response_delay => response_delay,
                   :server_name => @server_name,
                   :server_version => @server_version,
