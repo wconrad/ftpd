@@ -1,7 +1,6 @@
 # Benchmarks
 
-Benchmarks using pyftpd's [benchmark
-script](http://pyftpdlib.googlecode.com/svn/trunk/test/bench.py) and
+Benchmarks using pyftpd's benchmark script and
 [procedures](http://code.google.com/p/pyftpdlib/wiki/Benchmarks).
 
 ## Results
@@ -75,7 +74,9 @@ proftpd or pyftpdlib.
 
 ### Benchmark command
 
-    $ python bench.py  -u <USER> -p <PASS> -H localhost -P <PORT> -b all -n 200 -k <PID>
+bench.py needs psutil.  Under Debian, install _python-psutil_.
+
+    pyftpdlib-1.0.1/test$ python bench.py  -u <USER> -p <PASS> -H localhost -P <PORT> -b all -n 200 -k <PID>
 
 ### Proftpd
 
