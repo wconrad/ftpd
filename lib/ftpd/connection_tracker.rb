@@ -7,6 +7,7 @@ module Ftpd
     def initialize
       @mutex = Mutex.new
       @connections = {}
+      @socket_ips ={}
     end
 
     # Return the total number of connections
@@ -57,6 +58,7 @@ module Ftpd
         ip = peer_ip(socket)
         @connections[ip] ||= 0
         @connections[ip] += 1
+        @socket_ips[socket.object_id] = ip
       end
     end
 
@@ -64,7 +66,7 @@ module Ftpd
 
     def stop_track(socket)
       @mutex.synchronize do
-        ip = peer_ip(socket)
+        ip = @socket_ips.delete(socket.object_id)
         if (@connections[ip] -= 1) == 0
           @connections.delete(ip)
         end

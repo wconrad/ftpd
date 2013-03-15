@@ -25,31 +25,34 @@ module Ftpd
 
       def initialize(connection_tracker)
         @connection_tracker = connection_tracker
-        @connected = Queue.new
-        @disconnect = Queue.new
-        @disconnected = Queue.new
+        @tracked = Queue.new
+        @end_session = Queue.new
+        @session_ended = Queue.new
       end
 
       # Start tracking a connection.  Does not return until it is
       # being tracked.
 
-      def connect(socket)
+      def start_session(socket)
         Thread.new do
           @connection_tracker.track(socket) do
-            @connected.enq :go
-            @disconnect.deq
+            @tracked.enq :go
+            command = @end_session.deq
+            if command == :close
+              socket.stub(:getpeername).and_raise(RuntimeError, "Socket closed")
+            end
           end
-          @disconnected.enq :go
+          @session_ended.enq :go
         end
-        @connected.deq
+        @tracked.deq
       end
 
       # Stop tracking a connection.  Does not return until it is no
       # longer tracked.
 
-      def disconnect
-        @disconnect.enq :go
-        @disconnected.deq
+      def end_session(command = :normally)
+        @end_session.enq command
+        @session_ended.deq
       end
 
     end
@@ -61,12 +64,28 @@ module Ftpd
 
       let(:socket) {socket_bound_to('127.0.0.1')}
 
-      it 'should track the total number of connection' do
-        connection_tracker.connections.should == 0
-        connector.connect socket
-        connection_tracker.connections.should == 1
-        connector.disconnect
-        connection_tracker.connections.should == 0
+      context '(session ends normally)' do
+
+        it 'should track the total number of connection' do
+          connection_tracker.connections.should == 0
+          connector.start_session socket
+          connection_tracker.connections.should == 1
+          connector.end_session
+          connection_tracker.connections.should == 0
+        end
+
+      end
+
+      context '(socket disconnected during session)' do
+
+        it 'should track the total number of connection' do
+          connection_tracker.connections.should == 0
+          connector.start_session socket
+          connection_tracker.connections.should == 1
+          connector.end_session :close
+          connection_tracker.connections.should == 0
+        end
+
       end
 
     end
@@ -78,10 +97,10 @@ module Ftpd
         socket2 = socket_bound_to('127.0.0.2')
         connection_tracker.connections_for(socket1).should == 0
         connection_tracker.connections_for(socket2).should == 0
-        connector.connect socket1
+        connector.start_session socket1
         connection_tracker.connections_for(socket1).should == 1
         connection_tracker.connections_for(socket2).should == 0
-        connector.disconnect
+        connector.end_session
         connection_tracker.connections_for(socket1).should == 0
         connection_tracker.connections_for(socket2).should == 0
       end
@@ -94,9 +113,9 @@ module Ftpd
 
       it 'should forget about an IP that has no connection' do
         connection_tracker.known_ip_count.should == 0
-        connector.connect socket
+        connector.start_session socket
         connection_tracker.known_ip_count.should == 1
-        connector.disconnect
+        connector.end_session
         connection_tracker.known_ip_count.should == 0
       end
 
