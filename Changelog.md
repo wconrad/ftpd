@@ -2,9 +2,10 @@
 
 Enhancements
 
-* Configurable maximum connections (defaults to 200).
-* Configurable maximum connections per IP (defaults to 5).
-* Disconnect after too many failed login attempts (configurable).
+* Configurable maximum connections (defaults to unlimited).
+* Configurable maximum connections per IP (defaults to unlimited).
+* Configurable disconnect after too many failed login attempts
+  (defaults to unlimited)
 * Delay after failed login (configurable).
 
 API Changes

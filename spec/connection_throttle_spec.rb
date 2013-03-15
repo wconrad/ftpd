@@ -20,8 +20,8 @@ module Ftpd
     end
 
     it 'should have defaults' do
-      connection_throttle.max_connections.should == 200
-      connection_throttle.max_connections_per_ip.should == 5
+      connection_throttle.max_connections.should be_nil
+      connection_throttle.max_connections_per_ip.should be_nil
     end
 
     describe '#allow?' do
