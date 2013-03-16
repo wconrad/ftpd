@@ -17,21 +17,15 @@ module Ftpd
       @auth_level = opts[:auth_level]
       @socket = opts[:socket]
       @tls = opts[:tls]
+      @list_formatter = opts[:list_formatter]
+      @response_delay = opts[:response_delay]
+      @session_timeout = opts[:session_timeout]
       if @tls == :implicit
         @socket.encrypt
       end
-      @name_prefix = '/'
-      @list_formatter = opts[:list_formatter]
-      @data_type = 'A'
-      @mode = 'S'
-      @structure = 'F'
-      @response_delay = opts[:response_delay]
-      @data_channel_protection_level = :clear
       @command_sequence_checker = init_command_sequence_checker
-      @session_timeout = opts[:session_timeout]
-      @logged_in = false
       set_socket_options
-      reset_failed_auths
+      initialize_session
     end
 
     def run
@@ -827,6 +821,20 @@ module Ftpd
         reply "421 server unavailable"
         throw :done
       end
+    end
+
+    def initialize_session
+      @logged_in = false
+      @data_type = 'A'
+      @mode = 'S'
+      @structure = 'F'
+      @name_prefix = '/'
+      @data_channel_protection_level = :clear
+      @data_hostname = nil
+      @data_port = nil
+      @protection_buffer_size_set = 0
+      close_data_server_socket
+      reset_failed_auths
     end
 
     def server_name_and_version
