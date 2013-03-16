@@ -88,7 +88,7 @@ class TestClient
   end
 
   def xpwd
-    response = raw('XPWD')
+    response = @ftp.sendcmd('XPWD')
     response[/"(.+)"/, 1]
   end
 
@@ -125,7 +125,7 @@ class TestClient
   end
 
   def set_option(option)
-    raw "OPTS #{option}"
+    @ftp.sendcmd "OPTS #{option}"
   end
 
   private
