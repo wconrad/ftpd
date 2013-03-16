@@ -37,7 +37,7 @@ module Ftpd
     def run
       catch :done do
         begin
-          reply "220 ftpd"
+          reply "220 #{server_name_and_version}"
           loop do
             begin
               s = get_command
@@ -471,7 +471,7 @@ module Ftpd
     def cmd_stat(argument)
       ensure_logged_in
       syntax_error if argument
-      reply "211 #{@server_name} #{@server_version}"
+      reply "211 #{server_name_and_version}"
     end
 
     def self.unimplemented(command)
@@ -827,6 +827,10 @@ module Ftpd
         reply "421 server unavailable"
         throw :done
       end
+    end
+
+    def server_name_and_version
+      "#{@server_name} #{@server_version}"
     end
 
   end

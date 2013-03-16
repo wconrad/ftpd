@@ -15,5 +15,4 @@ Feature: Status
   Scenario: Server status
     Given a successful login
     When the client successfully requests status
-    Then the server returns its name
-    And the server returns its version
+    Then the server returns its title
