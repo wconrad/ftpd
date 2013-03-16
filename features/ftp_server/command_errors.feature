@@ -11,15 +11,3 @@ Feature: Command Errors
     Given a successful connection
     When the client sends command "foo"
     Then the server returns a command unrecognized error
-
-  Scenario Outline: Unimplemented command
-    Given a successful connection
-    When the client sends command "<command>"
-    Then the server returns an unimplemented command error
-    Examples:
-      | command |
-      | ABOR    |
-      | REIN    |
-      | REST    |
-      | SITE    |
-      | SMNT    |
