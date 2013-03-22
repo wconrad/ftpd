@@ -1,6 +1,6 @@
 GIT
   remote: git@github.com:wconrad/double-bag-ftps.git
-  revision: 043ba70309ed622302d3aa5c6f3169872d1211ca
+  revision: c546429689618e1757bb2dfe1fa35a386e7aebb2
   specs:
     double-bag-ftps (0.1.0)
 
