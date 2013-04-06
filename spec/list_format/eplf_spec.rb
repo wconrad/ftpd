@@ -9,14 +9,14 @@ module Ftpd
         let(:file_info) do
           FileInfo.new(:ftype => 'file',
                        :mode => 0100644,
-                       :mtime => Time.mktime(2013, 3, 3, 8, 38, 0),
+                       :mtime => Time.utc(2013, 3, 3, 8, 38, 0),
                        :path => 'foo',
                        :size => 1234)
         end
         subject(:formatter) {Eplf.new(file_info)}
 
         it 'should produce EPLF format' do
-          formatter.to_s.should == "+r,s1234,m1362325080\tfoo"
+          formatter.to_s.should == "+r,s1234,m1362299880\tfoo"
         end
 
       end
@@ -26,14 +26,14 @@ module Ftpd
         let(:file_info) do
           FileInfo.new(:ftype => 'directory',
                        :mode => 0100644,
-                       :mtime => Time.mktime(2013, 3, 3, 8, 38, 0),
+                       :mtime => Time.utc(2013, 3, 3, 8, 38, 0),
                        :path => 'foo',
                        :size => 1024)
         end
         subject(:formatter) {Eplf.new(file_info)}
 
         it 'should produce EPLF format' do
-          formatter.to_s.should == "+/,m1362325080\tfoo"
+          formatter.to_s.should == "+/,m1362299880\tfoo"
         end
 
       end
@@ -43,7 +43,7 @@ module Ftpd
         let(:file_info) do
           FileInfo.new(:ftype => 'file',
                        :mode => 0100644,
-                       :mtime => Time.mktime(2013, 3, 3, 8, 38, 0),
+                       :mtime => Time.utc(2013, 3, 3, 8, 38, 0),
                        :path => 'foo',
                        :identifier => '1234.5678',
                        :size => 1234)
@@ -52,7 +52,7 @@ module Ftpd
 
         it 'should produce EPLF format' do
           formatter.to_s.should ==
-            "+r,s1234,m1362325080,i1234.5678\tfoo"
+            "+r,s1234,m1362299880,i1234.5678\tfoo"
         end
 
       end
