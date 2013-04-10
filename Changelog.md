@@ -1,3 +1,10 @@
+### 0.7.0
+
+Bug fixes
+
+* Gracefully handle Errno::ENOTCONN during socket shutdown (fixes
+  gh-1)
+
 ### 0.6.0
 
 Enhancements

@@ -109,8 +109,8 @@ module Ftpd
 
     def close_socket(socket)
       if socket.respond_to?(:shutdown)
-        socket.shutdown
-        socket.read
+        socket.shutdown rescue nil
+        socket.read rescue nil
       end
     ensure
       socket.close
