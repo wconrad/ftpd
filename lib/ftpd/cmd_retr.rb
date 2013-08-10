@@ -8,7 +8,7 @@ module Ftpd
         ensure_file_system_supports :read
         path = argument
         syntax_error unless path
-        path = File.expand_path(path, name_prefix)
+        path = PathHelper.expand_path(path, name_prefix)
         ensure_accessible path
         ensure_exists path
         contents = file_system.read(path)

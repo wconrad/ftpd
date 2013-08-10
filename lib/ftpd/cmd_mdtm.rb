@@ -7,7 +7,7 @@ module Ftpd
       ensure_file_system_supports :dir
       ensure_file_system_supports :file_info
       syntax_error unless path
-      path = File.expand_path(path, name_prefix)
+      path = PathHelper.expand_path(path, name_prefix)
       ensure_accessible(path)
       ensure_exists(path)
       info = file_system.file_info(path)

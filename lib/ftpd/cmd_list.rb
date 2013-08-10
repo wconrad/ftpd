@@ -8,7 +8,7 @@ module Ftpd
         ensure_file_system_supports :dir
         ensure_file_system_supports :file_info
         path = list_path(argument)
-        path = File.expand_path(path, name_prefix)
+        path = PathHelper.expand_path(path, name_prefix)
         transmit_file(list(path), 'A')
       end
     end
