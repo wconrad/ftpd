@@ -4,11 +4,11 @@ module Ftpd
 
   describe ConnectionThrottle do
 
-    let(:socket) {mock TCPSocket}
+    let(:socket) {double TCPSocket}
     let(:connections) {0}
     let(:connections_for_socket) {0}
     let(:connection_tracker) do
-      mock ConnectionTracker, :connections => connections
+      double ConnectionTracker, :connections => connections
     end
     subject(:connection_throttle) do
       ConnectionThrottle.new(connection_tracker)

@@ -11,7 +11,7 @@ module Ftpd
     # Create a mock socket with the given peer address
 
     def socket_bound_to(source_ip)
-      socket = mock TCPSocket
+      socket = double TCPSocket
       peeraddr = Socket.pack_sockaddr_in(0, source_ip)
       socket.stub :getpeername => peeraddr
       socket
