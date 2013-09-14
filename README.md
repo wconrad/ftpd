@@ -212,8 +212,8 @@ And register your class with the ftp_server before starting it:
 
 ### Logging
 
-Ftpd can write to an instance of {Logger} that you provide.  To log to
-standard out:
+Ftpd can write to an instance of
+{http://www.ruby-doc.org/stdlib-2.0.0/libdoc/logger/rdoc/Logger.html Logger} that you provide.  To log to standard out:
 
     server.log = Logger.new($stdout)
 
