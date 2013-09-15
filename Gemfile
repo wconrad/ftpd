@@ -5,7 +5,7 @@ gem 'memoizer', '~> 1.0.1'
 group :development do
   gem 'cucumber'
   gem 'double-bag-ftps'
-  gem 'jeweler'
+  gem 'jeweler', '1.8.4'
   gem 'rake'
   gem 'redcarpet', '<3'
   gem 'rspec'
