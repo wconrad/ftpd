@@ -247,6 +247,10 @@ The tests pass with these Rubies:
 * ruby-1.9.3-p392
 * ruby-2.0.0-p0
 
+For Ruby 1.8, use an ftpd version before 0.8.  In your Gemfile:
+
+    gem 'ftpd', '<0.8'
+
 ## Development
 
 ### Tests
