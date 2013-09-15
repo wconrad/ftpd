@@ -10,6 +10,10 @@ Given /^the test server has TLS mode "(\w+)"$/ do |mode|
   server.tls = mode.to_sym
 end
 
+Given(/^the test server is bound to "(.*?)"$/) do |ip_address|
+  server.interface = ip_address
+end
+
 Given /^the test server has logging (enabled|disabled)$/ do |state|
   server.logging = state == 'enabled'
 end

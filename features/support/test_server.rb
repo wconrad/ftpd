@@ -219,6 +219,7 @@ class TestServer
   def_delegator :@server, :'auth_level'
   def_delegator :@server, :'auth_level='
   def_delegator :@server, :'failed_login_delay='
+  def_delegator :@server, :'interface='
   def_delegator :@server, :'max_connections='
   def_delegator :@server, :'max_connections_per_ip='
   def_delegator :@server, :'max_failed_logins='
@@ -250,7 +251,7 @@ class TestServer
   end
 
   def host
-    'localhost'
+    @server.interface
   end
 
   def user

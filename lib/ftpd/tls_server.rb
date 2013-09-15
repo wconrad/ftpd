@@ -47,7 +47,8 @@ module Ftpd
     def accept
       socket = @server_socket.accept
       if tls_enabled?
-        add_tls_methods_to_socket(socket)
+        add_missing_methods_to_socket socket
+        add_tls_methods_to_socket socket
       end
       socket
     end
@@ -66,18 +67,35 @@ module Ftpd
     end
     memoize :ssl_context
 
+    # Add to the TLS socket some methods that regular socket has, but TLS socket is missing
+
+    def add_missing_methods_to_socket(socket)
+
+      def socket.local_address
+        @io.local_address
+      end
+
+    end
+
+    # Add to the TLS sockets some methods of our own invention that
+    # make life a little easier.
+
     def add_tls_methods_to_socket(socket)
       context = @ssl_context
       class << socket
+
         def ssl_context
           context
         end
+
         def encrypted?
           !!cipher
         end
+
         def encrypt
           accept
         end
+
       end
     end
 

@@ -26,6 +26,7 @@ module Ftpd
       end
       @command_sequence_checker = init_command_sequence_checker
       set_socket_options
+      @protocols = Protocols.new(@socket)
       initialize_session
     end
 
@@ -109,6 +110,7 @@ module Ftpd
 
     def cmd_port(argument)
       ensure_logged_in
+      ensure_not_epsv_all
       pieces = argument.split(/,/)
       syntax_error unless pieces.size == 6
       pieces.collect! do |s|
@@ -119,11 +121,7 @@ module Ftpd
       end
       hostname = pieces[0..3].join('.')
       port = pieces[4] << 8 | pieces[5]
-      if port < 1024 && !@allow_low_data_ports
-        error "504 Command not implemented for that parameter"
-      end
-      @data_hostname = hostname
-      @data_port = port
+      set_active_mode_address hostname, port
       reply "200 PORT command successful"
     end
 
@@ -264,6 +262,7 @@ module Ftpd
 
     def cmd_pasv(argument)
       ensure_logged_in
+      ensure_not_epsv_all
       if @data_server
         reply "200 Already in passive mode"
       else
@@ -356,6 +355,12 @@ module Ftpd
     def ensure_tls_supported
       unless tls_enabled?
         error "534 TLS not enabled"
+      end
+    end
+
+    def ensure_not_epsv_all
+      if @epsv_all
+        error "501 Not allowed after EPSV ALL"
       end
     end
 
@@ -489,6 +494,49 @@ module Ftpd
       error '501 Unsupported option'
     end
 
+    def cmd_eprt(argument)
+      ensure_logged_in
+      ensure_not_epsv_all
+      delim = argument[0..0]
+      parts = argument.split(delim)[1..-1]
+      syntax_error unless parts.size == 3
+      protocol_code, address, port = *parts
+      protocol_code = protocol_code.to_i
+      ensure_protocol_supported protocol_code
+      port = port.to_i
+      set_active_mode_address address, port
+      reply "200 EPRT command successful"
+    end
+
+    def ensure_protocol_supported(protocol_code)
+      unless @protocols.supports_protocol?(protocol_code)
+        protocol_list = @protocols.protocol_codes.join(',')
+        error("522 Network protocol #{protocol_code} not supported, "\
+              "use (#{protocol_list})")
+      end
+    end
+
+    def cmd_epsv(argument)
+      ensure_logged_in
+      if @data_server
+        reply "200 Already in passive mode"
+      else
+        if argument == 'ALL'
+          @epsv_all = true
+          reply "220 EPSV now required for port setup"
+        else
+          protocol_code = argument && argument.to_i
+          if protocol_code
+            ensure_protocol_supported protocol_code
+          end
+          interface = @socket.addr[3]
+          @data_server = TCPServer.new(interface, 0)
+          port = @data_server.addr[1]
+          reply "229 Entering extended passive mode (|||#{port}|)"
+        end
+      end
+    end
+
     unimplemented :abor
     unimplemented :rein
     unimplemented :rest
@@ -497,7 +545,8 @@ module Ftpd
 
     def extensions
       [
-        (TLS_EXTENSIONS if tls_enabled?)
+        (TLS_EXTENSIONS if tls_enabled?),
+        IPV6_EXTENSIONS,
       ].flatten.compact
     end
 
@@ -505,6 +554,11 @@ module Ftpd
       'AUTH TLS',
       'PBSZ',
       'PROT'
+    ]
+
+    IPV6_EXTENSIONS = [
+      'EPRT',
+      'EPSV',
     ]
 
     def supported_commands
@@ -822,6 +876,18 @@ module Ftpd
       end
     end
 
+    def set_data_address(n)
+
+    end
+
+    def set_active_mode_address(address, port)
+      if port > 0xffff || port < 1024 && !@allow_low_data_ports
+        error "504 Command not implemented for that parameter"
+      end
+      @data_hostname = address
+      @data_port = port
+    end
+
     def initialize_session
       @logged_in = false
       @data_type = 'A'
@@ -832,6 +898,7 @@ module Ftpd
       @data_hostname = nil
       @data_port = nil
       @protection_buffer_size_set = 0
+      @epsv_all = false
       close_data_server_socket
       reset_failed_auths
     end

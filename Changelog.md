@@ -8,6 +8,7 @@ Enhancements
 
 * Added example showing ftp used as a test harness with rspec
 * Ignore LIST/NLST switches such as "-a"
+* Support IPV6
 
 ### 0.8.0
 

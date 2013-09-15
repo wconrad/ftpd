@@ -5,6 +5,7 @@ unless $:.include?(File.dirname(__FILE__) + '/../lib')
 end
 
 require 'ftpd'
+require 'ipaddr'
 require 'optparse'
 
 module Example
@@ -26,7 +27,7 @@ module Example
     attr_reader :user
 
     def initialize(argv)
-      @interface = 'localhost'
+      @interface = '127.0.0.1'
       @tls = :explicit
       @port = 0
       @auth_level = 'password'
@@ -185,8 +186,6 @@ module Example
 
     private
 
-    HOST = 'localhost'
-
     def auth_level
       Ftpd.const_get("AUTH_#{@args.auth_level.upcase}")
     end
@@ -213,7 +212,7 @@ module Example
       puts "Account: #{account.inspect}" if auth_level >= Ftpd::AUTH_ACCOUNT
       puts "TLS: #{@args.tls}"
       puts "Directory: #{@data_dir}"
-      puts "URI: ftp://#{HOST}:#{@server.bound_port}"
+      puts "URI: ftp://#{connection_host}:#{@server.bound_port}"
       puts "PID: #{$$}"
     end
 
@@ -221,7 +220,7 @@ module Example
       command_path = '/tmp/connect-to-example-ftp-server.sh'
       File.open(command_path, 'w') do |file|
         file.puts "#!/bin/bash"
-        file.puts "ftp $FTP_ARGS #{HOST} #{@server.bound_port}"
+        file.puts "ftp $FTP_ARGS #{connection_host} #{@server.bound_port}"
       end
       system("chmod +x #{command_path}")
       puts "Connection script written to #{command_path}"
@@ -251,6 +250,15 @@ module Example
 
     def make_log
       @args.debug && Logger.new($stdout)
+    end
+
+    def connection_host
+      addr = IPAddr.new(@server.interface)
+      if addr.ipv6?
+        '::1'
+      else
+        '127.0.0.1'
+      end
     end
 
   end

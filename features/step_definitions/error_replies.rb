@@ -105,3 +105,11 @@ end
 Then /^the server returns an already exists error$/ do
   step 'the server returns a "550 Already exists" error'
 end
+
+Then /^the server returns a network protocol not supported error$/ do
+  step 'the server returns a "522 Network protocol" error'
+end
+
+Then /^the server sends a not allowed after epsv all error$/ do
+  step 'the server returns a "501 Not allowed after EPSV ALL" error'
+end

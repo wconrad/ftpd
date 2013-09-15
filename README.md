@@ -28,9 +28,6 @@ impacting you (or at least want to let many of them build up before
 you have to deal with them), then lock your Gemfile down to a minor
 release (e.g. :version => '~> 0.5.0').
 
-Ftpd currently does not support IPV6 and therefore you are urged to
-ensure binding the server interface as `server.interface = '127.0.0.1'`.
-
 ## Hello World
 
 This is examples/hello_world.rb, a bare minimum FTP server.  It allows
@@ -245,6 +242,9 @@ To log to a file:
 
 * Implements [RFC-2389](http://tools.ietf.org/rfc/rfc2389.txt)
   (Feature negotiation mechanism for the File Transfer Protocol)
+
+* Implements [RFC-2428](http://tools.ietf.org/rfc/rfc2428.txt) (FTP
+  Extensions for IPv6 and NATs)
 
 * Implements enough of
   [RFC-4217](http://tools.ietf.org/rfc/rfc4217.txt) (Securing FTP with

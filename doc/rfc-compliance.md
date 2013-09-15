@@ -213,8 +213,8 @@ use over various network protocols, and the new response codes 522 and
 * [link](http://tools.ietf.org/rfc/rfc2428.txt)
 
 <pre>
-EPRT    No      ---     Set active data connection over IPv4 or IPv6    
-EPSV    No      ---     Set passive data connection over IPv4 or IPv6 
+EPRT    Yes    0.9.0    Set active data connection over IPv4 or IPv6    
+EPSV    Yes    0.9.0    Set passive data connection over IPv4 or IPv6 
 </pre>
 
 ##RFC-2577 - FTP Security Considerations

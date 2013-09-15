@@ -4,6 +4,7 @@ end
 
 require 'ftpd'
 require 'stringio'
+require 'thread'
 require 'timecop'
 require 'tmpdir'
 
