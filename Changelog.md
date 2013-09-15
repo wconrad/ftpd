@@ -1,3 +1,14 @@
+This is the change log for the main branch of ftpd, which supports
+Ruby 1.9 and greater.  For ruby 1.8.7, please use the latest version
+before 0.8.0.
+
+### 0.8.0
+
+Administration
+
+* Split Ruby 1.8 into separate branch
+* Upgraded gems
+
 ### 0.7.0
 
 Bug fixes
