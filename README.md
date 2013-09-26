@@ -28,6 +28,9 @@ impacting you (or at least want to let many of them build up before
 you have to deal with them), then lock your Gemfile down to a minor
 release (e.g. :version => '~> 0.5.0').
 
+Ftpd currently does not support IPV6 and therefore you are urged to
+ensure binding the server interface as `server.interface = '127.0.0.1'`.
+
 ## Hello World
 
 This is examples/hello_world.rb, a bare minimum FTP server.  It allows
@@ -57,6 +60,7 @@ end
 Dir.mktmpdir do |temp_dir|
   driver = Driver.new(temp_dir)
   server = Ftpd::FtpServer.new(driver)
+  server.interface = '127.0.0.1'
   server.start
   puts "Server listening on port #{server.bound_port}"
   gets
@@ -171,6 +175,7 @@ example, to set the session timeout to 10 minutes:
 ```ruby
 server = Ftpd::FtpServer.new(driver)
 server.session_timeout = 10 * 60
+server.interface = '127.0.0.1'
 server.start
 ```
 
