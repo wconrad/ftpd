@@ -34,32 +34,34 @@ This is examples/hello_world.rb, a bare minimum FTP server.  It allows
 any user/password, and serves files in a temporary directory.  It
 binds to an ephemeral port on the local interface:
 
-    require 'ftpd'
-    require 'tmpdir'
+```ruby
+require 'ftpd'
+require 'tmpdir'
 
-    class Driver
+class Driver
 
-      def initialize(temp_dir)
-        @temp_dir = temp_dir
-      end
+  def initialize(temp_dir)
+    @temp_dir = temp_dir
+  end
 
-      def authenticate(user, password)
-        true
-      end
+  def authenticate(user, password)
+    true
+  end
 
-      def file_system(user)
-        Ftpd::DiskFileSystem.new(@temp_dir)
-      end
+  def file_system(user)
+    Ftpd::DiskFileSystem.new(@temp_dir)
+  end
 
-    end
+end
 
-    Dir.mktmpdir do |temp_dir|
-      driver = Driver.new(temp_dir)
-      server = Ftpd::FtpServer.new(driver)
-      server.start
-      puts "Server listening on port #{server.bound_port}"
-      gets
-    end
+Dir.mktmpdir do |temp_dir|
+  driver = Driver.new(temp_dir)
+  server = Ftpd::FtpServer.new(driver)
+  server.start
+  puts "Server listening on port #{server.bound_port}"
+  gets
+end
+```
 
 A more full-featured example that allows TLS and takes options is in
 examples/example.rb
@@ -115,15 +117,17 @@ Here are the methods a file system may expose:
 
 Ftpd includes a disk based file system:
 
-    class Driver
+```ruby
+class Driver
 
-      ...
+  ...
 
-      def file_system(user)
-        Ftpd::DiskFileSystem.new('/var/lib/ftp')
-      end
+  def file_system(user)
+    Ftpd::DiskFileSystem.new('/var/lib/ftp')
+  end
 
-    end
+end
+```
 
 **Warning**: The DiskFileSystem allows file and directory modification
 including writing, renaming, deleting, etc.  If you want a read-only
@@ -146,25 +150,29 @@ allows only the operations you want, or which mixes the predefined
 modules with your customizations, as in this silly example that allows
 uploads but then throws them away.
 
-    class BlackHole
-      def write(ftp_path, contents)
-      end
-    end
+```ruby
+class BlackHole
+  def write(ftp_path, contents)
+  end
+end
 
-    class CustomDiskFileSystem
-      include DiskFileSystem::Base
-      include DiskFileSystem::Read
-      include BlackHole
-    end
+class CustomDiskFileSystem
+  include DiskFileSystem::Base
+  include DiskFileSystem::Read
+  include BlackHole
+end
+```
 
 ## Configuration
 
 Configuration is done via accessors on {Ftpd::FtpServer}.  For
 example, to set the session timeout to 10 minutes:
 
-      server = Ftpd::FtpServer.new(driver)
-      server.session_timeout = 10 * 60
-      server.start
+```ruby
+server = Ftpd::FtpServer.new(driver)
+server.session_timeout = 10 * 60
+server.start
+```
 
 You can set any of these attributes before starting the server:
 
