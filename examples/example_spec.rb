@@ -102,6 +102,10 @@ describe Fetcher::FTPFetcher do
       result = subject.connect_and_list(server.bound_port)
       expect(result).to be_a(Array)
       expect(result).not_to be_empty
+    end
+
+    it "should connect to the FTP server and find 'report.txt' in the Array returned" do
+      result = subject.connect_and_list(server.bound_port)
       expect(result.pop).to eq("report.txt")
     end
   end
