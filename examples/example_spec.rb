@@ -15,6 +15,9 @@ require 'tmpdir'
 
 DATA_DIR = File.expand_path('../examples/rspec_specs/ftp_documents', File.dirname(__FILE__))
 
+# This is an example client spec driven via the use of Ftpd within the
+# specs.  The specs spawn a 'dummy' Ftpd server and ensure this client
+# operates as expected.
 module Fetcher
   class FTPFetcher
 
@@ -53,7 +56,8 @@ module Fetcher
   end
 end
 
-
+# This is the `Driver` for Ftpd.  In this example, the file system is
+# considered as read-only.
 class Driver
   def initialize(user, pwd, data_dir)
     @user = user
@@ -80,6 +84,10 @@ describe Fetcher::FTPFetcher do
   # NOTE In this example, the client implements `connect_and_list()`
   # where a connection is establishd and the files at the remote root
   # path are returned as an `Array`.
+  #
+  # In this example, a file named `report.txt` is located in
+  # `examples/rspec_specs/ftp_documents` - in the second spec below, we
+  # expect to find this file on our 'dummy' Ftpd server.
   describe "#connect_and_list" do
     it "should connect and not raise errors" do
       expect{subject.connect_and_list(server.bound_port)}.not_to raise_error
