@@ -18,7 +18,7 @@ RSpec.configure do |config|
   config.formatter = :documentation
 end
 
-DATA_DIR = File.expand_path('../examples/rspec_specs/ftp_documents', File.dirname(__FILE__))
+DATA_DIR = File.expand_path('../rspec_specs/ftp_documents', File.dirname(__FILE__))
 
 # This is an example client spec driven via the use of Ftpd within the
 # specs.  The specs spawn a 'dummy' Ftpd server and ensure this client
@@ -31,7 +31,7 @@ module Fetcher
     # @param pwd [String] password.
     # @param dir [String] remote directory to change to.
     def initialize(host, user, pwd, dir)
-      @file_path = File.expand_path('../examples/rspec_specs/tmp', File.dirname(__FILE__))
+      @file_path = File.expand_path('../rspec_specs/tmp', File.dirname(__FILE__))
       create_file_path
       @host = host
       @user = user
