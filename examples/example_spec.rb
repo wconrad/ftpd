@@ -13,6 +13,11 @@ require 'net/ftp'
 require 'ftpd'
 require 'tmpdir'
 
+RSpec.configure do |config|
+  config.color_enabled = true
+  config.formatter = :documentation
+end
+
 DATA_DIR = File.expand_path('../examples/rspec_specs/ftp_documents', File.dirname(__FILE__))
 
 # This is an example client spec driven via the use of Ftpd within the
