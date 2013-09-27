@@ -8,12 +8,51 @@
 # interaction with a 'dummy' ftp server via RSpec.  In this example we
 # assume the client is implemented via `Fetcher::FTPFetcher`.
 
-require 'spec_helper'
+require 'rspec'
 require 'net/ftp'
 require 'ftpd'
 require 'tmpdir'
 
-DATA_DIR = "#{Rails.root}/spec/documents"
+DATA_DIR = File.expand_path('../examples/rspec_specs/ftp_documents', File.dirname(__FILE__))
+
+module Fetcher
+  class FTPFetcher
+
+    # @param host [String] ftp host to connect to.
+    # @param user [String] username.
+    # @param pwd [String] password.
+    # @param dir [String] remote directory to change to.
+    def initialize(host, user, pwd, dir)
+      @file_path = File.expand_path('../examples/rspec_specs/tmp', File.dirname(__FILE__))
+      create_file_path
+      @host = host
+      @user = user
+      @pwd = pwd
+      @dir = dir
+      @ftp = Net::FTP.new
+    end
+
+    attr_reader :file_path, :host, :user, :pwd, :dir
+    attr_accessor :ftp
+
+    # @param port [Fixnum] port to connect to, 21 by default.
+    # @return [Array] list of files in the current directory.
+    def connect_and_list(port = 21)
+      ftp.debug_mode = true if ENV['DEBUG'] == "true"
+      ftp.passive = true
+      ftp.connect(host, port)
+      ftp.login(user, pwd)
+      ftp.chdir(dir)
+      ftp.nlst
+    end
+
+    private
+    def create_file_path
+      Dir.mkdir(file_path, 0755) unless File.exists?(file_path)
+    end
+  end
+end
+
 
 class Driver
   def initialize(user, pwd, data_dir)
@@ -35,7 +74,7 @@ describe Fetcher::FTPFetcher do
   end
 
   let(:subject) do
-    Fetcher::FTPFetcher.new('lvh.me', 'u', 'p', '/ftp')
+    Fetcher::FTPFetcher.new('lvh.me', 'u', 'p', '/')
   end
 
   # NOTE In this example, the client implements `connect_and_list()`
@@ -50,6 +89,7 @@ describe Fetcher::FTPFetcher do
       result = subject.connect_and_list(server.bound_port)
       expect(result).to be_a(Array)
       expect(result).not_to be_empty
+      expect(result.pop).to eq("report.txt")
     end
   end
 end
