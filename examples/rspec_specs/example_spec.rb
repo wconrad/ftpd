@@ -42,19 +42,16 @@ module Fetcher
       @ftp = Net::FTP.new
     end
 
-    attr_reader :file_path, :host, :user, :pwd, :dir
-    attr_accessor :ftp
-
     # @param port [Fixnum] port to connect to, 21 by default.
     # @return [Array] list of files in the current directory.
 
     def connect_and_list(port = 21)
-      ftp.debug_mode = true if ENV['DEBUG'] == "true"
-      ftp.passive = true
-      ftp.connect(host, port)
-      ftp.login(user, pwd)
-      ftp.chdir(dir)
-      ftp.nlst
+      @ftp.debug_mode = true if ENV['DEBUG'] == "true"
+      @ftp.passive = true
+      @ftp.connect @host, port
+      @ftp.login @user, @pwd
+      @ftp.chdir @dir
+      @ftp.nlst
     end
 
   end
