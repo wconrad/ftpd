@@ -62,7 +62,7 @@ describe Fetcher::FTPFetcher do
   # read-only and contains a single file.
 
   class Driver
-    def initialize 
+    def initialize
       @data_dir = Dir.mktmpdir
       at_exit {FileUtils.rm_rf(@data_dir)}
       FileUtils.touch File.expand_path('report.txt', @data_dir)
@@ -81,14 +81,6 @@ describe Fetcher::FTPFetcher do
   let(:subject) do
     Fetcher::FTPFetcher.new('127.0.0.1', 'user', 'password', '/')
   end
-
-  # NOTE In this example, the client implements `connect_and_list()`
-  # where a connection is establishd and the files at the remote root
-  # path are returned as an `Array`.
-  #
-  # In this example, a file named `report.txt` is located in
-  # `examples/rspec_specs/ftp_documents` - in the second spec below, we
-  # expect to find this file on our 'dummy' Ftpd server.
 
   describe "#connect_and_list" do
 
