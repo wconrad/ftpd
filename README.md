@@ -325,6 +325,16 @@ Wayne Conrad <wconrad@yagni.com>
 Thanks to Databill, LLC, which supported the creation of this library,
 and granted permission to donate it to the community.
 
+### Contributors
+
+Among those who have improved ftpd are:
+
+* Alfonso Cora
+* Larry. W. Cashdollar
+* Michael de Silva
+
+Thank you!
+
 ## See also
 
 * [Changelog](Changelog.md)
