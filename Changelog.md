@@ -4,6 +4,10 @@ before 0.8.0.
 
 ### 0.8.0
 
+Enhancements
+
+* Added example showing ftp used as a test harness with rspec
+
 Administration
 
 * Split Ruby 1.8 into separate branch
