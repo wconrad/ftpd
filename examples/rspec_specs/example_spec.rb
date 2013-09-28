@@ -76,7 +76,6 @@ describe Fetcher::FTPFetcher do
     server = Ftpd::FtpServer.new(Driver.new)
     server.interface = "127.0.0.1"
     server.start
-    puts "Server listening on port #{server.bound_port}"
     server
   end
 
