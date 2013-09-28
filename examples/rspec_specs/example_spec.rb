@@ -16,8 +16,6 @@ require 'net/ftp'
 require 'ftpd'
 require 'tmpdir'
 
-DATA_DIR = File.expand_path('../rspec_specs/ftp_documents', File.dirname(__FILE__))
-
 # This is an example client spec driven via the use of Ftpd within the
 # specs.  The specs spawn a 'dummy' Ftpd server and ensure this client
 # operates as expected.
@@ -94,19 +92,9 @@ describe Fetcher::FTPFetcher do
 
   describe "#connect_and_list" do
 
-    it "should connect and not raise errors" do
-      expect{subject.connect_and_list(server.bound_port)}.not_to raise_error
-    end
-
-    it "should connect to the FTP server and return an Array of files" do
-      result = subject.connect_and_list(server.bound_port)
-      expect(result).to be_a(Array)
-      expect(result).not_to be_empty
-    end
-
     it "should connect to the FTP server and find 'report.txt' in the Array returned" do
       result = subject.connect_and_list(server.bound_port)
-      expect(result.pop).to eq("report.txt")
+      expect(result).to include('report.txt')
     end
 
   end
