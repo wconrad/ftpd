@@ -62,21 +62,24 @@ module Fetcher
   end
 end
 
-# This is the `Driver` for Ftpd.  In this example, the file system is
-# considered as read-only.
-class Driver
-  def initialize(user, pwd, data_dir)
-    @user = user
-    @pwd = pwd
-    @data_dir = data_dir
-  end
-  def authenticate(user, pwd); true; end
-  def file_system(user); Ftpd::ReadOnlyDiskFileSystem.new(@data_dir); end
-end
-
 describe Fetcher::FTPFetcher do
+
+  # This `Driver` tells Ftpd how to authenticate and how to interact
+  # with the file systme.  In this example, the file system is
+  # read-only and contains a single file.
+
+  class Driver
+    def initialize 
+      @data_dir = Dir.mktmpdir
+      at_exit {FileUtils.rm_rf(@data_dir)}
+      FileUtils.touch File.expand_path('report.txt', @data_dir)
+    end
+    def authenticate(user, pwd); true; end
+    def file_system(user); Ftpd::ReadOnlyDiskFileSystem.new(@data_dir); end
+  end
+
   let(:server) do
-    server = Ftpd::FtpServer.new Driver.new("spec_user", "spec_pwd", DATA_DIR)
+    server = Ftpd::FtpServer.new(Driver.new)
     server.interface = "127.0.0.1"
     server.start
     puts "Server listening on port #{server.bound_port}"
