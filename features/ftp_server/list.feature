@@ -68,6 +68,15 @@ Feature: List
     And the file list should contain "foo"
     And the file list should contain "bar"
 
+  Scenario: -a
+    Given a successful login
+    And the server has file "foo"
+    And the server has file "bar"
+    When the client successfully lists the directory "-a"
+    Then the file list should be in long form
+    And the file list should contain "foo"
+    And the file list should contain "bar"
+
   Scenario: Missing directory
     Given a successful login
     When the client successfully lists the directory "missing/file"

@@ -41,6 +41,15 @@ Feature: Name List
     Then the file list should be in short form
     And the file list should contain "foo"
 
+  Scenario: '-a'
+    Given a successful login
+    And the server has file "foo"
+    And the server has file "bar"
+    When the client successfully name-lists the directory "-a"
+    Then the file list should be in short form
+    And the file list should contain "foo"
+    And the file list should contain "bar"
+
   Scenario: Passive
     Given a successful login
     And the server has file "foo"

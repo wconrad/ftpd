@@ -7,6 +7,7 @@ before 0.8.0.
 Enhancements
 
 * Added example showing ftp used as a test harness with rspec
+* Ignore LIST/NLST switches such as "-a"	
 
 Administration
 

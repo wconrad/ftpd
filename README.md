@@ -330,6 +330,7 @@ and granted permission to donate it to the community.
 Among those who have improved ftpd are:
 
 * Alfonso Cora
+* Bjoern B. Dorra
 * Larry. W. Cashdollar
 * Michael de Silva
 
