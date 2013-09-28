@@ -197,6 +197,7 @@ module Ftpd
     end
 
     def cmd_list(argument)
+      argument = argument_without_options(argument)
       close_data_server_socket_when_done do
         ensure_logged_in
         ensure_file_system_supports :dir
@@ -209,6 +210,7 @@ module Ftpd
     end
 
     def cmd_nlst(argument)
+      argument = argument_without_options(argument)
       close_data_server_socket_when_done do
         ensure_logged_in
         ensure_file_system_supports :dir
@@ -219,6 +221,10 @@ module Ftpd
       end
     end
 
+    def argument_without_options(argument)
+      argument.gsub(/(-\S*\s?)/,'')
+    end
+    
     def cmd_type(argument)
       ensure_logged_in
       syntax_error unless argument =~ /^(\S)(?: (\S+))?$/
