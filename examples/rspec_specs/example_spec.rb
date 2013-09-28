@@ -31,8 +31,6 @@ module Fetcher
     # @param dir [String] remote directory to change to.
 
     def initialize(host, user, pwd, dir)
-      @file_path = File.expand_path('../rspec_specs/tmp', File.dirname(__FILE__))
-      create_file_path
       @host = host
       @user = user
       @pwd = pwd
@@ -55,10 +53,6 @@ module Fetcher
       ftp.nlst
     end
 
-    private
-    def create_file_path
-      Dir.mkdir(file_path, 0755) unless File.exists?(file_path)
-    end
   end
 end
 
