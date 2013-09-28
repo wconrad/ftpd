@@ -23,6 +23,10 @@ DATA_DIR = File.expand_path('../rspec_specs/ftp_documents', File.dirname(__FILE_
 # operates as expected.
 
 module Fetcher
+
+  # This is the code under test, a simple fetcher that logs into an
+  # FTP site, changes to a directlry, and gets a list of files.
+
   class FTPFetcher
 
     # @param host [String] ftp host to connect to.
