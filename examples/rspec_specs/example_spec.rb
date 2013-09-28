@@ -8,6 +8,10 @@
 # interaction with a 'dummy' ftp server via RSpec.  In this example we
 # assume the client is implemented via `Fetcher::FTPFetcher`.
 
+unless $:.include?(File.dirname(__FILE__) + '/../../lib')
+  $:.unshift(File.dirname(__FILE__) + '/../../lib')
+end
+
 require 'net/ftp'
 require 'ftpd'
 require 'tmpdir'
