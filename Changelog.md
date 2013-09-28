@@ -1,6 +1,12 @@
 This is the changelog for the Ruby 1.8.7 branch (version 0.7) of ftpd.
 For later version of Ruby, please use ftpd version >= 0.8.
 
+### 0.7.2
+
+Enhancements
+
+* Added example showing ftp used as a test harness with rspec
+
 ### 0.7.1
 
 * Upgrade gems to latest version that work with Ruby 1.8.7
