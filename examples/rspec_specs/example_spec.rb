@@ -23,6 +23,7 @@ DATA_DIR = File.expand_path('../rspec_specs/ftp_documents', File.dirname(__FILE_
 # This is an example client spec driven via the use of Ftpd within the
 # specs.  The specs spawn a 'dummy' Ftpd server and ensure this client
 # operates as expected.
+
 module Fetcher
   class FTPFetcher
 
@@ -30,6 +31,7 @@ module Fetcher
     # @param user [String] username.
     # @param pwd [String] password.
     # @param dir [String] remote directory to change to.
+
     def initialize(host, user, pwd, dir)
       @file_path = File.expand_path('../rspec_specs/tmp', File.dirname(__FILE__))
       create_file_path
@@ -45,6 +47,7 @@ module Fetcher
 
     # @param port [Fixnum] port to connect to, 21 by default.
     # @return [Array] list of files in the current directory.
+
     def connect_and_list(port = 21)
       ftp.debug_mode = true if ENV['DEBUG'] == "true"
       ftp.passive = true
@@ -93,7 +96,9 @@ describe Fetcher::FTPFetcher do
   # In this example, a file named `report.txt` is located in
   # `examples/rspec_specs/ftp_documents` - in the second spec below, we
   # expect to find this file on our 'dummy' Ftpd server.
+
   describe "#connect_and_list" do
+
     it "should connect and not raise errors" do
       expect{subject.connect_and_list(server.bound_port)}.not_to raise_error
     end
@@ -108,5 +113,6 @@ describe Fetcher::FTPFetcher do
       result = subject.connect_and_list(server.bound_port)
       expect(result.pop).to eq("report.txt")
     end
+
   end
 end
