@@ -84,7 +84,7 @@ describe Fetcher::FTPFetcher do
   end
 
   let(:subject) do
-    Fetcher::FTPFetcher.new('lvh.me', 'user', 'password', '/')
+    Fetcher::FTPFetcher.new('127.0.0.1', 'user', 'password', '/')
   end
 
   # NOTE In this example, the client implements `connect_and_list()`
