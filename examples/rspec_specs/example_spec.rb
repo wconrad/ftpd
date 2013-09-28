@@ -8,15 +8,9 @@
 # interaction with a 'dummy' ftp server via RSpec.  In this example we
 # assume the client is implemented via `Fetcher::FTPFetcher`.
 
-require 'rspec'
 require 'net/ftp'
 require 'ftpd'
 require 'tmpdir'
-
-RSpec.configure do |config|
-  config.color_enabled = true
-  config.formatter = :documentation
-end
 
 DATA_DIR = File.expand_path('../rspec_specs/ftp_documents', File.dirname(__FILE__))
 
