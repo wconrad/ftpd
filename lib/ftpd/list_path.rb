@@ -7,7 +7,7 @@ module Ftpd
     # Turn the argument to LIST/NLST into a path
     #
     # @param argument [String] The argument, or nil if not present
-    # @returns [String] The path
+    # @return [String] The path
     #
     # Although compliant with the spec, this function does not do
     # these things that traditional Unix FTP servers do:
