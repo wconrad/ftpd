@@ -5,6 +5,7 @@ Feature: EPRT
   So that I can correct problems
 
   Background:
+    Given the test server is bound to "::"
     Given the test server is started
 
   Scenario: Port 1024
