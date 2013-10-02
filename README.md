@@ -57,7 +57,6 @@ end
 Dir.mktmpdir do |temp_dir|
   driver = Driver.new(temp_dir)
   server = Ftpd::FtpServer.new(driver)
-  server.interface = '127.0.0.1'
   server.start
   puts "Server listening on port #{server.bound_port}"
   gets
@@ -172,7 +171,6 @@ example, to set the session timeout to 10 minutes:
 ```ruby
 server = Ftpd::FtpServer.new(driver)
 server.session_timeout = 10 * 60
-server.interface = '127.0.0.1'
 server.start
 ```
 

@@ -4,7 +4,7 @@ module Ftpd
     include Memoizer
 
     # The interface to bind to (e.g. "127.0.0.1", "0.0.0.0",
-    # "10.0.0.12", etc.).  Defaults to "localhost"
+    # "10.0.0.12", "::1", "::", etc.).  Defaults to "127.0.0.1"
     #
     # Set this before calling #start.
     #
@@ -23,7 +23,7 @@ module Ftpd
     attr_accessor :port
 
     def initialize
-      @interface = 'localhost'
+      @interface = '127.0.0.1'
       @port = 0
     end
 
