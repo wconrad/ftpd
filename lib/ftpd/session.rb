@@ -888,7 +888,7 @@ module Ftpd
       @data_channel_protection_level = :clear
       @data_hostname = nil
       @data_port = nil
-      @protection_buffer_size_set = 0
+      @protection_buffer_size_set = false
       @epsv_all = false
       close_data_server_socket
       reset_failed_auths
