@@ -2,15 +2,14 @@
 
 ftpd is a pure Ruby FTP server library.  It supports implicit and
 explicit TLS, passive and active mode, and is unconditionally
-compliant per [RFC-1123][1].  It an be used as part of a test fixture or
-embedded in a program.
+compliant per [RFC-1123][1].  It can be used as part of a test fixture
+or embedded in a program.
 
 ## A note about this README
 
-This readme, and other files, contains Yardoc markup, especially for
-links to the API docs; those links don't display properly on github.
-You'll find a properly rendered version [on
-rubydoc.info](http://rubydoc.info/gems/ftpd)
+This readme contains Yardoc markup for links to the API docs; those
+links don't display properly on github.  You'll find a properly
+rendered version [on rubydoc.info](http://rubydoc.info/gems/ftpd)
 
 ## The state of this library
 
