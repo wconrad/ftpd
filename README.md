@@ -7,9 +7,10 @@ or embedded in a program.
 
 ## A note about this README
 
-This readme contains Yardoc markup for links to the API docs; those
-links don't display properly on github.  You'll find a properly
-rendered version [on rubydoc.info](http://rubydoc.info/gems/ftpd)
+This readme contains [Yardoc](http://yardoc.org/) markup for links to
+the API docs; those links don't display properly on github.  You'll
+find a properly rendered version [on
+rubydoc.info](http://rubydoc.info/gems/ftpd)
 
 ## The state of this library
 
@@ -220,7 +221,8 @@ And register your class with the ftp_server before starting it:
 ### Logging
 
 Ftpd can write to an instance of
-{http://www.ruby-doc.org/stdlib-2.0.0/libdoc/logger/rdoc/Logger.html Logger} that you provide.  To log to standard out:
+{http://www.ruby-doc.org/stdlib-2.0.0/libdoc/logger/rdoc/Logger.html
+Logger} that you provide.  To log to standard out:
 
     server.log = Logger.new($stdout)
 
