@@ -7,6 +7,9 @@ README_PATH = File.expand_path('../README.md', File.dirname(__FILE__))
 def extract_description_from_readme
   readme = File.open(README_PATH, 'r', &:read)
   s = readme[/^# FTPD.*\n+((?:.*\n)+?)\n*##/i, 1]
+  unless s
+    raise 'Unable to extract description from readme'
+  end     
   s.gsub(/\n/, ' ').strip
 end
 
