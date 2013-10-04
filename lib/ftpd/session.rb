@@ -6,22 +6,13 @@ module Ftpd
     include Error
     include ListPath
 
-    def initialize(opts)
-      @failed_login_delay = opts[:failed_login_delay]
-      @connection_tracker = opts[:connection_tracker]
-      @max_failed_logins = opts[:max_failed_logins]
-      @log = opts[:log] || NullLogger.new
-      @allow_low_data_ports = opts[:allow_low_data_ports]
-      @server_name = opts[:server_name]
-      @server_version = opts[:server_version]
-      @driver = opts[:driver]
-      @auth_level = opts[:auth_level]
-      @socket = opts[:socket]
-      @tls = opts[:tls]
-      @list_formatter = opts[:list_formatter]
-      @response_delay = opts[:response_delay]
-      @session_timeout = opts[:session_timeout]
-      if @tls == :implicit
+    # @params session_config [SessionConfig] Session configuration
+    # @param socket [TCPSocket, OpenSSL::SSL::SSLSocket] The socket
+
+    def initialize(session_config, socket)
+      @config = session_config
+      @socket = socket
+      if @config.tls == :implicit
         @socket.encrypt
       end
       @command_sequence_checker = init_command_sequence_checker
@@ -72,7 +63,7 @@ module Ftpd
       syntax_error unless argument
       sequence_error if @logged_in
       @user = argument
-      if @auth_level > AUTH_USER
+      if @config.auth_level > AUTH_USER
         reply "331 Password required"
         expect 'pass'
       else
@@ -83,7 +74,7 @@ module Ftpd
     def cmd_pass(argument)
       syntax_error unless argument
       @password = argument
-      if @auth_level > AUTH_PASSWORD
+      if @config.auth_level > AUTH_PASSWORD
         reply "332 Account required"
         expect 'acct'
       else
@@ -365,7 +356,7 @@ module Ftpd
     end
 
     def tls_enabled?
-      @tls != :off
+      @config.tls != :off
     end
 
     def cmd_cdup(argument)
@@ -617,7 +608,7 @@ module Ftpd
         handle_data_disconnect do
           data_socket.write(contents)
         end
-        @log.debug "Sent #{contents.size} bytes"
+        @config.log.debug "Sent #{contents.size} bytes"
         reply "226 Transfer complete"
       end
     end
@@ -628,7 +619,7 @@ module Ftpd
           data_socket.read
         end
         contents = nvt_ascii_to_unix(contents) if @data_type == 'A'
-        @log.debug "Received #{contents.size} bytes"
+        @config.log.debug "Received #{contents.size} bytes"
         contents
       end
     end
@@ -749,12 +740,12 @@ module Ftpd
       s = gets_with_timeout(@socket)
       throw :done if s.nil?
       s = s.chomp
-      @log.debug s
+      @config.log.debug s
       s
     end
 
     def gets_with_timeout(socket)
-      ready = IO.select([@socket], nil, nil, @session_timeout)
+      ready = IO.select([@socket], nil, nil, @config.session_timeout)
       timeout if ready.nil?
       ready[0].first.gets
     end
@@ -765,11 +756,11 @@ module Ftpd
     end
 
     def reply(s)
-      if @response_delay.to_i != 0
-        @log.warn "#{@response_delay} second delay before replying"
-        sleep @response_delay
+      if @config.response_delay.to_i != 0
+        @config.log.warn "#{@config.response_delay} second delay before replying"
+        sleep @config.response_delay
       end
-      @log.debug s
+      @config.log.debug s
       @socket.write s + "\r\n"
     end
 
@@ -807,7 +798,7 @@ module Ftpd
     def format_list(paths)
       paths.map do |path|
         file_info = @file_system.file_info(path)
-        @list_formatter.new(file_info).to_s + "\n"
+        @config.list_formatter.new(file_info).to_s + "\n"
       end.join
     end
 
@@ -825,10 +816,10 @@ module Ftpd
     end
 
     def authenticate(*args)
-      while args.size < @driver.method(:authenticate).arity
+      while args.size < @config.driver.method(:authenticate).arity
         args << nil
       end
-      @driver.authenticate(*args)
+      @config.driver.authenticate(*args)
     end
 
     def login(*auth_tokens)
@@ -837,7 +828,7 @@ module Ftpd
         error "530 Login incorrect"
       end
       reply "230 Logged in"
-      set_file_system @driver.file_system(@user)
+      set_file_system @config.driver.file_system(@user)
       @logged_in = true
       reset_failed_auths
     end
@@ -869,8 +860,8 @@ module Ftpd
 
     def failed_auth
       @failed_auths += 1
-      sleep @failed_login_delay
-      if @max_failed_logins && @failed_auths >= @max_failed_logins
+      sleep @config.failed_login_delay
+      if @config.max_failed_logins && @failed_auths >= @config.max_failed_logins
         reply "421 server unavailable"
         throw :done
       end
@@ -881,7 +872,7 @@ module Ftpd
     end
 
     def set_active_mode_address(address, port)
-      if port > 0xffff || port < 1024 && !@allow_low_data_ports
+      if port > 0xffff || port < 1024 && !@config.allow_low_data_ports
         error "504 Command not implemented for that parameter"
       end
       @data_hostname = address
@@ -904,7 +895,7 @@ module Ftpd
     end
 
     def server_name_and_version
-      "#{@server_name} #{@server_version}"
+      "#{@config.server_name} #{@config.server_version}"
     end
 
   end

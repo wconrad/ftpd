@@ -49,7 +49,11 @@ module Ftpd
     #
     # @return [Logger]
 
-    attr_accessor :log
+    attr_reader :log
+
+    def log=(logger)
+      @log = logger || NullLogger.new
+    end
 
     # The maximum number of connections the server will allow.
     # Defaults to {ConnectionThrottle::DEFAULT_MAX_CONNECTIONS}.
@@ -62,6 +66,16 @@ module Ftpd
     def_delegator :@connection_throttle, :'max_connections'
     def_delegator :@connection_throttle, :'max_connections='
 
+    # The maximum number of failed login attempts before disconnecting
+    # the user.  Defaults to nil (no maximum).  When set, this may
+    # makes brute-force password guessing attack less efficient.
+    #
+    # Set this before calling #start.
+    #
+    # @return [Integer]
+
+    attr_accessor :max_failed_logins
+
     # The maximum number of connections the server will allow from a
     # given IP.  Defaults to
     # {ConnectionThrottle::DEFAULT_MAX_CONNECTIONS_PER_IP}.
@@ -73,16 +87,6 @@ module Ftpd
 
     def_delegator :@connection_throttle, :'max_connections_per_ip'
     def_delegator :@connection_throttle, :'max_connections_per_ip='
-
-    # The maximum number of failed login attempts before disconnecting
-    # the user.  Defaults to nil (no maximum).  When set, this may
-    # makes brute-force password guessing attack less efficient.
-    #
-    # Set this before calling #start.
-    #
-    # @return [Integer]
-
-    attr_accessor :max_failed_logins
 
     # The number of seconds to delay before replying.  This is for
     # testing, when you need to test, for example, client timeouts.
@@ -144,7 +148,7 @@ module Ftpd
       @server_version = read_version_file
       @allow_low_data_ports = false
       @failed_login_delay = 0
-      @log = nil
+      self.log = nil
       @connection_tracker = ConnectionTracker.new
       @connection_throttle = ConnectionThrottle.new(@connection_tracker)
     end
@@ -166,19 +170,21 @@ module Ftpd
     end
 
     def run_session(socket)
-      Session.new(:allow_low_data_ports => allow_low_data_ports,
-                  :auth_level => @auth_level,
-                  :driver => @driver,
-                  :failed_login_delay => @failed_login_delay,
-                  :list_formatter => @list_formatter,
-                  :log => log,
-                  :max_failed_logins => @max_failed_logins,
-                  :response_delay => response_delay,
-                  :server_name => @server_name,
-                  :server_version => @server_version,
-                  :session_timeout => @session_timeout,
-                  :socket => socket,
-                  :tls => @tls).run
+      config = SessionConfig.new
+      config.allow_low_data_ports = @allow_low_data_ports
+      config.auth_level = @auth_level
+      config.driver = @driver
+      config.failed_login_delay = @failed_login_delay
+      config.list_formatter = @list_formatter
+      config.log = @log
+      config.max_failed_logins = @max_failed_logins
+      config.response_delay = response_delay
+      config.server_name = @server_name
+      config.server_version = @server_version
+      config.session_timeout = @session_timeout
+      config.tls = @tls
+      session = Session.new(config, socket)
+      session.run
     end
 
     def read_version_file
