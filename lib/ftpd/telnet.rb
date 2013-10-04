@@ -50,7 +50,7 @@ module Ftpd
     # @param command [String]
 
     def initialize(command)
-      telnet_state_machine command
+      parse_command command
     end
 
     private
@@ -66,7 +66,9 @@ module Ftpd
     end
     include Codes
 
-    def telnet_state_machine (command)
+    # Parse the the command.  Sets @plain and @reply
+
+    def parse_command(command)
       @plain = ''
       @reply = ''
       state = :idle
