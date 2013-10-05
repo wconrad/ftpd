@@ -66,6 +66,34 @@ module Ftpd
     end
     include Codes
 
+    def accept(scanner)
+      @plain << scanner[1]
+    end
+
+    def reply_dont(scanner)
+      @reply << IAC + DONT + scanner[1]
+    end
+
+    def reply_wont(scanner)
+      @reply << IAC + WONT + scanner[1]
+    end
+
+    def ignore(scanner)
+    end
+
+    # Telnet sequences to handle, and how to handle them
+
+    SEQUENCES = [
+      [/#{IAC}(#{IAC})/, :accept],
+      [/#{IAC}#{WILL}(.)/m, :reply_dont],
+      [/#{IAC}#{WONT}(.)/m, :ignore],
+      [/#{IAC}#{DO}(.)/m, :reply_wont],
+      [/#{IAC}#{DONT}(.)/m, :ignore],
+      [/#{IAC}#{IP}/, :ignore],
+      [/#{IAC}#{DM}/, :ignore],
+      [/(.)/m, :accept],
+    ]
+
     # Parse the the command.  Sets @plain and @reply
 
     def parse_command(command)
@@ -73,18 +101,11 @@ module Ftpd
       @reply = ''
       scanner = StringScanner.new(command)
       while !scanner.eos?
-        if scanner.scan(/#{IAC}#{IAC}/)
-          @plain << IAC
-        elsif scanner.scan(/#{IAC}#{WILL}(.)/m)
-          @reply << IAC + DONT + scanner[1]
-        elsif scanner.scan(/#{IAC}#{WONT}(.)/m)
-        elsif scanner.scan(/#{IAC}#{DO}(.)/m)
-          @reply << IAC + WONT + scanner[1]
-        elsif scanner.scan(/#{IAC}#{DONT}(.)/m)
-        elsif scanner.scan(/#{IAC}#{IP}/)
-        elsif scanner.scan(/#{IAC}#{DM}/)
-        else
-          @plain << scanner.get_byte
+        SEQUENCES.each do |regexp, method|
+          if scanner.scan(regexp)
+            send method, scanner
+            break
+          end
         end
       end
     end
