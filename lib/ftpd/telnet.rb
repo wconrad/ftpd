@@ -71,48 +71,20 @@ module Ftpd
     def parse_command(command)
       @plain = ''
       @reply = ''
-      state = :idle
-      command.each_char do |c|
-        case state
-        when :idle
-          if c == IAC
-            state = :iac
-          else
-            @plain << c
-          end
-        when :iac
-          case c
-          when IAC
-            @plain << c
-            state = :idle
-          when WILL
-            state = :will
-          when WONT
-            state = :wont
-          when DO
-            state = :do
-          when DONT
-            state = :dont
-          when IP
-            state = :idle
-          when DM
-            state = :idle
-          else
-            @plain << IAC + c
-            state = :idle
-          end
-        when :will
-          @reply << IAC + DONT + c
-          state = :idle
-        when :wont
-          state = :idle
-        when :do
-          @reply << IAC + WONT + c
-          state = :idle
-        when :dont
-          state = :idle
+      scanner = StringScanner.new(command)
+      while !scanner.eos?
+        if scanner.scan(/#{IAC}#{IAC}/)
+          @plain << IAC
+        elsif scanner.scan(/#{IAC}#{WILL}(.)/m)
+          @reply << IAC + DONT + scanner[1]
+        elsif scanner.scan(/#{IAC}#{WONT}(.)/m)
+        elsif scanner.scan(/#{IAC}#{DO}(.)/m)
+          @reply << IAC + WONT + scanner[1]
+        elsif scanner.scan(/#{IAC}#{DONT}(.)/m)
+        elsif scanner.scan(/#{IAC}#{IP}/)
+        elsif scanner.scan(/#{IAC}#{DM}/)
         else
-          raise "Unknown state #{state.inspect}"
+          @plain << scanner.get_byte
         end
       end
     end

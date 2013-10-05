@@ -6,6 +6,7 @@ require 'openssl'
 require 'pathname'
 require 'shellwords'
 require 'socket'
+require 'strscan'
 require 'thread'
 require 'tmpdir'
 
