@@ -165,16 +165,7 @@ module Example
       @driver = Driver.new(user, password, account,
                            @data_dir, @args.read_only)
       @server = Ftpd::FtpServer.new(@driver)
-      @server.interface = @args.interface
-      @server.port = @args.port
-      @server.tls = @args.tls
-      @server.certfile_path = insecure_certfile_path
-      if @args.eplf
-        @server.list_formatter = Ftpd::ListFormat::Eplf
-      end
-      @server.auth_level = auth_level
-      @server.session_timeout = @args.session_timeout
-      @server.log = make_log
+      configure_server
       @server.start
       display_connection_info
       create_connection_script
@@ -185,6 +176,19 @@ module Example
     end
 
     private
+
+    def configure_server
+      @server.interface = @args.interface
+      @server.port = @args.port
+      @server.tls = @args.tls
+      @server.certfile_path = insecure_certfile_path
+      if @args.eplf
+        @server.list_formatter = Ftpd::ListFormat::Eplf
+      end
+      @server.auth_level = auth_level
+      @server.session_timeout = @args.session_timeout
+      @server.log = make_log
+    end
 
     def auth_level
       Ftpd.const_get("AUTH_#{@args.auth_level.upcase}")
@@ -212,8 +216,12 @@ module Example
       puts "Account: #{account.inspect}" if auth_level >= Ftpd::AUTH_ACCOUNT
       puts "TLS: #{@args.tls}"
       puts "Directory: #{@data_dir}"
-      puts "URI: ftp://#{connection_host}:#{@server.bound_port}"
+      puts "URI: #{uri}"
       puts "PID: #{$$}"
+    end
+
+    def uri
+      "ftp://#{connection_host}:#{@server.bound_port}"
     end
 
     def create_connection_script
