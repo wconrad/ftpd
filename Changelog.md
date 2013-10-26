@@ -4,6 +4,10 @@ before 0.8.0.
 
 ### 0.10.0
 
+Bug fixes
+
+* Do not die when implicit SSL connection disconnects (issue #13)	
+
 API Changes:
 
 * Change default interface from "localhost" to "127.0.0.1".

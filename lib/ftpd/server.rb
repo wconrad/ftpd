@@ -97,6 +97,7 @@ module Ftpd
       Thread.new do
         begin
           session socket
+        rescue OpenSSL::SSL::SSLError => e
         ensure
           close_socket socket
         end
