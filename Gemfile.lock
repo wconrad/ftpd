@@ -24,9 +24,9 @@ GEM
       nokogiri (~> 1.5.2)
       oauth2
     hashie (2.0.5)
-    highline (1.6.19)
+    highline (1.6.20)
     httpauth (0.2.0)
-    jeweler (1.8.7)
+    jeweler (1.8.8)
       builder
       bundler (~> 1.0)
       git (>= 1.2.5)
@@ -35,11 +35,11 @@ GEM
       nokogiri (= 1.5.10)
       rake
       rdoc
-    json (1.8.0)
+    json (1.8.1)
     jwt (0.1.8)
       multi_json (>= 1.5)
     memoizer (1.0.1)
-    multi_json (1.8.0)
+    multi_json (1.8.2)
     multi_test (0.0.2)
     multi_xml (0.5.5)
     multipart-post (1.2.0)
