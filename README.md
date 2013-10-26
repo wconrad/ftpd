@@ -359,6 +359,7 @@ Among those who have improved ftpd are:
 * Larry. W. Cashdollar
 * Michael de Silva
 * cransom
+* m0x
 
 Thank you!
 
