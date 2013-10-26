@@ -53,7 +53,9 @@ module Ftpd
       write_file 'dir/file_in_dir'
       make_directory 'unwritable_dir'
       write_file 'unwritable_dir/file'
-      add_symlink 'file', 'symlink'
+      if SymlinkHelper.symlink_supported?
+        add_symlink 'file', 'symlink'
+      end
     end
 
     describe '#accessible?' do
@@ -262,9 +264,11 @@ module Ftpd
         it_behaves_like 'file info'
       end
 
-      context '(symlink)' do
-        let(:path) {'symlink'}
-        it_behaves_like 'file info'
+      if SymlinkHelper.symlink_supported?
+        context '(symlink)' do
+          let(:path) {'symlink'}
+          it_behaves_like 'file info'
+        end
       end
 
     end
