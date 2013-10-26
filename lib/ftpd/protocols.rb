@@ -50,6 +50,7 @@ module Ftpd
     end
 
     def ipv6_dual_stack?
+      return false unless Socket.const_defined?(:IPV6_V6ONLY)
       v6only = @socket.getsockopt(Socket::IPPROTO_IPV6,
                                   Socket::IPV6_V6ONLY).unpack('i')
       v6only == [0]
