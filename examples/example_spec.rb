@@ -23,7 +23,7 @@ require 'tmpdir'
 module Fetcher
 
   # This is the code under test, a simple fetcher that logs into an
-  # FTP site, changes to a directlry, and gets a list of files.
+  # FTP site, changes to a directory, and gets a list of files.
 
   class FTPFetcher
 
@@ -58,7 +58,7 @@ end
 describe Fetcher::FTPFetcher do
 
   # This `Driver` tells Ftpd how to authenticate and how to interact
-  # with the file systme.  In this example, the file system is
+  # with the file system.  In this example, the file system is
   # read-only and contains a single file.
 
   class Driver
