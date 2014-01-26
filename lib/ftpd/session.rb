@@ -559,7 +559,7 @@ module Ftpd
     end
 
     def pwd
-      reply %Q(257 "#{@name_prefix}" is current directory)
+      reply %Q(250 "#{@name_prefix}" is current directory)
     end
 
     TRANSMISSION_MODES = {
