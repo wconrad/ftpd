@@ -25,6 +25,7 @@ module Ftpd
     def initialize
       @interface = '127.0.0.1'
       @port = 0
+      @stopping = false
     end
 
     # The port the server is bound to.  Must not be called until after
@@ -48,6 +49,7 @@ module Ftpd
     # stops the thread.
 
     def stop
+      @stopping = true
       @server_socket.close
     end
 
@@ -68,6 +70,10 @@ module Ftpd
               IO.select([@server_socket])
               sleep(0.2)
               retry
+            rescue Errno::EBADF
+              raise unless @stopping
+              @stopping = false
+              break
             end
             start_session socket
           rescue IOError
