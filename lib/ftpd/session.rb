@@ -537,7 +537,7 @@ module Ftpd
       ensure_accessible(path)
       ensure_exists(path)
       info = @file_system.file_info(path)
-      mtime = info.mtime
+      mtime = info.mtime.utc
       reply "213 #{mtime.strftime("%Y%m%d%H%M%S")}"
     end
 
