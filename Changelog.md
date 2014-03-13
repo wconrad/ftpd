@@ -7,6 +7,7 @@ before 0.8.0.
 Bug fixes
 
 * Fix Bad file descriptor exception on stop (issue #20)
+* CWD returns 250, not 257 (issue #18)
 
 ### 0.10.0
 

@@ -277,7 +277,7 @@ module Ftpd
       ensure_exists path
       ensure_directory path
       @name_prefix = path
-      pwd
+      pwd 250
     end
     alias cmd_xcwd :cmd_cwd
 
@@ -368,7 +368,7 @@ module Ftpd
 
     def cmd_pwd(argument)
       ensure_logged_in
-      pwd
+      pwd 257
     end
     alias cmd_xpwd :cmd_pwd
 
@@ -558,8 +558,8 @@ module Ftpd
       end.compact.map(&:upcase)
     end
 
-    def pwd
-      reply %Q(257 "#{@name_prefix}" is current directory)
+    def pwd(status_code)
+      reply %Q(#{status_code} "#{@name_prefix}" is current directory)
     end
 
     TRANSMISSION_MODES = {
