@@ -330,6 +330,7 @@ Among those who have improved ftpd are:
 
 * Alfonso Cora
 * Bjoern B. Dorra
+* Joshua Rutherford
 * Larry. W. Cashdollar
 * Michael de Silva
 
