@@ -9,6 +9,11 @@ Bug fixes
 * Fix Bad file descriptor exception on stop (issue #20)
 * CWD returns 250, not 257 (issue #18)
 
+#Enhancements
+
+* MDTM command (issue #19)
+* SIZE command (issue #19)
+
 ### 0.10.0
 
 Bug fixes
