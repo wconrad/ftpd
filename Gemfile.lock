@@ -74,7 +74,7 @@ DEPENDENCIES
   cucumber
   double-bag-ftps
   jeweler
-  memoizer (~> 1.0.1)
+  memoizer (~> 1.0)
   rake
   redcarpet
   rspec
