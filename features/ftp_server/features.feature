@@ -24,3 +24,9 @@ Feature: Features
     And the client connects
     When the client sends "FEAT FOO"
     Then the server returns a syntax error
+
+  Scenario: IPV6 Extensions
+    Given the test server is started
+    When the client successfully requests features
+    Then the response should include feature "EPRT"
+    And the response should include feature "EPSV"
