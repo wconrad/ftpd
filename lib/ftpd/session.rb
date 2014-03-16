@@ -903,10 +903,6 @@ module Ftpd
       end
     end
 
-    def set_data_address(n)
-
-    end
-
     def set_active_mode_address(address, port)
       if port > 0xffff || port < 1024 && !@config.allow_low_data_ports
         error "504 Command not implemented for that parameter"
