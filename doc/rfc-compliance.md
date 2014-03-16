@@ -265,7 +265,7 @@ Four new commands are added: "SIZE", "MDTM", "MLST", and "MLSD". The existing co
 MDTM command      No    ---   Get file's last modification time       
 MLSD command      No    ---   Get directory list in a standardized form.
 MLST command      No    ---   Get file information in a standardized form.
-SIZE command      No    ---   Get file size.
+SIZE command      Yes   ---   Get file size.
 TVSF mechanism    No    ---   Unix-like file system naming conventions
 Min. MLST facts   No    ---   
 GMT timestamps    No    ---
