@@ -584,6 +584,7 @@ module Ftpd
     ]
 
     RFC_3659_EXTENSIONS = [
+      'MDTM',
       'SIZE',
     ]
 

@@ -35,3 +35,4 @@ Feature: Features
     Given the test server is started
     When the client successfully requests features
     Then the response should include feature "SIZE"
+    Then the response should include feature "MDTM"
