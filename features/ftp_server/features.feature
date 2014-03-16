@@ -30,3 +30,8 @@ Feature: Features
     When the client successfully requests features
     Then the response should include feature "EPRT"
     And the response should include feature "EPSV"
+
+  Scenario: RFC 3659 Extensions
+    Given the test server is started
+    When the client successfully requests features
+    Then the response should include feature "SIZE"

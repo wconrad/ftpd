@@ -563,6 +563,7 @@ module Ftpd
       [
         (TLS_EXTENSIONS if tls_enabled?),
         IPV6_EXTENSIONS,
+        RFC_3659_EXTENSIONS,
       ].flatten.compact
     end
 
@@ -575,6 +576,10 @@ module Ftpd
     IPV6_EXTENSIONS = [
       'EPRT',
       'EPSV',
+    ]
+
+    RFC_3659_EXTENSIONS = [
+      'SIZE',
     ]
 
     def supported_commands
