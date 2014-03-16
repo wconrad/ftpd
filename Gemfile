@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'memoizer', '~> 1.0.1'
+gem 'memoizer', '~> 1.0'
 
 group :development do
   gem 'cucumber'
