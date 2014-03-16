@@ -71,6 +71,14 @@ class TestClient
     @ftp.send method, local_path(remote_path), remote_path
   end
 
+  def get_size(mode, remote_path)
+    raise unless ['binary', 'text'].include?(mode)
+    @ftp.binary = mode == 'binary'
+    override_with_binary do
+      @ftp.size(remote_path)
+    end
+  end
+
   def add_file(path)
     full_path = temp_path(path)
     mkdir_p File.dirname(full_path)
@@ -141,16 +149,19 @@ class TestClient
   end
 
   def make_ftp
-    case @tls_mode
-    when :off
-      make_non_tls_ftp
-    when :implicit
-      make_tls_ftp(:implicit)
-    when :explicit
-      make_tls_ftp(:explicit)
-    else
-      raise "Unknown TLS mode: #{@tls_mode}"
-    end
+    ftp =
+      case @tls_mode
+      when :off
+        make_non_tls_ftp
+      when :implicit
+        make_tls_ftp(:implicit)
+      when :explicit
+        make_tls_ftp(:explicit)
+      else
+        raise "Unknown TLS mode: #{@tls_mode}"
+      end
+    allow_size_in_ascii_mode ftp
+    ftp
   end
 
   def make_tls_ftp(ftps_mode)
@@ -165,6 +176,40 @@ class TestClient
 
   def make_non_tls_ftp
     Net::FTP.new
+  end
+
+  # Ruby FTP client forces binary mode when doing a SIZE command.  Our
+  # tests want to check that the server's SIZE command works correctly
+  # in ASCII mode as well, so we'll monkey-patch the FTP client.
+
+  def allow_size_in_ascii_mode(ftp)
+
+    class << ftp
+
+      attr_accessor :override_with_binary
+
+      alias :orig_with_binary :with_binary
+
+      def with_binary(*args, &block)
+        if @override_with_binary
+          block.call
+        else
+          return orig_with_binary(*args, &block)
+        end
+      end
+
+    end
+
+  end
+
+  def override_with_binary
+    orig = @ftp.override_with_binary
+    begin
+      @ftp.override_with_binary = true
+      yield
+    ensure
+      @ftp.override_with_binary = orig
+    end
   end
 
   # Ruby 2.0's Ftp class is expecting a TCPSocket, not a Socket.  The
