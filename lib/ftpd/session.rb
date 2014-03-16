@@ -538,7 +538,12 @@ module Ftpd
       ensure_exists(path)
       info = @file_system.file_info(path)
       mtime = info.mtime.utc
-      reply "213 #{mtime.strftime("%Y%m%d%H%M%S")}"
+      # We would like to report fractional seconds, too.  Sadly, the
+      # spec declares that we may not report more precision than is
+      # actually there, and there is no spec or API to tell us how
+      # many fractional digits are significant.
+      mtime = mtime.strftime("%Y%m%d%H%M%S")
+      reply "213 #{mtime}"
     end
 
     def cmd_size(path)

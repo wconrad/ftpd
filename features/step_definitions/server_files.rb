@@ -1,9 +1,16 @@
+require 'date'
+
 Given /^the server has directory "(.*?)"$/ do |remote_path|
   server.add_directory remote_path
 end
 
 Given /^the server has file "(.*?)"$/ do |remote_path|
   server.add_file remote_path
+end
+
+Given(/^the file "(.*?)" has mtime "(.*?)"$/) do |remote_path, mtime|
+  mtime = DateTime.parse(mtime).to_time.utc
+  server.set_mtime remote_path, mtime
 end
 
 Then /^the server should( not)? have file "(.*?)"$/ do |neg, path|

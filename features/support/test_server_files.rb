@@ -8,6 +8,11 @@ module TestServerFiles
     end
   end
 
+  def set_mtime(path, mtime)
+    full_path = temp_path(path)
+    File.utime(File.atime(full_path), mtime, full_path)
+  end
+
   def add_directory(path)
     full_path = temp_path(path)
     mkdir_p full_path

@@ -79,6 +79,10 @@ class TestClient
     end
   end
 
+  def get_mtime(remote_path)
+    @ftp.mtime(remote_path)
+  end
+
   def add_file(path)
     full_path = temp_path(path)
     mkdir_p File.dirname(full_path)
