@@ -6,6 +6,19 @@ module Ftpd
     include Error
     include ListPath
 
+    attr_accessor :data_server
+    attr_accessor :data_type
+    attr_accessor :logged_in
+    attr_accessor :name_prefix
+    attr_accessor :protection_buffer_size_set
+    attr_accessor :socket
+    attr_reader :config
+    attr_reader :file_system
+    attr_writer :data_channel_protection_level
+    attr_writer :epsv_all
+    attr_writer :mode
+    attr_writer :structure
+
     # @params session_config [SessionConfig] Session configuration
     # @param socket [TCPSocket, OpenSSL::SSL::SSLSocket] The socket
 
@@ -18,6 +31,8 @@ module Ftpd
       @command_sequence_checker = init_command_sequence_checker
       set_socket_options
       @protocols = Protocols.new(@socket)
+      @command_handlers = CommandHandlers.new
+      register_commands
       initialize_session
     end
 
@@ -31,12 +46,12 @@ module Ftpd
               s = process_telnet_sequences(s)
               syntax_error unless s =~ /^(\w+)(?: (.*))?$/
               command, argument = $1.downcase, $2
-              method = 'cmd_' + command
-              unless respond_to?(method, true)
+              method = command_method(command)
+              unless valid_command?(command)
                 unrecognized_error s
               end
               @command_sequence_checker.check command
-              send(method, argument)
+              execute_command command, argument
             rescue CommandError => e
               reply e.message
             end
@@ -48,265 +63,67 @@ module Ftpd
 
     private
 
-    def cmd_allo(argument)
-      ensure_logged_in
-      syntax_error unless argument =~ /^\d+( R \d+)?$/
-      command_not_needed
-    end
-
-    def cmd_syst(argument)
-      syntax_error if argument
-      reply "215 UNIX Type: L8"
-    end
-
-    def cmd_user(argument)
-      syntax_error unless argument
-      sequence_error if @logged_in
-      @user = argument
-      if @config.auth_level > AUTH_USER
-        reply "331 Password required"
-        expect 'pass'
-      else
-        login(@user)
+    def register_commands
+      [
+        CmdAllo,
+        CmdAppe,
+        CmdAuth,
+        CmdCdup,
+        CmdCwd,
+        CmdDele,
+        CmdEprt,
+        CmdEpsv,
+        CmdFeat,
+        CmdHelp,
+        CmdList,
+        CmdLogin,
+        CmdMdtm,
+        CmdMkd,
+        CmdMode,
+        CmdNlst,
+        CmdNoop,
+        CmdOpts,
+        CmdPasv,
+        CmdPbsz,
+        CmdPort,
+        CmdProt,
+        CmdPwd,
+        CmdQuit,
+        CmdRename,
+        CmdRetr,
+        CmdRmd,
+        CmdSize,
+        CmdStat,
+        CmdStor,
+        CmdStou,
+        CmdStru,
+        CmdSyst,
+        CmdType,
+      ].each do |klass|
+        @command_handlers << klass.new(self)
       end
     end
 
-    def cmd_pass(argument)
-      syntax_error unless argument
-      @password = argument
-      if @config.auth_level > AUTH_PASSWORD
-        reply "332 Account required"
-        expect 'acct'
+    def valid_command?(command)
+      @command_handlers.has?(command) ||
+        respond_to?(command_method(command), true)
+    end
+
+    def execute_command command, argument
+      if @command_handlers.has?(command)
+        @command_handlers.execute command, argument
       else
-        login(@user, @password)
+        send command_method(command), argument
       end
     end
 
-    def cmd_acct(argument)
-      syntax_error unless argument
-      account = argument
-      login(@user, @password, account)
-    end
-
-    def cmd_quit(argument)
-      syntax_error if argument
-      ensure_logged_in
-      reply "221 Byebye"
-      @logged_in = false
+    def command_method(command)
+      'cmd_' + command
     end
 
     def syntax_error
       error "501 Syntax error"
     end
-
-    def cmd_port(argument)
-      ensure_logged_in
-      ensure_not_epsv_all
-      pieces = argument.split(/,/)
-      syntax_error unless pieces.size == 6
-      pieces.collect! do |s|
-        syntax_error unless s =~ /^\d{1,3}$/
-        i = s.to_i
-        syntax_error unless (0..255) === i
-        i
-      end
-      hostname = pieces[0..3].join('.')
-      port = pieces[4] << 8 | pieces[5]
-      set_active_mode_address hostname, port
-      reply "200 PORT command successful"
-    end
-
-    def cmd_stor(argument)
-      close_data_server_socket_when_done do
-        ensure_logged_in
-        ensure_file_system_supports :write
-        path = argument
-        syntax_error unless path
-        path = File.expand_path(path, @name_prefix)
-        ensure_accessible path
-        ensure_exists File.dirname(path)
-        contents = receive_file
-        @file_system.write path, contents
-        reply "226 Transfer complete"
-      end
-    end
-
-    def cmd_stou(argument)
-      close_data_server_socket_when_done do
-        ensure_logged_in
-        ensure_file_system_supports :write
-        path = argument || 'ftpd'
-        path = File.expand_path(path, @name_prefix)
-        path = unique_path(path)
-        ensure_accessible path
-        ensure_exists File.dirname(path)
-        contents = receive_file(File.basename(path))
-        @file_system.write path, contents
-        reply "226 Transfer complete"
-      end
-    end
-
-    def cmd_appe(argument)
-      close_data_server_socket_when_done do
-        ensure_logged_in
-        ensure_file_system_supports :append
-        path = argument
-        syntax_error unless path
-        path = File.expand_path(path, @name_prefix)
-        ensure_accessible path
-        contents = receive_file
-        @file_system.append path, contents
-        reply "226 Transfer complete"
-      end
-    end
-
-    def cmd_retr(argument)
-      close_data_server_socket_when_done do
-        ensure_logged_in
-        ensure_file_system_supports :read
-        path = argument
-        syntax_error unless path
-        path = File.expand_path(path, @name_prefix)
-        ensure_accessible path
-        ensure_exists path
-        contents = @file_system.read(path)
-        transmit_file contents
-      end
-    end
-
-    def cmd_dele(argument)
-      ensure_logged_in
-      ensure_file_system_supports :delete
-      path = argument
-      error "501 Path required" unless path
-      path = File.expand_path(path, @name_prefix)
-      ensure_accessible path
-      ensure_exists path
-      @file_system.delete path
-      reply "250 DELE command successful"
-    end
-
-    def cmd_list(argument)
-      close_data_server_socket_when_done do
-        ensure_logged_in
-        ensure_file_system_supports :dir
-        ensure_file_system_supports :file_info
-        path = list_path(argument)
-        path = File.expand_path(path, @name_prefix)
-        transmit_file(list(path), 'A')
-      end
-    end
-
-    def cmd_nlst(argument)
-      close_data_server_socket_when_done do
-        ensure_logged_in
-        ensure_file_system_supports :dir
-        path = list_path(argument)
-        path = File.expand_path(path, @name_prefix)
-        transmit_file(name_list(path), 'A')
-      end
-    end
-
-    def cmd_type(argument)
-      ensure_logged_in
-      syntax_error unless argument =~ /^(\S)(?: (\S+))?$/
-      type_code = $1
-      format_code = $2
-      unless argument =~ /^([AEI]( [NTC])?|L .*)$/
-        error '504 Invalid type code'
-      end
-      case argument
-      when /^A( [NT])?$/
-        @data_type = 'A'
-      when /^(I|L 8)$/
-        @data_type = 'I'
-      else
-        error '504 Type not implemented'
-      end
-      reply "200 Type set to #{@data_type}"
-    end
-
-    def cmd_mode(argument)
-      syntax_error unless argument
-      ensure_logged_in
-      name, implemented = TRANSMISSION_MODES[argument]
-      error "504 Invalid mode code" unless name
-      error "504 Mode not implemented" unless implemented
-      @mode = argument
-      reply "200 Mode set to #{name}"
-    end
-
-    def cmd_stru(argument)
-      syntax_error unless argument
-      ensure_logged_in
-      name, implemented = FILE_STRUCTURES[argument]
-      error "504 Invalid structure code" unless name
-      error "504 Structure not implemented" unless implemented
-      @structure = argument
-      reply "200 File structure set to #{name}"
-    end
-
-    def cmd_noop(argument)
-      syntax_error if argument
-      reply "200 Nothing done"
-    end
-
-    def cmd_pasv(argument)
-      ensure_logged_in
-      ensure_not_epsv_all
-      if @data_server
-        reply "200 Already in passive mode"
-      else
-        interface = @socket.addr[3]
-        @data_server = TCPServer.new(interface, 0)
-        ip = @data_server.addr[3]
-        port = @data_server.addr[1]
-        quads = [
-          ip.scan(/\d+/),
-          port >> 8,
-          port & 0xff,
-        ].flatten.join(',')
-        reply "227 Entering passive mode (#{quads})"
-      end
-    end
-
-    def cmd_cwd(argument)
-      ensure_logged_in
-      path = File.expand_path(argument, @name_prefix)
-      ensure_accessible path
-      ensure_exists path
-      ensure_directory path
-      @name_prefix = path
-      pwd 250
-    end
-    alias cmd_xcwd :cmd_cwd
-
-    def cmd_mkd(argument)
-      syntax_error unless argument
-      ensure_logged_in
-      ensure_file_system_supports :mkdir
-      path = File.expand_path(argument, @name_prefix)
-      ensure_accessible path
-      ensure_exists File.dirname(path)
-      ensure_directory File.dirname(path)
-      ensure_does_not_exist path
-      @file_system.mkdir path
-      reply %Q'257 "#{path}" created'
-    end
-    alias cmd_xmkd :cmd_mkd
-
-    def cmd_rmd(argument)
-      syntax_error unless argument
-      ensure_logged_in
-      ensure_file_system_supports :rmdir
-      path = File.expand_path(argument, @name_prefix)
-      ensure_accessible path
-      ensure_exists path
-      ensure_directory path
-      @file_system.rmdir path
-      reply '250 RMD command successful'
-    end
-    alias cmd_xrmd :cmd_rmd
 
     def ensure_file_system_supports(method)
       unless @file_system.respond_to?(method)
@@ -359,144 +176,12 @@ module Ftpd
       @config.tls != :off
     end
 
-    def cmd_cdup(argument)
-      syntax_error if argument
-      ensure_logged_in
-      cmd_cwd('..')
-    end
-    alias cmd_xcup :cmd_cdup
-
-    def cmd_pwd(argument)
-      ensure_logged_in
-      pwd 257
-    end
-    alias cmd_xpwd :cmd_pwd
-
-    def cmd_auth(security_scheme)
-      ensure_tls_supported
-      if @socket.encrypted?
-        error "503 AUTH already done"
-      end
-      unless security_scheme =~ /^TLS(-C)?$/i
-        error "504 Security scheme not implemented: #{security_scheme}"
-      end
-      reply "234 AUTH #{security_scheme} OK."
-      @socket.encrypt
-    end
-
-    def cmd_pbsz(buffer_size)
-      ensure_tls_supported
-      syntax_error unless buffer_size =~ /^\d+$/
-      buffer_size = buffer_size.to_i
-      unless @socket.encrypted?
-        error "503 PBSZ must be preceded by AUTH"
-      end
-      unless buffer_size == 0
-        error "501 PBSZ=0"
-      end
-      reply "200 PBSZ=0"
-      @protection_buffer_size_set = true
-    end
-
-    def cmd_prot(level_arg)
-      level_code = level_arg.upcase
-      unless @protection_buffer_size_set
-        error "503 PROT must be preceded by PBSZ"
-      end
-      level = DATA_CHANNEL_PROTECTION_LEVELS[level_code]
-      unless level
-        error "504 Unknown protection level"
-      end
-      unless level == :private
-        error "536 Unsupported protection level #{level}"
-      end
-      @data_channel_protection_level = level
-      reply "200 Data protection level #{level_code}"
-    end
-
-    def cmd_rnfr(argument)
-      ensure_logged_in
-      ensure_file_system_supports :rename
-      syntax_error unless argument
-      from_path = File.expand_path(argument, @name_prefix)
-      ensure_accessible from_path
-      ensure_exists from_path
-      @rename_from_path = from_path
-      reply '350 RNFR accepted; ready for destination'
-      expect 'rnto'
-    end
-
-    def cmd_rnto(argument)
-      ensure_logged_in
-      ensure_file_system_supports :rename
-      syntax_error unless argument
-      to_path = File.expand_path(argument, @name_prefix)
-      ensure_accessible to_path
-      ensure_does_not_exist to_path
-      @file_system.rename(@rename_from_path, to_path)
-      reply '250 Rename successful'
-    end
-
-    def cmd_help(argument)
-      if argument
-        command = argument.upcase
-        if supported_commands.include?(command)
-          reply "214 Command #{command} is recognized"
-        else
-          reply "214 Command #{command} is not recognized"
-        end
-      else
-        reply '214-The following commands are recognized:'
-        supported_commands.sort.each_slice(8) do |commands|
-          line = commands.map do |command|
-            '   %-4s' % command
-          end.join
-          reply line
-        end
-        reply '214 Have a nice day.'
-      end
-    end
-
-    def cmd_stat(argument)
-      ensure_logged_in
-      syntax_error if argument
-      reply "211 #{server_name_and_version}"
-    end
-
     def self.unimplemented(command)
       method_name = "cmd_#{command}"
       define_method method_name do |arguments|
         unimplemented_error
       end
       private method_name
-    end
-
-    def cmd_feat(argument)
-      syntax_error if argument
-      reply '211-Extensions supported:'
-      extensions.each do |extension|
-        reply " #{extension}"
-      end
-      reply '211 END'
-    end
-
-    def cmd_opts(argument)
-      syntax_error unless argument
-      error '501 Unsupported option'
-    end
-
-    def cmd_eprt(argument)
-      ensure_logged_in
-      ensure_not_epsv_all
-      delim = argument[0..0]
-      parts = argument.split(delim)[1..-1]
-      syntax_error unless parts.size == 3
-      protocol_code, address, port = *parts
-      protocol_code = protocol_code.to_i
-      ensure_protocol_supported protocol_code
-      port = port.to_i
-      set_active_mode_address address, port
-      reply "200 EPRT command successful"
     end
 
     def ensure_protocol_supported(protocol_code)
@@ -507,102 +192,30 @@ module Ftpd
       end
     end
 
-    def cmd_epsv(argument)
-      ensure_logged_in
-      if @data_server
-        reply "200 Already in passive mode"
-      else
-        if argument == 'ALL'
-          @epsv_all = true
-          reply "220 EPSV now required for port setup"
-        else
-          protocol_code = argument && argument.to_i
-          if protocol_code
-            ensure_protocol_supported protocol_code
-          end
-          interface = @socket.addr[3]
-          @data_server = TCPServer.new(interface, 0)
-          port = @data_server.addr[1]
-          reply "229 Entering extended passive mode (|||#{port}|)"
-        end
-      end
-    end
-
-    def cmd_mdtm(path)
-      ensure_logged_in
-      ensure_file_system_supports :dir
-      ensure_file_system_supports :file_info
-      syntax_error unless path
-      path = File.expand_path(path, @name_prefix)
-      ensure_accessible(path)
-      ensure_exists(path)
-      info = @file_system.file_info(path)
-      mtime = info.mtime.utc
-      # We would like to report fractional seconds, too.  Sadly, the
-      # spec declares that we may not report more precision than is
-      # actually there, and there is no spec or API to tell us how
-      # many fractional digits are significant.
-      mtime = mtime.strftime("%Y%m%d%H%M%S")
-      reply "213 #{mtime}"
-    end
-
-    def cmd_size(path)
-      ensure_logged_in
-      ensure_file_system_supports :read
-      syntax_error unless path
-      path = File.expand_path(path, @name_prefix)
-      ensure_accessible(path)
-      ensure_exists(path)
-      contents = @file_system.read(path)
-      contents = (@data_type == 'A') ? unix_to_nvt_ascii(contents) : contents
-      reply "213 #{contents.bytesize}"
-    end
-
     unimplemented :abor
     unimplemented :rein
     unimplemented :rest
     unimplemented :site
     unimplemented :smnt
 
-    def extensions
-      [
-        (TLS_EXTENSIONS if tls_enabled?),
-        IPV6_EXTENSIONS,
-        RFC_3659_EXTENSIONS,
-      ].flatten.compact
+    def supported_commands
+      commands = commands_defined_in_session + commands_defined_in_separate_classes
+      commands.map(&:upcase)
     end
 
-    TLS_EXTENSIONS = [
-      'AUTH TLS',
-      'PBSZ',
-      'PROT'
-    ]
-
-    IPV6_EXTENSIONS = [
-      'EPRT',
-      'EPSV',
-    ]
-
-    RFC_3659_EXTENSIONS = [
-      'MDTM',
-      'SIZE',
-    ]
-
-    def supported_commands
+    def commands_defined_in_session
       private_methods.map do |method|
-        method.to_s[/^cmd_(\w+)$/, 1]
+        method.to_s[/^#{CommandHandler::COMMAND_METHOD_PREFIX}(\w+)$/, 1]
       end.compact.map(&:upcase)
+    end
+
+    def commands_defined_in_separate_classes
+      @command_handlers.commands
     end
 
     def pwd(status_code)
       reply %Q(#{status_code} "#{@name_prefix}" is current directory)
     end
-
-    TRANSMISSION_MODES = {
-      'B'=>['Block', false],
-      'C'=>['Compressed', false],
-      'S'=>['Stream', true],
-    }
 
     FORMAT_TYPES = {
       'N'=>['Non-print', true],
@@ -615,19 +228,6 @@ module Ftpd
       'E'=>['EBCDIC', false],
       'I'=>['BINARY', true],
       'L'=>['LOCAL', false],
-    }
-
-    FILE_STRUCTURES = {
-      'R'=>['Record', false],
-      'F'=>['File', true],
-      'P'=>['Page', false],
-    }
-
-    DATA_CHANNEL_PROTECTION_LEVELS = {
-      'C'=>:clear,
-      'S'=>:safe,
-      'E'=>:confidential,
-      'P'=>:private
     }
 
     def expect(command)
@@ -859,12 +459,13 @@ module Ftpd
     end
 
     def login(*auth_tokens)
+      user = auth_tokens.first
       unless authenticate(*auth_tokens)
         failed_auth
         error "530 Login incorrect"
       end
       reply "230 Logged in"
-      set_file_system @config.driver.file_system(@user)
+      set_file_system @config.driver.file_system(user)
       @logged_in = true
       reset_failed_auths
     end
