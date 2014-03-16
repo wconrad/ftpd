@@ -252,7 +252,7 @@ LANG command     No      ---
 UNICODE          No      ---
 </pre>
 
-RFC-3659 - Extensions to FTP
+## RFC-3659 - Extensions to FTP
 
 Four new commands are added: "SIZE", "MDTM", "MLST", and "MLSD". The existing command "REST" is modified.
 
