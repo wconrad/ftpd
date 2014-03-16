@@ -262,13 +262,13 @@ Four new commands are added: "SIZE", "MDTM", "MLST", and "MLSD". The existing co
 * [link](http://tools.ietf.org/rfc/rfc3659.txt)
 
 <pre>
-MDTM command      No    ---   Get file's last modification time       
+MDTM command      Yes   ---   Get file's last modification time       
 MLSD command      No    ---   Get directory list in a standardized form.
 MLST command      No    ---   Get file information in a standardized form.
 SIZE command      Yes   ---   Get file size.
 TVSF mechanism    No    ---   Unix-like file system naming conventions
 Min. MLST facts   No    ---   
-GMT timestamps    No    ---
+GMT timestamps    Yes   ---
 </pre>
 
 ##RFC-4217 - Securing FTP with TLS
