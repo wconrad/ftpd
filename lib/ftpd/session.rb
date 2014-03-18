@@ -1,5 +1,3 @@
-#!/usr/bin/env ruby
-
 module Ftpd
   class Session
 
