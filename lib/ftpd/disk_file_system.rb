@@ -67,6 +67,18 @@ module Ftpd
     end
   end
 
+  # DiskFileSystem mixin for writing files.  Used by Append and Write.
+
+  module FileWriting
+
+    def write_file(ftp_path, contents, mode)
+      File.open(expand_ftp_path(ftp_path), mode) do |file|
+        file.write contents
+      end
+    end
+
+  end
+
   class DiskFileSystem
 
     # DiskFileSystem mixin providing file deletion
@@ -121,6 +133,7 @@ module Ftpd
 
     module Write
 
+      include FileWriting
       include TranslateExceptions
 
       # Write a file to disk.
@@ -134,9 +147,7 @@ module Ftpd
       # If missing, then these commands are not supported.
 
       def write(ftp_path, contents)
-        File.open(expand_ftp_path(ftp_path), 'wb') do |file|
-          file.write contents
-        end
+        write_file ftp_path, contents, 'wb'
       end
       translate_exceptions :write
 
@@ -149,6 +160,7 @@ module Ftpd
 
     module Append
 
+      include FileWriting
       include TranslateExceptions
 
       # Append to a file.  If the file does not exist, create it.
@@ -161,9 +173,7 @@ module Ftpd
       # If missing, then these commands are not supported.
 
       def append(ftp_path, contents)
-        File.open(expand_ftp_path(ftp_path), 'ab') do |file|
-          file.write contents
-        end
+        write_file ftp_path, contents, 'ab'
       end
       translate_exceptions :append
 
