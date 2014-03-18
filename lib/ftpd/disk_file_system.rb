@@ -67,14 +67,18 @@ module Ftpd
     end
   end
 
-  # DiskFileSystem mixin for writing files.  Used by Append and Write.
+  class DiskFileSystem
 
-  module FileWriting
+    # DiskFileSystem mixin for writing files.  Used by Append and Write.
 
-    def write_file(ftp_path, contents, mode)
-      File.open(expand_ftp_path(ftp_path), mode) do |file|
-        file.write contents
+    module FileWriting
+
+      def write_file(ftp_path, contents, mode)
+        File.open(expand_ftp_path(ftp_path), mode) do |file|
+          file.write contents
+        end
       end
+
     end
 
   end
