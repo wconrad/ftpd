@@ -1,3 +1,5 @@
+require_relative 'translate_exceptions'
+
 module Ftpd
 
   class DiskFileSystem

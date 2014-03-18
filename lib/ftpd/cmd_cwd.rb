@@ -1,3 +1,5 @@
+require_relative 'command_handler'
+
 module Ftpd
 
   class CmdCwd < CommandHandler

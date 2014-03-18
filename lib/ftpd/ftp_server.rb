@@ -1,3 +1,5 @@
+require_relative 'tls_server'
+
 module Ftpd
   class FtpServer < TlsServer
 

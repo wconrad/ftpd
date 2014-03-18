@@ -1,3 +1,5 @@
+require_relative 'command_handler'
+
 module Ftpd
 
   # The Quit (QUIT) command

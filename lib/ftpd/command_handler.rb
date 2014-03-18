@@ -1,3 +1,5 @@
+require_relative 'error'
+
 module Ftpd
 
   # Command handler base class
