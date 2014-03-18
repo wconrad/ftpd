@@ -88,10 +88,14 @@ module Ftpd
         CmdProt,
         CmdPwd,
         CmdQuit,
+        CmdRein,
         CmdRename,
+        CmdRest,
         CmdRetr,
         CmdRmd,
+        CmdSite,
         CmdSize,
+        CmdSmnt,
         CmdStat,
         CmdStor,
         CmdStou,
@@ -175,14 +179,6 @@ module Ftpd
       @config.tls != :off
     end
 
-    def self.unimplemented(command)
-      method_name = "cmd_#{command}"
-      define_method method_name do |arguments|
-        unimplemented_error
-      end
-      private method_name
-    end
-
     def ensure_protocol_supported(protocol_code)
       unless @protocols.supports_protocol?(protocol_code)
         protocol_list = @protocols.protocol_codes.join(',')
@@ -190,11 +186,6 @@ module Ftpd
               "use (#{protocol_list})")
       end
     end
-
-    unimplemented :rein
-    unimplemented :rest
-    unimplemented :site
-    unimplemented :smnt
 
     def supported_commands
       commands = commands_defined_in_session + commands_defined_in_separate_classes
