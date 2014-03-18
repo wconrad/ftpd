@@ -61,47 +61,8 @@ module Ftpd
     private
 
     def register_commands
-      [
-        CmdAbor,
-        CmdAllo,
-        CmdAppe,
-        CmdAuth,
-        CmdCdup,
-        CmdCwd,
-        CmdDele,
-        CmdEprt,
-        CmdEpsv,
-        CmdFeat,
-        CmdHelp,
-        CmdList,
-        CmdLogin,
-        CmdMdtm,
-        CmdMkd,
-        CmdMode,
-        CmdNlst,
-        CmdNoop,
-        CmdOpts,
-        CmdPasv,
-        CmdPbsz,
-        CmdPort,
-        CmdProt,
-        CmdPwd,
-        CmdQuit,
-        CmdRein,
-        CmdRename,
-        CmdRest,
-        CmdRetr,
-        CmdRmd,
-        CmdSite,
-        CmdSize,
-        CmdSmnt,
-        CmdStat,
-        CmdStor,
-        CmdStou,
-        CmdStru,
-        CmdSyst,
-        CmdType,
-      ].each do |klass|
+      handlers = CommandHandlerFactory.standard_command_handlers
+      handlers.each do |klass|
         @command_handlers << klass.new(self)
       end
     end

@@ -55,6 +55,7 @@ module Ftpd
   autoload :CmdSyst,                   'ftpd/cmd_syst'
   autoload :CmdType,                   'ftpd/cmd_type'
   autoload :CommandHandler,            'ftpd/command_handler'
+  autoload :CommandHandlerFactory,     'ftpd/command_handler_factory'
   autoload :CommandHandlers,           'ftpd/command_handlers'
   autoload :CommandSequenceChecker,    'ftpd/command_sequence_checker'
   autoload :ConnectionThrottle,        'ftpd/connection_throttle'
