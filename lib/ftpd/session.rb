@@ -63,6 +63,7 @@ module Ftpd
 
     def register_commands
       [
+        CmdAbor,
         CmdAllo,
         CmdAppe,
         CmdAuth,
@@ -190,7 +191,6 @@ module Ftpd
       end
     end
 
-    unimplemented :abor
     unimplemented :rein
     unimplemented :rest
     unimplemented :site

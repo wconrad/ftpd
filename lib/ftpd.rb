@@ -15,6 +15,7 @@ module Ftpd
     autoload :Eplf,                    'ftpd/list_format/eplf'
     autoload :Ls,                      'ftpd/list_format/ls'
   end
+  autoload :CmdAbor,                   'ftpd/cmd_abor'
   autoload :CmdAllo,                   'ftpd/cmd_allo'
   autoload :CmdAppe,                   'ftpd/cmd_appe'
   autoload :CmdAuth,                   'ftpd/cmd_auth'
