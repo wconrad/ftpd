@@ -258,13 +258,34 @@ See [RFC Compliance](doc/rfc-compliance.md) for details
 
 The tests pass with these Rubies:
 
-* ruby-1.8.7-p371
-* ruby-1.9.3-p448
-* ruby-2.0.0-p247
+* ruby-1.9.3
+* ruby-2.0
+* ruby-2.1
 
 For Ruby 1.8, use an ftpd version before 0.8.  In your Gemfile:
 
     gem 'ftpd', '<0.8'
+
+## OS compatability
+
+## *nix
+
+Ftpd runs on:
+
+* Linux
+* OSX
+
+## Windows
+
+The master branch of ftpd does not currently run on Windows.  There is
+an experimental branch for Windows which contains several changes that
+ought to make ftpd work on Windows, but they need testing.  To try
+that branch, use this line in your Gemfile:
+
+    gem 'ftpd', github: 'wconrad/ftpd', :branch => 'windows'
+
+Does it work for you?  Is it busted?  Please report your experience
+[here](https://github.com/wconrad/ftpd/issues/3).
 
 ## Development
 
