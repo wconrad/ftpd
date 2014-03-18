@@ -282,7 +282,7 @@ an experimental branch for Windows which contains several changes that
 ought to make ftpd work on Windows, but they need testing.  To try
 that branch, use this line in your Gemfile:
 
-    gem 'ftpd', github: 'wconrad/ftpd', :branch => 'windows'
+    gem 'ftpd', github: 'wconrad/ftpd', branch: 'windows'
 
 Does it work for you?  Is it busted?  Please report your experience
 [here](https://github.com/wconrad/ftpd/issues/3).
