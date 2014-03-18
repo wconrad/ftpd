@@ -44,7 +44,6 @@ module Ftpd
               s = process_telnet_sequences(s)
               syntax_error unless s =~ /^(\w+)(?: (.*))?$/
               command, argument = $1.downcase, $2
-              method = command_method(command)
               unless valid_command?(command)
                 unrecognized_error s
               end
@@ -108,20 +107,11 @@ module Ftpd
     end
 
     def valid_command?(command)
-      @command_handlers.has?(command) ||
-        respond_to?(command_method(command), true)
+      @command_handlers.has?(command)
     end
 
     def execute_command command, argument
-      if @command_handlers.has?(command)
-        @command_handlers.execute command, argument
-      else
-        send command_method(command), argument
-      end
-    end
-
-    def command_method(command)
-      'cmd_' + command
+      @command_handlers.execute command, argument
     end
 
     def syntax_error
@@ -188,18 +178,7 @@ module Ftpd
     end
 
     def supported_commands
-      commands = commands_defined_in_session + commands_defined_in_separate_classes
-      commands.map(&:upcase)
-    end
-
-    def commands_defined_in_session
-      private_methods.map do |method|
-        method.to_s[/^#{CommandHandler::COMMAND_METHOD_PREFIX}(\w+)$/, 1]
-      end.compact.map(&:upcase)
-    end
-
-    def commands_defined_in_separate_classes
-      @command_handlers.commands
+      @command_handlers.commands.map(&:upcase)
     end
 
     def pwd(status_code)
