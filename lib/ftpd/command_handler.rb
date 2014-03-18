@@ -20,11 +20,17 @@ module Ftpd
     # Return the commands implemented by this handler.  For example,
     # if the handler has the method "cmd_allo", this returns ['allo'].
 
-    def commands
-      methods.map(&:to_s).grep(/#{COMMAND_METHOD_PREFIX}/).map do |method|
-        method.gsub(/^#{COMMAND_METHOD_PREFIX}/, '')
+    class << self
+      include Memoizer
+      def commands
+        public_instance_methods.map(&:to_s).grep(/#{COMMAND_METHOD_PREFIX}/).map do |method|
+          method.gsub(/^#{COMMAND_METHOD_PREFIX}/, '')
+        end
       end
+      memoize :commands
     end
+
+    def_delegator 'self.class', :commands
 
     # Forward methods to the session
 
