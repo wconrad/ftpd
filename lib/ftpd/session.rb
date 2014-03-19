@@ -4,6 +4,7 @@ module Ftpd
     include Error
     include ListPath
 
+    attr_accessor :data_channel_protection_level
     attr_accessor :data_server
     attr_accessor :data_type
     attr_accessor :logged_in
@@ -11,8 +12,9 @@ module Ftpd
     attr_accessor :protection_buffer_size_set
     attr_accessor :socket
     attr_reader :config
+    attr_reader :data_hostname
+    attr_reader :data_port
     attr_reader :file_system
-    attr_writer :data_channel_protection_level
     attr_writer :epsv_all
     attr_writer :mode
     attr_writer :structure
@@ -137,34 +139,6 @@ module Ftpd
       @file_system = FileSystemErrorTranslator.new(file_system)
     end
 
-    def transmit_file(contents, data_type = @data_type)
-      open_data_connection do |data_socket|
-        contents = unix_to_nvt_ascii(contents) if data_type == 'A'
-        handle_data_disconnect do
-          data_socket.write(contents)
-        end
-        @config.log.debug "Sent #{contents.size} bytes"
-        reply "226 Transfer complete"
-      end
-    end
-
-    def receive_file(path_to_advertise = nil)
-      open_data_connection(path_to_advertise) do |data_socket|
-        contents = handle_data_disconnect do
-          data_socket.read
-        end
-        contents = nvt_ascii_to_unix(contents) if @data_type == 'A'
-        @config.log.debug "Received #{contents.size} bytes"
-        contents
-      end
-    end
-
-    def handle_data_disconnect
-      return yield
-    rescue Errno::ECONNRESET, Errno::EPIPE
-      reply "426 Connection closed; transfer aborted."
-    end
-
     def unix_to_nvt_ascii(s)
       return s if s =~ /\r\n/
       s.gsub(/\n/, "\r\n")
@@ -174,101 +148,14 @@ module Ftpd
       s.gsub(/\r\n/, "\n")
     end
 
-    def open_data_connection(path_to_advertise = nil, &block)
-      send_start_of_data_connection_reply(path_to_advertise)
-      if @data_server
-        if encrypt_data?
-          open_passive_tls_data_connection(&block)
-        else
-          open_passive_data_connection(&block)
-        end
-      else
-        if encrypt_data?
-          open_active_tls_data_connection(&block)
-        else
-          open_active_data_connection(&block)
-        end
-      end
-    end
-
-    def send_start_of_data_connection_reply(path)
-      if path
-        reply "150 FILE: #{path}"
-      else
-        reply "150 Opening #{data_connection_description}"
-      end
-    end
-
-    def data_connection_description
-      [
-        DATA_TYPES[@data_type][0],
-        "mode data connection",
-        ("(TLS)" if encrypt_data?)
-      ].compact.join(' ')
-    end
-
     def command_not_needed
       reply '202 Command not needed at this site'
-    end
-
-    def encrypt_data?
-      @data_channel_protection_level != :clear
-    end
-
-    def open_active_data_connection
-      data_socket = TCPSocket.new(@data_hostname, @data_port)
-      begin
-        yield(data_socket)
-      ensure
-        data_socket.close
-      end
-    end
-
-    def open_active_tls_data_connection
-      open_active_data_connection do |socket|
-        make_tls_connection(socket) do |ssl_socket|
-          yield(ssl_socket)
-        end
-      end
-    end
-
-    def open_passive_data_connection
-      data_socket = @data_server.accept
-      begin
-        yield(data_socket)
-      ensure
-        data_socket.close
-      end
-    end
-
-    def close_data_server_socket_when_done
-      yield
-    ensure
-      close_data_server_socket
     end
 
     def close_data_server_socket
       return unless @data_server
       @data_server.close
       @data_server = nil
-    end
-
-    def open_passive_tls_data_connection
-      open_passive_data_connection do |socket|
-        make_tls_connection(socket) do |ssl_socket|
-          yield(ssl_socket)
-        end
-      end
-    end
-
-    def make_tls_connection(socket)
-      ssl_socket = OpenSSL::SSL::SSLSocket.new(socket, @socket.ssl_context)
-      ssl_socket.accept
-      begin
-        yield(ssl_socket)
-      ensure
-        ssl_socket.close
-      end
     end
 
     def get_command

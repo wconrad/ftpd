@@ -1,3 +1,4 @@
+require_relative 'data_connection_helper'
 require_relative 'error'
 require_relative 'file_system_helper'
 
@@ -9,6 +10,7 @@ module Ftpd
 
     extend Forwardable
 
+    include DataConnectionHelper
     include Error
     include FileSystemHelper
 
@@ -37,13 +39,20 @@ module Ftpd
 
     def_delegator 'self.class', :commands
 
+    private
+
+    attr_reader :session
+
     # Forward methods to the session
 
     def_delegators :@session,
-    :close_data_server_socket_when_done,
+    :close_data_server_socket,
     :command_not_needed,
     :config,
+    :data_channel_protection_level,
     :data_channel_protection_level=,
+    :data_hostname,
+    :data_port,
     :data_server,
     :data_server=,
     :data_type,
@@ -65,10 +74,10 @@ module Ftpd
     :name_list,
     :name_prefix,
     :name_prefix=,
+    :nvt_ascii_to_unix,
     :protection_buffer_size_set,
     :protection_buffer_size_set=,
     :pwd,
-    :receive_file,
     :reply,
     :server_name_and_version,
     :set_active_mode_address,
@@ -77,7 +86,6 @@ module Ftpd
     :supported_commands,
     :syntax_error,
     :tls_enabled?,
-    :transmit_file,
     :unix_to_nvt_ascii
  
   end
