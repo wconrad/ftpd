@@ -16,6 +16,7 @@ require 'memoizer'
 
 # Ftpd
 
+require_relative 'ftpd/ascii_helper'
 require_relative 'ftpd/auth_levels'
 require_relative 'ftpd/cmd_abor'
 require_relative 'ftpd/cmd_allo'

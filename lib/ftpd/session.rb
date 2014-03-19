@@ -139,15 +139,6 @@ module Ftpd
       @file_system = FileSystemErrorTranslator.new(file_system)
     end
 
-    def unix_to_nvt_ascii(s)
-      return s if s =~ /\r\n/
-      s.gsub(/\n/, "\r\n")
-    end
-
-    def nvt_ascii_to_unix(s)
-      s.gsub(/\r\n/, "\n")
-    end
-
     def command_not_needed
       reply '202 Command not needed at this site'
     end

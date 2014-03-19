@@ -10,6 +10,7 @@ module Ftpd
 
     extend Forwardable
 
+    include AsciiHelper
     include DataConnectionHelper
     include Error
     include FileSystemHelper
@@ -74,7 +75,6 @@ module Ftpd
     :name_list,
     :name_prefix,
     :name_prefix=,
-    :nvt_ascii_to_unix,
     :protection_buffer_size_set,
     :protection_buffer_size_set=,
     :pwd,
@@ -85,8 +85,7 @@ module Ftpd
     :structure=,
     :supported_commands,
     :syntax_error,
-    :tls_enabled?,
-    :unix_to_nvt_ascii
+    :tls_enabled?
  
   end
 
