@@ -84,7 +84,6 @@ module Ftpd
     :socket,
     :structure=,
     :supported_commands,
-    :syntax_error,
     :tls_enabled?
  
   end

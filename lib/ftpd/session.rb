@@ -4,6 +4,7 @@ module Ftpd
     include Error
     include ListPath
 
+    attr_accessor :command_sequence_checker
     attr_accessor :data_channel_protection_level
     attr_accessor :data_server
     attr_accessor :data_type
@@ -32,32 +33,13 @@ module Ftpd
       set_socket_options
       @protocols = Protocols.new(@socket)
       @command_handlers = CommandHandlers.new
+      @command_loop = CommandLoop.new(self)
       register_commands
       initialize_session
     end
 
     def run
-      catch :done do
-        begin
-          reply "220 #{server_name_and_version}"
-          loop do
-            begin
-              s = get_command
-              s = process_telnet_sequences(s)
-              syntax_error unless s =~ /^(\w+)(?: (.*))?$/
-              command, argument = $1.downcase, $2
-              unless valid_command?(command)
-                unrecognized_error s
-              end
-              @command_sequence_checker.check command
-              execute_command command, argument
-            rescue CommandError => e
-              reply e.message
-            end
-          end
-        rescue Errno::ECONNRESET, Errno::EPIPE
-        end
-      end
+      @command_loop.read_and_execute_commands
     end
 
     private
@@ -75,10 +57,6 @@ module Ftpd
 
     def execute_command command, argument
       @command_handlers.execute command, argument
-    end
-
-    def syntax_error
-      error "501 Syntax error"
     end
 
     def ensure_logged_in
@@ -149,25 +127,6 @@ module Ftpd
       @data_server = nil
     end
 
-    def get_command
-      s = gets_with_timeout(@socket)
-      throw :done if s.nil?
-      s = s.chomp
-      @config.log.debug s
-      s
-    end
-
-    def gets_with_timeout(socket)
-      ready = IO.select([@socket], nil, nil, @config.session_timeout)
-      timeout if ready.nil?
-      ready[0].first.gets
-    end
-
-    def timeout
-      reply '421 Control connection timed out.'
-      throw :done
-    end
-
     def reply(s)
       if @config.response_delay.to_i != 0
         @config.log.warn "#{@config.response_delay} second delay before replying"
@@ -215,14 +174,6 @@ module Ftpd
 
     def receive_oob_data_inline(socket)
       socket.setsockopt(Socket::SOL_SOCKET, Socket::SO_OOBINLINE, 1)
-    end
-
-    def process_telnet_sequences(s)
-      telnet = Telnet.new(s)
-      unless telnet.reply.empty?
-        @socket.write telnet.reply
-      end
-      telnet.plain
     end
 
     def reset_failed_auths

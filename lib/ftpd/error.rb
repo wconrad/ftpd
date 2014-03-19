@@ -25,5 +25,9 @@ module Ftpd
       error "550 #{message}"
     end
 
+    def syntax_error
+      error "501 Syntax error"
+    end
+
   end
 end
