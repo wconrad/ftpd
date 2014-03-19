@@ -1,4 +1,5 @@
 require_relative 'error'
+require_relative 'file_system_helper'
 
 module Ftpd
 
@@ -6,8 +7,10 @@ module Ftpd
   
   class CommandHandler
 
-    include Error
     extend Forwardable
+
+    include Error
+    include FileSystemHelper
 
     COMMAND_FILENAME_PREFIX = 'cmd_'
     COMMAND_KLASS_PREFIX = 'Cmd'
@@ -45,11 +48,6 @@ module Ftpd
     :data_server=,
     :data_type,
     :data_type=,
-    :ensure_accessible,
-    :ensure_directory,
-    :ensure_does_not_exist,
-    :ensure_exists,
-    :ensure_file_system_supports,
     :ensure_logged_in,
     :ensure_not_epsv_all,
     :ensure_protocol_supported,
@@ -67,7 +65,6 @@ module Ftpd
     :name_list,
     :name_prefix,
     :name_prefix=,
-    :path_list,
     :protection_buffer_size_set,
     :protection_buffer_size_set=,
     :pwd,
@@ -81,7 +78,6 @@ module Ftpd
     :syntax_error,
     :tls_enabled?,
     :transmit_file,
-    :unique_path,
     :unix_to_nvt_ascii
  
   end

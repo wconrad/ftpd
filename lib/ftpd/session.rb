@@ -79,39 +79,9 @@ module Ftpd
       error "501 Syntax error"
     end
 
-    def ensure_file_system_supports(method)
-      unless @file_system.respond_to?(method)
-        unimplemented_error
-      end
-    end
-
     def ensure_logged_in
       return if @logged_in
       error "530 Not logged in"
-    end
-
-    def ensure_accessible(path)
-      unless @file_system.accessible?(path)
-        error '550 Access denied'
-      end
-    end
-
-    def ensure_exists(path)
-      unless @file_system.exists?(path)
-        error '550 No such file or directory'
-      end
-    end
-
-    def ensure_does_not_exist(path)
-      if @file_system.exists?(path)
-        error '550 Already exists'
-      end
-    end
-
-    def ensure_directory(path)
-      unless @file_system.directory?(path)
-        error '550 Not a directory'
-      end
     end
 
     def ensure_tls_supported
@@ -329,38 +299,12 @@ module Ftpd
       @socket.write s + "\r\n"
     end
 
-    def unique_path(path)
-      suffix = nil
-      100.times do
-        path_with_suffix = [path, suffix].compact.join('.')
-        unless @file_system.exists?(path_with_suffix)
-          return path_with_suffix
-        end
-        suffix = generate_suffix
-      end
-      raise "Unable to find unique path"
-    end
-
-    def generate_suffix
-      set = ('a'..'z').to_a
-      8.times.map do
-        set[rand(set.size)]
-      end.join
-    end
-
     def init_command_sequence_checker
       checker = CommandSequenceChecker.new
       checker.must_expect 'acct'
       checker.must_expect 'pass'
       checker.must_expect 'rnto'
       checker
-    end
-
-    def path_list(path)
-      if @file_system.directory?(path)
-        path = File.join(path, '*')
-      end
-      @file_system.dir(path).sort
     end
 
     def authenticate(*args)
