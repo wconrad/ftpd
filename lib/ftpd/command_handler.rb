@@ -67,6 +67,7 @@ module Ftpd
     :name_list,
     :name_prefix,
     :name_prefix=,
+    :path_list,
     :protection_buffer_size_set,
     :protection_buffer_size_set=,
     :pwd,

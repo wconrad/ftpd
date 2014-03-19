@@ -356,23 +356,6 @@ module Ftpd
       checker
     end
 
-    def list(path)
-      format_list(path_list(path))
-    end
-
-    def format_list(paths)
-      paths.map do |path|
-        file_info = @file_system.file_info(path)
-        @config.list_formatter.new(file_info).to_s + "\n"
-      end.join
-    end
-
-    def name_list(path)
-      path_list(path).map do |path|
-        File.basename(path) + "\n"
-      end.join
-    end
-
     def path_list(path)
       if @file_system.directory?(path)
         path = File.join(path, '*')

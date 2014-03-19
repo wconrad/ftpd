@@ -15,6 +15,19 @@ module Ftpd
       end
     end
 
+    private
+
+    def list(path)
+      format_list(path_list(path))
+    end
+
+    def format_list(paths)
+      paths.map do |path|
+        file_info = file_system.file_info(path)
+        config.list_formatter.new(file_info).to_s + "\n"
+      end.join
+    end
+
   end
 
 end
