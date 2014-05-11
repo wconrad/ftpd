@@ -4,13 +4,21 @@ require 'jeweler'
 
 README_PATH = File.expand_path('../README.md', File.dirname(__FILE__))
 
+def remove_badges(description)
+  description.gsub(/\[.*\n/, '')
+end
+
+def join_lines(description)
+  description.gsub(/\n/, ' ').strip
+end
+
 def extract_description_from_readme
   readme = File.open(README_PATH, 'r', &:read)
-  s = readme[/^# FTPD.*\n+((?:.*\n)+?)\n*##/i, 1]
-  unless s
+  description = readme[/^# FTPD.*\n+((?:.*\n)+?)\n*##/i, 1]
+  unless description
     raise 'Unable to extract description from readme'
-  end     
-  s.gsub(/\n/, ' ').strip
+  end
+  join_lines(remove_badges(description))
 end
 
 Jeweler::Tasks.new do |gem|
