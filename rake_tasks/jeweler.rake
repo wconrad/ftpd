@@ -4,8 +4,21 @@ require 'jeweler'
 
 README_PATH = File.expand_path('../README.md', File.dirname(__FILE__))
 
+def remove_markdown_link(description)
+  regex = %r{
+    \[
+      ([^\]]+)
+    \]
+    (
+      \[\d+\] |
+      \([^)]+\)
+    )
+  }x
+  description = description.gsub(regex, '\1')
+end
+
 def remove_badges(description)
-  description.gsub(/\[.*\n/, '')
+  description.gsub(/^\[!.*\n/, '')
 end
 
 def join_lines(description)
@@ -18,7 +31,10 @@ def extract_description_from_readme
   unless description
     raise 'Unable to extract description from readme'
   end
-  join_lines(remove_badges(description))
+  description = remove_badges(description)
+  description = remove_markdown_link(description)
+  description = join_lines(description)
+  description
 end
 
 Jeweler::Tasks.new do |gem|
