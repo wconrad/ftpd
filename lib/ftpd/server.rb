@@ -50,7 +50,10 @@ module Ftpd
 
     def stop
       @stopping = true
-      @server_socket.shutdown
+      begin
+        @server_socket.shutdown
+      rescue Errno::ENOTCONN
+      end
       @server_socket.close
     end
 

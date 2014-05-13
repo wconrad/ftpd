@@ -2,6 +2,10 @@ This is the change log for the main branch of ftpd, which supports
 Ruby 1.9 and greater.  For ruby 1.8.7, please use the latest version
 before 0.8.0.
 
+Bug fixes
+
+* Ignore Errno::ENOTCONN on socket shutdown (issue #24)	
+
 Administration
 
 * Remove examples/foo.rb (accidental commit)
