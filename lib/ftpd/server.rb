@@ -74,7 +74,7 @@ module Ftpd
               IO.select([@server_socket])
               sleep(0.2)
               retry
-            rescue Errno::EBADF
+            rescue Errno::EBADF, Errno::ENOTSOCK
               raise unless @stopping
               @stopping = false
               break
