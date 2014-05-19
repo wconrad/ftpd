@@ -2,6 +2,12 @@ This is the change log for the main branch of ftpd, which supports
 Ruby 1.9 and greater.  For ruby 1.8.7, please use the latest version
 before 0.8.0.
 
+### 0.16.0
+
+Bug fixes
+
+* Fix Errno::ENOTSOCK error in Ruby 2.1.2 (issue #25)
+
 ### 0.15.0
 
 Bug fixes
