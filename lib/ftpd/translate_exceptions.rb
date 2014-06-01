@@ -40,9 +40,9 @@ module Ftpd
 
       def translate_exceptions(method_name)
         original_method = instance_method(method_name)
-        define_method method_name do |*args|
+        define_method method_name do |*args, &block|
           exception_translator.translate_exceptions do
-            original_method.bind(self).call *args
+            original_method.bind(self).call *args, &block
           end
         end
       end

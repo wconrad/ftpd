@@ -12,8 +12,9 @@ module Ftpd
         syntax_error unless path
         path = File.expand_path(path, name_prefix)
         ensure_accessible path
-        contents = receive_file
-        file_system.append path, contents
+        receive_file do |data_socket|
+          file_system.append path, data_socket
+        end
         reply "226 Transfer complete"
       end
     end

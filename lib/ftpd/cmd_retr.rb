@@ -13,8 +13,9 @@ module Ftpd
         path = File.expand_path(path, name_prefix)
         ensure_accessible path
         ensure_exists path
-        contents = file_system.read(path)
-        transmit_file contents
+        file_system.read(path) do |file|
+          transmit_file file
+        end
       end
     end
 

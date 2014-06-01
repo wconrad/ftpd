@@ -10,7 +10,6 @@ module Ftpd
 
     extend Forwardable
 
-    include AsciiHelper
     include DataConnectionHelper
     include Error
     include FileSystemHelper

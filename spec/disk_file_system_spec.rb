@@ -128,14 +128,17 @@ module Ftpd
       context '(success)' do
         let(:path) {'file'}
         specify do
-          disk_file_system.read(path).should == canned_contents(path)
+          disk_file_system.read(path) do |file|
+            file.should be_a(IO)
+            file.read.should == canned_contents(path)
+          end
         end
       end
 
       context '(error)' do
         specify do
           expect {
-            disk_file_system.read(missing_path)
+            disk_file_system.read(missing_path) {}
           }.to raise_error *missing_file_error
         end
       end
@@ -145,11 +148,12 @@ module Ftpd
     describe '#write' do
 
       let(:contents) {'file contents'}
+      let(:stream)   {Ftpd::Stream.new(StringIO.new(contents), nil)}
 
       context '(success)' do
         let(:path) {'file_path'}
         specify do
-          disk_file_system.write(path, contents)
+          disk_file_system.write(path, stream)
           read_file(path).should == contents
         end
       end
@@ -157,7 +161,7 @@ module Ftpd
       context '(error)' do
         specify do
           expect {
-            disk_file_system.write('dir', contents)
+            disk_file_system.write('dir', stream)
           }.to raise_error *is_a_directory_error
         end
       end
@@ -167,11 +171,12 @@ module Ftpd
     describe '#append' do
 
       let(:contents) {'file contents'}
+      let(:stream)   {Ftpd::Stream.new(StringIO.new(contents), nil)}
 
       context '(destination missing)' do
         let(:path) {'file_path'}
         specify do
-          disk_file_system.append(path, contents)
+          disk_file_system.append(path, stream)
           read_file(path).should == contents
         end
       end
@@ -179,7 +184,7 @@ module Ftpd
       context '(destination exists)' do
         let(:path) {'file'}
         specify do
-          disk_file_system.append(path, contents)
+          disk_file_system.append(path, stream)
           read_file(path).should == canned_contents(path) + contents
         end
       end
@@ -187,7 +192,7 @@ module Ftpd
       context '(error)' do
         specify do
           expect {
-            disk_file_system.append('dir', contents)
+            disk_file_system.append('dir', stream)
           }.to raise_error *is_a_directory_error
         end
       end
