@@ -75,9 +75,11 @@ module Ftpd
 
     module FileWriting
 
-      def write_file(ftp_path, contents, mode)
+      def write_file(ftp_path, io, mode)
         File.open(expand_ftp_path(ftp_path), mode) do |file|
-          file.write contents
+          while line = io.gets
+            file.write line
+          end
         end
       end
 
@@ -117,16 +119,22 @@ module Ftpd
 
       include TranslateExceptions
 
-      # Read a file into memory.
+      # Read a file from disk.
       # @param ftp_path [String] The virtual path
+      # @yield [io] Passes an IO object to the block
       #
       # Called for:
       # * RETR
       #
       # If missing, then these commands are not supported.
 
-      def read(ftp_path)
-        File.open(expand_ftp_path(ftp_path), 'rb', &:read)
+      def read(ftp_path, &block)
+        io = File.open(expand_ftp_path(ftp_path), 'rb')
+        begin
+          yield(io)
+        ensure
+          io.close
+        end
       end
       translate_exceptions :read
 
@@ -144,7 +152,7 @@ module Ftpd
 
       # Write a file to disk.
       # @param ftp_path [String] The virtual path
-      # @param contents [String] The file's contents
+      # @param io [IO] IO that contains the data to write
       #
       # Called for:
       # * STOR
@@ -152,8 +160,8 @@ module Ftpd
       #
       # If missing, then these commands are not supported.
 
-      def write(ftp_path, contents)
-        write_file ftp_path, contents, 'wb'
+      def write(ftp_path, io)
+        write_file ftp_path, io, 'wb'
       end
       translate_exceptions :write
 
@@ -171,15 +179,15 @@ module Ftpd
 
       # Append to a file.  If the file does not exist, create it.
       # @param ftp_path [String] The virtual path
-      # @param contents [String] The file's contents
+      # @param io [IO] IO that contains the data to write
       #
       # Called for:
       # * APPE
       #
       # If missing, then these commands are not supported.
 
-      def append(ftp_path, contents)
-        write_file ftp_path, contents, 'ab'
+      def append(ftp_path, io)
+        write_file ftp_path, io, 'ab'
       end
       translate_exceptions :append
 

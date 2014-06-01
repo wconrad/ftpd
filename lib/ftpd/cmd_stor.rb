@@ -13,8 +13,9 @@ module Ftpd
         path = File.expand_path(path, name_prefix)
         ensure_accessible path
         ensure_exists File.dirname(path)
-        contents = receive_file
-        file_system.write path, contents
+        receive_file do |data_socket|
+          file_system.write path, data_socket
+        end
         reply "226 Transfer complete"
       end
     end

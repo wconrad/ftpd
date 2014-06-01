@@ -1,4 +1,5 @@
 # Standard libraries
+require 'delegate'
 require 'fileutils'
 require 'forwardable'
 require 'logger'

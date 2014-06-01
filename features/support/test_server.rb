@@ -98,21 +98,21 @@ class TestServer
 
       def raise_on_file_system_error(method_name)
         original_method = instance_method(method_name)
-        define_method method_name do |*args|
+        define_method method_name do |*args, &block|
           ftp_path = args.first
           if force_file_system_error?(ftp_path)
             raise Ftpd::PermanentFileSystemError, 'Unable to do it'
           end
-          original_method.bind(self).call *args
+          original_method.bind(self).call *args, &block
         end
       end
 
       def return_true_on_file_system_error(method_name)
         original_method = instance_method(method_name)
-        define_method method_name do |*args|
+        define_method method_name do |*args, &block|
           ftp_path = args.first
           return true if force_file_system_error?(ftp_path)
-          original_method.bind(self).call *args
+          original_method.bind(self).call *args, &block
         end
       end
 
