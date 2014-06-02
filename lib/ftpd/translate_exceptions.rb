@@ -1,6 +1,6 @@
 module Ftpd
 
-  # This module tranlates exceptions to FileSystemError exceptions.
+  # This module translates exceptions to FileSystemError exceptions.
   #
   # A disk file system (such as Ftpd::DiskFileSystem) is expected to
   # raise only FileSystemError exceptions, but many common operations
