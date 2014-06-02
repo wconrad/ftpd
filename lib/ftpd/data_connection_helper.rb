@@ -11,7 +11,7 @@ module Ftpd
       attr_accessor :bytes
 
       def gets
-        line = super
+        line = __getobj__.gets
         return unless line
 
         line = nvt_ascii_to_unix(line) if data_type == 'A'
@@ -21,7 +21,7 @@ module Ftpd
 
       def write(contents)
         contents = unix_to_nvt_ascii(contents) if data_type == 'A'
-        result = super(contents)
+        result = __getobj__.write(contents)
         record_bytes(contents)
         result
       end
