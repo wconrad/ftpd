@@ -357,6 +357,7 @@ Among those who have improved ftpd are:
 * Joshua Rutherford
 * Larry. W. Cashdollar
 * Michael de Silva
+* Mike Ragalie
 * cransom
 
 If I've forgotten to add you, please remind me, or submit a merge
