@@ -40,7 +40,7 @@ module Ftpd
     # {#expect} is called again.
     #
     # @param command [String] The command.  Must be lowercase.
-    # @raise [CommandError] A "503 Bad sequence" error
+    # @raise [FtpServerError] A "503 Bad sequence" error
 
     def check(command)
       if @expected_command

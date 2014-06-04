@@ -9,10 +9,10 @@ module Ftpd
       syntax_error unless buffer_size =~ /^\d+$/
       buffer_size = buffer_size.to_i
       unless socket.encrypted?
-        error "503 PBSZ must be preceded by AUTH"
+        error "PBSZ must be preceded by AUTH", 503
       end
       unless buffer_size == 0
-        error "501 PBSZ=0"
+        error "PBSZ=0", 501
       end
       reply "200 PBSZ=0"
       self.protection_buffer_size_set = true

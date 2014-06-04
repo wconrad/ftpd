@@ -21,12 +21,12 @@ module Ftpd
               syntax_error unless s =~ /^(\w+)(?: (.*))?$/
               command, argument = $1.downcase, $2
               unless valid_command?(command)
-                unrecognized_error s
+                error "Syntax error, command unrecognized: #{s.chomp}", 500
               end
               command_sequence_checker.check command
               execute_command command, argument
-            rescue CommandError => e
-              reply e.message
+            rescue FtpServerError => e
+              reply e.message_with_code
             end
           end
         rescue Errno::ECONNRESET, Errno::EPIPE

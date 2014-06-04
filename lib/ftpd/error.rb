@@ -1,32 +1,20 @@
 module Ftpd
   module Error
 
-    def error(message)
-      raise CommandError, message
-    end
-
-    def transient_error(message)
-      error "450 #{message}"
-    end
-
-    def unrecognized_error(s)
-      error "500 Syntax error, command unrecognized: #{s.chomp}"
+    def error(message, code)
+      raise FtpServerError.new(message, code)
     end
 
     def unimplemented_error
-      error "502 Command not implemented"
+      error "Command not implemented", 502
     end
 
     def sequence_error
-      error "503 Bad sequence of commands"
-    end
-
-    def permanent_error(message)
-      error "550 #{message}"
+      error "Bad sequence of commands", 503
     end
 
     def syntax_error
-      error "501 Syntax error"
+      error "Syntax error", 501
     end
 
   end

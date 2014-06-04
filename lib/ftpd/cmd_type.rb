@@ -10,7 +10,7 @@ module Ftpd
       type_code = $1
       format_code = $2
       unless argument =~ /^([AEI]( [NTC])?|L .*)$/
-        error '504 Invalid type code'
+        error 'Invalid type code', 504
       end
       case argument
       when /^A( [NT])?$/
@@ -18,7 +18,7 @@ module Ftpd
       when /^(I|L 8)$/
         self.data_type = 'I'
       else
-        error '504 Type not implemented'
+        error 'Type not implemented', 504
       end
       reply "200 Type set to #{data_type}"
     end

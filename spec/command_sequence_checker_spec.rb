@@ -3,7 +3,9 @@ require File.expand_path('spec_helper', File.dirname(__FILE__))
 module Ftpd
   describe CommandSequenceChecker do
 
-    let(:sequence_error) {[CommandError, '503 Bad sequence of commands']}
+    let(:sequence_error_verification) do
+      lambda {|e| e.code == 503 && e.message == "Bad sequence of commands"}
+    end
     subject(:checker) {CommandSequenceChecker.new}
 
     context 'initial' do
@@ -25,7 +27,7 @@ module Ftpd
       it 'rejects any other command' do
         expect {
           checker.check 'NOOP'
-        }.to raise_error *sequence_error
+        }.to raise_error(FtpServerError, &sequence_error_verification)
       end
 
     end
@@ -49,7 +51,7 @@ module Ftpd
         checker.expect 'PASS'
         expect {
           checker.check 'NOOP'
-        }.to raise_error *sequence_error
+        }.to raise_error(FtpServerError, &sequence_error_verification)
       end
 
       it 'accepts any other command' do
@@ -67,7 +69,7 @@ module Ftpd
       it 'rejects that command if not expected' do
         expect {
           checker.check 'PASS'
-        }.to raise_error *sequence_error
+        }.to raise_error(FtpServerError, &sequence_error_verification)
       end
 
       it 'accepts that command when it is accepted' do

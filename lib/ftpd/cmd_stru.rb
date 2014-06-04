@@ -8,8 +8,8 @@ module Ftpd
       syntax_error unless argument
       ensure_logged_in
       name, implemented = FILE_STRUCTURES[argument]
-      error "504 Invalid structure code" unless name
-      error "504 Structure not implemented" unless implemented
+      error "Invalid structure code", 504 unless name
+      error "Structure not implemented", 504 unless implemented
       self.structure = argument
       reply "200 File structure set to #{name}"
     end

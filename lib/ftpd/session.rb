@@ -61,18 +61,18 @@ module Ftpd
 
     def ensure_logged_in
       return if @logged_in
-      error "530 Not logged in"
+      error "Not logged in", 530
     end
 
     def ensure_tls_supported
       unless tls_enabled?
-        error "534 TLS not enabled"
+        error "TLS not enabled", 534
       end
     end
 
     def ensure_not_epsv_all
       if @epsv_all
-        error "501 Not allowed after EPSV ALL"
+        error "Not allowed after EPSV ALL", 501
       end
     end
 
@@ -83,8 +83,8 @@ module Ftpd
     def ensure_protocol_supported(protocol_code)
       unless @protocols.supports_protocol?(protocol_code)
         protocol_list = @protocols.protocol_codes.join(',')
-        error("522 Network protocol #{protocol_code} not supported, "\
-              "use (#{protocol_list})")
+        error("Network protocol #{protocol_code} not supported, "\
+              "use (#{protocol_list})", 522)
       end
     end
 
@@ -114,7 +114,7 @@ module Ftpd
     end
 
     def set_file_system(file_system)
-      @file_system = FileSystemErrorTranslator.new(file_system)
+      @file_system = file_system
     end
 
     def command_not_needed
@@ -155,7 +155,7 @@ module Ftpd
       user = auth_tokens.first
       unless authenticate(*auth_tokens)
         failed_auth
-        error "530 Login incorrect"
+        error "Login incorrect", 530
       end
       reply "230 Logged in"
       set_file_system @config.driver.file_system(user)
@@ -191,7 +191,7 @@ module Ftpd
 
     def set_active_mode_address(address, port)
       if port > 0xffff || port < 1024 && !@config.allow_low_data_ports
-        error "504 Command not implemented for that parameter"
+        error "Command not implemented for that parameter", 504
       end
       @data_hostname = address
       @data_port = port

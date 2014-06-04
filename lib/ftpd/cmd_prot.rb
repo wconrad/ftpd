@@ -7,14 +7,14 @@ module Ftpd
     def cmd_prot(level_arg)
       level_code = level_arg.upcase
       unless protection_buffer_size_set
-        error "503 PROT must be preceded by PBSZ"
+        error "PROT must be preceded by PBSZ", 503
       end
       level = DATA_CHANNEL_PROTECTION_LEVELS[level_code]
       unless level
-        error "504 Unknown protection level"
+        error "Unknown protection level", 504
       end
       unless level == :private
-        error "536 Unsupported protection level #{level}"
+        error "Unsupported protection level #{level}", 536
       end
       self.data_channel_protection_level = level
       reply "200 Data protection level #{level_code}"
