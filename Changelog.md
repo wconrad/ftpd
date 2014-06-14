@@ -4,11 +4,26 @@ before 0.8.0.
 
 ### 0.17.0
 
-API Changes:
+This release is brought to you by Mike Ragalie.  Thanks, Mike!
+
+Features
+
+* Streaming file transfers (issues #12 and #26)
+
+API Changes
+
+These breaking API changes are for streaming file transfers.  Custom
+file systems will notice these changes.  Nobody else should.
 
 * The FileSystemErrorTranslator has been removed.  Instead, the file
   system may raise FtpServerError with a message and an optional error
-  code.  Thanks to Mike Ragalie.
+  code.
+
+* DiskFileSystem#write now takes an `Ftpd::Stream` object instead of a
+  `String`.
+
+* DiskFileSystem#read expects to receive a block and yields an `IO`
+  object to the block.
 
 ### 0.16.0
 
@@ -20,7 +35,7 @@ Bug fixes
 
 Bug fixes
 
-* Ignore Errno::ENOTCONN on socket shutdown (issue #24)	
+* Ignore Errno::ENOTCONN on socket shutdown (issue #24)
 
 Administration
 
