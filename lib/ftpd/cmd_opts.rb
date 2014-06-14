@@ -6,7 +6,7 @@ module Ftpd
 
     def cmd_opts(argument)
       syntax_error unless argument
-      error '501 Unsupported option'
+      error 'Unsupported option', 501
     end
 
   end

@@ -19,25 +19,25 @@ module Ftpd
 
     def ensure_accessible(path)
       unless file_system.accessible?(path)
-        error '550 Access denied'
+        error 'Access denied', 550
       end
     end
 
     def ensure_exists(path)
       unless file_system.exists?(path)
-        error '550 No such file or directory'
+        error 'No such file or directory', 550
       end
     end
 
     def ensure_does_not_exist(path)
       if file_system.exists?(path)
-        error '550 Already exists'
+        error 'Already exists', 550
       end
     end
 
     def ensure_directory(path)
       unless file_system.directory?(path)
-        error '550 Not a directory'
+        error 'Not a directory', 550
       end
     end
 

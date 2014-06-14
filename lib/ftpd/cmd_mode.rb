@@ -8,8 +8,8 @@ module Ftpd
       syntax_error unless argument
       ensure_logged_in
       name, implemented = TRANSMISSION_MODES[argument]
-      error "504 Invalid mode code" unless name
-      error "504 Mode not implemented" unless implemented
+      error "Invalid mode code", 504 unless name
+      error "Mode not implemented", 504 unless implemented
       self.mode = argument
       reply "200 Mode set to #{name}"
     end

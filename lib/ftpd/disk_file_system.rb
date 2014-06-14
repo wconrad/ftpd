@@ -368,7 +368,8 @@ module Ftpd
   # found") or TransientFileSystemError (e.g. "file busy").  A
   # PermanentFileSystemError will cause a "550" error response to be
   # sent; a TransientFileSystemError will cause a "450" error response
-  # to be sent.
+  # to be sent. Methods may also raise an FtpServerError with any
+  # desired error code.
   #
   # The class is divided into modules that may be included piecemeal.
   # By including some mixins and not others, you can compose a disk
