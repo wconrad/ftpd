@@ -2,6 +2,14 @@ This is the change log for the main branch of ftpd, which supports
 Ruby 1.9 and greater.  For ruby 1.8.7, please use the latest version
 before 0.8.0.
 
+### 0.17.0
+
+API Changes:
+
+* The FileSystemErrorTranslator has been removed.  Instead, the file
+  system may raise FtpServerError with a message and an optional error
+  code.  Thanks to Mike Ragalie.
+
 ### 0.16.0
 
 Bug fixes
