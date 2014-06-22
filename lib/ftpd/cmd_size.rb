@@ -4,8 +4,6 @@ module Ftpd
 
   class CmdSize < CommandHandler
 
-    include AsciiHelper
-
     def cmd_size(path)
       ensure_logged_in
       ensure_file_system_supports :read
@@ -16,10 +14,11 @@ module Ftpd
 
       file_system.read(path) do |file|
         if data_type == 'A'
-          size = 0
-          while line = file.gets
-            size += unix_to_nvt_ascii(line).size
-          end
+          output = StringIO.new
+          io = Ftpd::Stream.new(output, data_type)
+
+          io.write(file)
+          size = output.size
         else
           size = file.size
         end

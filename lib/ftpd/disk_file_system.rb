@@ -75,9 +75,9 @@ module Ftpd
 
     module FileWriting
 
-      def write_file(ftp_path, io, mode)
+      def write_file(ftp_path, stream, mode)
         File.open(expand_ftp_path(ftp_path), mode) do |file|
-          while line = io.gets
+          while line = stream.read
             file.write line
           end
         end
@@ -152,7 +152,7 @@ module Ftpd
 
       # Write a file to disk.
       # @param ftp_path [String] The virtual path
-      # @param io [IO] IO that contains the data to write
+      # @param stream [Ftpd::Stream] Stream that contains the data to write
       #
       # Called for:
       # * STOR
@@ -160,8 +160,8 @@ module Ftpd
       #
       # If missing, then these commands are not supported.
 
-      def write(ftp_path, io)
-        write_file ftp_path, io, 'wb'
+      def write(ftp_path, stream)
+        write_file ftp_path, stream, 'wb'
       end
       translate_exceptions :write
 
@@ -179,15 +179,15 @@ module Ftpd
 
       # Append to a file.  If the file does not exist, create it.
       # @param ftp_path [String] The virtual path
-      # @param io [IO] IO that contains the data to write
+      # @param stream [Ftpd::Stream] Stream that contains the data to write
       #
       # Called for:
       # * APPE
       #
       # If missing, then these commands are not supported.
 
-      def append(ftp_path, io)
-        write_file ftp_path, io, 'ab'
+      def append(ftp_path, stream)
+        write_file ftp_path, stream, 'ab'
       end
       translate_exceptions :append
 

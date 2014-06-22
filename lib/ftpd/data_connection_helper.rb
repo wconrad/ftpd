@@ -4,62 +4,28 @@ module Ftpd
 
   module DataConnectionHelper
 
-    class NvtSocket < SimpleDelegator
-      include AsciiHelper
-
-      attr_accessor :data_type
-      attr_accessor :bytes
-
-      def gets
-        line = __getobj__.gets
-        return unless line
-
-        line = nvt_ascii_to_unix(line) if data_type == 'A'
-        record_bytes(line)
-        line
-      end
-
-      def write(contents)
-        contents = unix_to_nvt_ascii(contents) if data_type == 'A'
-        result = __getobj__.write(contents)
-        record_bytes(contents)
-        result
-      end
-
-      private
-      def record_bytes(line)
-        self.bytes ||= 0
-        self.bytes += line.size if line
-      end
-
-    end
-
     def transmit_file(io, data_type = session.data_type)
       open_data_connection do |data_socket|
-        socket = NvtSocket.new(data_socket)
-        socket.data_type = data_type
+        socket = Ftpd::Stream.new(data_socket, data_type)
 
         handle_data_disconnect do
-          while line = io.gets
-            socket.write(line)
-          end
+          socket.write(io)
         end
 
-        config.log.debug "Sent #{socket.bytes} bytes"
+        config.log.debug "Sent #{socket.byte_count} bytes"
         reply "226 Transfer complete"
       end
     end
 
     def receive_file(path_to_advertise = nil, &block)
       open_data_connection(path_to_advertise) do |data_socket|
-        socket = NvtSocket.new(data_socket)
-        socket.data_type = data_type
+        socket = Ftpd::Stream.new(data_socket, data_type)
 
         handle_data_disconnect do
           yield socket
         end
 
-        config.log.debug "Received #{socket.bytes} bytes"
+        config.log.debug "Received #{socket.byte_count} bytes"
       end
     end
 
