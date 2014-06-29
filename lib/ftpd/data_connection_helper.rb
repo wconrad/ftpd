@@ -4,25 +4,28 @@ module Ftpd
 
   module DataConnectionHelper
 
-    def transmit_file(contents, data_type = session.data_type)
+    def transmit_file(io, data_type = session.data_type)
       open_data_connection do |data_socket|
-        contents = unix_to_nvt_ascii(contents) if data_type == 'A'
+        socket = Ftpd::Stream.new(data_socket, data_type)
+
         handle_data_disconnect do
-          data_socket.write(contents)
+          socket.write(io)
         end
-        config.log.debug "Sent #{contents.size} bytes"
+
+        config.log.debug "Sent #{socket.byte_count} bytes"
         reply "226 Transfer complete"
       end
     end
 
-    def receive_file(path_to_advertise = nil)
+    def receive_file(path_to_advertise = nil, &block)
       open_data_connection(path_to_advertise) do |data_socket|
-        contents = handle_data_disconnect do
-          data_socket.read
+        socket = Ftpd::Stream.new(data_socket, data_type)
+
+        handle_data_disconnect do
+          yield socket
         end
-        contents = nvt_ascii_to_unix(contents) if data_type == 'A'
-        config.log.debug "Received #{contents.size} bytes"
-        contents
+
+        config.log.debug "Received #{socket.byte_count} bytes"
       end
     end
 

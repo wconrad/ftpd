@@ -11,9 +11,20 @@ module Ftpd
       path = File.expand_path(path, name_prefix)
       ensure_accessible(path)
       ensure_exists(path)
-      contents = file_system.read(path)
-      contents = (data_type == 'A') ? unix_to_nvt_ascii(contents) : contents
-      reply "213 #{contents.bytesize}"
+
+      file_system.read(path) do |file|
+        if data_type == 'A'
+          output = StringIO.new
+          io = Ftpd::Stream.new(output, data_type)
+
+          io.write(file)
+          size = output.size
+        else
+          size = file.size
+        end
+
+        reply "213 #{size}"
+      end
     end
 
   end
