@@ -9,6 +9,6 @@ group :development do
   gem 'rake'
   gem 'redcarpet', '~> 3.1.2'
   gem 'rspec'
-  gem 'timecop'
+  gem 'timecop', '~> 0.7.1'
   gem 'yard'
 end
