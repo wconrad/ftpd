@@ -8,7 +8,7 @@ module Ftpd
     def self.should_stub(method)
       describe "#{method}" do
         specify do
-          subject.should respond_to method
+          expect(subject).to respond_to method
         end
       end
     end

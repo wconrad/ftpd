@@ -19,5 +19,5 @@ end
 
 Then(/^the reported mtime should be "(.*?)"$/) do |mtime|
   expected_time = DateTime.parse(mtime).to_time.utc
-  @mtime.should eq expected_time
+  expect(@mtime).to eq expected_time
 end

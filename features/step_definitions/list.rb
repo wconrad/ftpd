@@ -52,22 +52,22 @@ When /^the client name-lists the directory( "(?:.*?)")?$/ do |directory|
 end
 
 Then /^the file list should( not)? contain "(.*?)"$/ do |neg, filename|
-  matcher = if neg
-              :should_not
-            else
-              :should
-            end
-  @list.filenames.send(matcher, include(filename))
+  verb = if neg
+           :to_not
+         else
+           :to
+         end
+  expect(@list.filenames).send(verb, include(filename))
 end
 
 Then /^the file list should be in (long|short) form$/ do |form|
-  @list.should send("be_#{form}_form")
+  expect(@list).to send("be_#{form}_form")
 end
 
 Then /^the file list should be empty$/ do
-  @list.should be_empty
+  expect(@list).to be_empty
 end
 
 Then /^the list should be in EPLF format$/ do
-  @list.should be_eplf_format
+  expect(@list).to be_eplf_format
 end

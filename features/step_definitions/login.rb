@@ -51,7 +51,7 @@ Then /^the client should( not)? be logged in$/ do |neg|
                    else
                      :be_truthy
                    end
-  logged_in?.should send(matcher_method)
+  expect(logged_in?).to send(matcher_method)
 end
 
 When /^the client sends a password( with no parameter)?$/ do |no_param|

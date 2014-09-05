@@ -6,11 +6,11 @@ rescue Net::FTPError => e
 end
 
 Then /^the server returns no error$/ do
-  @error.should be_nil
+  expect(@error).to be_nil
 end
 
 Then /^the server returns a "(.*?)" error$/ do |error_message|
-  (@error || '').should include error_message
+  expect(@error || '').to include error_message
 end
 
 Then /^the server returns a too many connections error$/ do

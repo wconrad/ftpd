@@ -19,8 +19,8 @@ module Ftpd
 
       it 'should approximate ls -l format' do
         Timecop.freeze(2013, 3, 3, 8, 38, 0) do
-          formatter.to_s.should ==
-            '-rw-r--r-- 1 user     group        1234 Mar  3 08:38 foo'
+          expect(formatter.to_s).to eq \
+          '-rw-r--r-- 1 user     group        1234 Mar  3 08:38 foo'
         end
       end
 
@@ -40,7 +40,7 @@ module Ftpd
       ].each do |ftype, letter|
         context "(#{ftype})" do
           specify do
-            Ls::FileType.letter(ftype).should == letter
+            expect(Ls::FileType.letter(ftype)).to eq letter
           end
         end
       end

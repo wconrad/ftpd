@@ -18,9 +18,9 @@ When /^the client successfully cd's to "(.*?)"$/ do |path|
 end
 
 Then /^the current directory should be "(.*?)"$/ do |path|
-  client.pwd.should == path
+  expect(client.pwd).to eq path
 end
 
 Then /^the XPWD directory should be "(.*?)"$/ do |path|
-  client.xpwd.should == path
+  expect(client.xpwd).to eq path
 end

@@ -1,8 +1,8 @@
 Then /^the server should have written( no)? log output$/ do |neg|
-  method = if neg
-             :should
-           else
-             :should_not
-           end
-  server.log_output.send(method) == ''
+  verb = if neg
+           :to
+         else
+           :to_not
+         end
+  expect(server.log_output).send(verb, eq(''))
 end

@@ -19,7 +19,7 @@ Then /^the server should( not)? have file "(.*?)"$/ do |neg, path|
             else
               :be_truthy
             end
-  server.has_file?(path).should send(matcher)
+  expect(server.has_file?(path)).to send(matcher)
 end
 
 Then /^the server should( not)? have directory "(.*?)"$/ do |neg, path|
@@ -28,34 +28,34 @@ Then /^the server should( not)? have directory "(.*?)"$/ do |neg, path|
             else
               :be_truthy
             end
-  server.has_directory?(path).should send(matcher)
+  expect(server.has_directory?(path)).to send(matcher)
 end
 
 Then /^the remote file "(.*?)" should have (unix|windows) line endings$/ do
 |remote_path, line_ending_type|
-  line_ending_type(server.file_contents(remote_path)).should ==
+  expect(line_ending_type(server.file_contents(remote_path))).to eq \
     line_ending_type.to_sym
 end
 
 Then /^the server should have a file with the contents of "(.*?)"$/ do
 |path|
-  server.has_file_with_contents_of?(path).should be_truthy
+  expect(server.has_file_with_contents_of?(path)).to be_truthy
 end
 
 Then /^the server should have (\d+) files? with "(.*?)" in the name$/ do
 |count, name|
-  server.files_named_like(name).size.should == count.to_i
+  expect(server.files_named_like(name).size).to eq count.to_i
 end
 
 Then /^the remote file "(.*?)" should match "(\w+)" \+ "(\w+)"$/ do
 |remote_path, template1, template2|
   expected = @server.template(template1) + @server.template(template2)
   actual = @server.file_contents(remote_path)
-  actual.should == expected
+  expect(actual).to eq expected
 end
 
 Then /^the remote file "(.*?)" should match "(\w+)"$/ do |remote_path, template|
   expected = @server.template(template)
   actual = @server.file_contents(remote_path)
-  actual.should == expected
+  expect(actual).to eq expected
 end

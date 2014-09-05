@@ -29,9 +29,9 @@ When /^the (\S+) client tries to connect from (\S+)$/ do
 end
 
 Then /^the client should be connected$/ do
-  client.should be_connected
+  expect(client).to be_connected
 end
 
 Then /^the client should not be connected$/ do
-  client.should_not be_connected
+  expect(client).to_not be_connected
 end

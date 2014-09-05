@@ -15,13 +15,16 @@ module Ftpd
     end
 
     before(:each) do
-      connection_tracker.stub(:connections => connections)
-      connection_tracker.stub(:connections_for).with(socket).and_return(connections_for_socket)
+      allow(connection_tracker).to receive(:connections)
+      .and_return(connections)
+      allow(connection_tracker).to receive(:connections_for)
+      .with(socket)
+      .and_return(connections_for_socket)
     end
 
     it 'should have defaults' do
-      connection_throttle.max_connections.should be_nil
-      connection_throttle.max_connections_per_ip.should be_nil
+      expect(connection_throttle.max_connections).to be_nil
+      expect(connection_throttle.max_connections_per_ip).to be_nil
     end
 
     describe '#allow?' do
@@ -37,17 +40,17 @@ module Ftpd
 
         context 'almost at maximum connections' do
           let(:connections) {max_connections - 1}
-          specify {connection_throttle.allow?(socket).should be_truthy}
+          specify {expect(connection_throttle.allow?(socket)).to be_truthy}
         end
 
         context 'at maximum connections' do
           let(:connections) {max_connections}
-          specify {connection_throttle.allow?(socket).should be_falsey}
+          specify {expect(connection_throttle.allow?(socket)).to be_falsey}
         end
 
         context 'above maximum connections' do
           let(:connections) {max_connections + 1}
-          specify {connection_throttle.allow?(socket).should be_falsey}
+          specify {expect(connection_throttle.allow?(socket)).to be_falsey}
         end
 
       end
@@ -63,17 +66,17 @@ module Ftpd
 
         context 'almost at maximum connections for ip' do
           let(:connections_for_socket) {max_connections_per_ip - 1}
-          specify {connection_throttle.allow?(socket).should be_truthy}
+          specify {expect(connection_throttle.allow?(socket)).to be_truthy}
         end
 
         context 'at maximum connections for ip' do
           let(:connections_for_socket) {max_connections_per_ip}
-          specify {connection_throttle.allow?(socket).should be_falsey}
+          specify {expect(connection_throttle.allow?(socket)).to be_falsey}
         end
 
         context 'above maximum connections for ip' do
           let(:connections_for_socket) {max_connections_per_ip + 1}
-          specify {connection_throttle.allow?(socket).should be_falsey}
+          specify {expect(connection_throttle.allow?(socket)).to be_falsey}
         end
 
       end
@@ -86,7 +89,7 @@ module Ftpd
 
       it 'should send a "too many connections" message' do
         connection_throttle.deny socket
-        socket.string.should == "421 Too many connections\r\n"
+        expect(socket.string).to eq "421 Too many connections\r\n"
       end
 
     end

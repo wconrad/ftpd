@@ -4,6 +4,7 @@ module Ftpd
   describe ExceptionTranslator do
 
     class FooError < StandardError ; end
+    class BarError < StandardError ; end
 
     subject(:translator) {ExceptionTranslator.new}
     let(:message) {'An error happened'}

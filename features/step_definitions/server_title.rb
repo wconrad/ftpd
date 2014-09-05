@@ -4,9 +4,9 @@ Then /^the server returns its title$/ do
 end
 
 Then /^the server returns its name$/ do
-  @response.should include @server.server_name
+  expect(@response).to include @server.server_name
 end
 
 Then /^the server returns its version$/ do
-  @response.should =~ /\b\d+\.\d+\.\d+\b/
+  expect(@response).to match /\b\d+\.\d+\.\d+\b/
 end

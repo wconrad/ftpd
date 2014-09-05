@@ -7,11 +7,11 @@ def feature_regexp(feature)
 end
 
 Then /^the response should include feature "(.*?)"$/ do |feature|
-  @feature_reply.should =~ feature_regexp(feature)
+  expect(@feature_reply).to match feature_regexp(feature)
 end
 
 Then /^the response should not include feature "(.*?)"$/ do |feature|
-  @feature_reply.should_not =~ feature_regexp(feature)
+  expect(@feature_reply).to_not match feature_regexp(feature)
 end
 
 Then /^the response should( not)? include TLS features$/ do |neg|

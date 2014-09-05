@@ -16,7 +16,7 @@ module Ftpd
         subject(:formatter) {Eplf.new(file_info)}
 
         it 'should produce EPLF format' do
-          formatter.to_s.should == "+r,s1234,m1362299880\tfoo"
+          expect(formatter.to_s).to eq "+r,s1234,m1362299880\tfoo"
         end
 
       end
@@ -33,7 +33,7 @@ module Ftpd
         subject(:formatter) {Eplf.new(file_info)}
 
         it 'should produce EPLF format' do
-          formatter.to_s.should == "+/,m1362299880\tfoo"
+          expect(formatter.to_s).to eq "+/,m1362299880\tfoo"
         end
 
       end
@@ -51,8 +51,7 @@ module Ftpd
         subject(:formatter) {Eplf.new(file_info)}
 
         it 'should produce EPLF format' do
-          formatter.to_s.should ==
-            "+r,s1234,m1362299880,i1234.5678\tfoo"
+          expect(formatter.to_s).to eq "+r,s1234,m1362299880,i1234.5678\tfoo"
         end
 
       end

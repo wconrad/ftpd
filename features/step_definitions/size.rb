@@ -16,5 +16,5 @@ When /^the client gets size with no path$/ do
 end
 
 Then(/^the reported size should be "(.*?)"$/) do |size|
-  @size.should eq size.to_i
+  expect(@size).to eq size.to_i
 end

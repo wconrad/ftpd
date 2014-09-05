@@ -13,7 +13,7 @@ module Ftpd
     def socket_bound_to(source_ip)
       socket = double TCPSocket
       peeraddr = Socket.pack_sockaddr_in(0, source_ip)
-      socket.stub :getpeername => peeraddr
+      allow(socket).to receive(:getpeername) {peeraddr}
       socket
     end
 
@@ -22,6 +22,11 @@ module Ftpd
     # keep a block active.
 
     class Connector
+
+      # Enable the rspec expect syntax in this class.
+      # This uses an internal API of rspec-mock.
+      # See: http://stackoverflow.com/q/25692786/238886
+      RSpec::Mocks::Syntax.enable_expect self
 
       def initialize(connection_tracker)
         @connection_tracker = connection_tracker
@@ -39,7 +44,8 @@ module Ftpd
             @tracked.enq :go
             command = @end_session.deq
             if command == :close
-              socket.stub(:getpeername).and_raise(RuntimeError, "Socket closed")
+              allow(socket).to receive(:getpeername)
+              .and_raise(RuntimeError, "Socket closed")
             end
           end
           @session_ended.enq :go
@@ -67,11 +73,11 @@ module Ftpd
       context '(session ends normally)' do
 
         it 'should track the total number of connection' do
-          connection_tracker.connections.should == 0
+          expect(connection_tracker.connections).to eq 0
           connector.start_session socket
-          connection_tracker.connections.should == 1
+          expect(connection_tracker.connections).to eq 1
           connector.end_session
-          connection_tracker.connections.should == 0
+          expect(connection_tracker.connections).to eq 0
         end
 
       end
@@ -79,11 +85,11 @@ module Ftpd
       context '(socket disconnected during session)' do
 
         it 'should track the total number of connection' do
-          connection_tracker.connections.should == 0
+          expect(connection_tracker.connections).to eq 0
           connector.start_session socket
-          connection_tracker.connections.should == 1
+          expect(connection_tracker.connections).to eq 1
           connector.end_session :close
-          connection_tracker.connections.should == 0
+          expect(connection_tracker.connections).to eq 0
         end
 
       end
@@ -95,14 +101,14 @@ module Ftpd
       it 'should track the number of connections for an ip' do
         socket1 = socket_bound_to('127.0.0.1')
         socket2 = socket_bound_to('127.0.0.2')
-        connection_tracker.connections_for(socket1).should == 0
-        connection_tracker.connections_for(socket2).should == 0
+        expect(connection_tracker.connections_for(socket1)).to eq 0
+        expect(connection_tracker.connections_for(socket2)).to eq 0
         connector.start_session socket1
-        connection_tracker.connections_for(socket1).should == 1
-        connection_tracker.connections_for(socket2).should == 0
+        expect(connection_tracker.connections_for(socket1)).to eq 1
+        expect(connection_tracker.connections_for(socket2)).to eq 0
         connector.end_session
-        connection_tracker.connections_for(socket1).should == 0
-        connection_tracker.connections_for(socket2).should == 0
+        expect(connection_tracker.connections_for(socket1)).to eq 0
+        expect(connection_tracker.connections_for(socket2)).to eq 0
       end
 
     end
@@ -112,11 +118,11 @@ module Ftpd
       let(:socket) {socket_bound_to('127.0.0.1')}
 
       it 'should forget about an IP that has no connection' do
-        connection_tracker.known_ip_count.should == 0
+        expect(connection_tracker.known_ip_count).to eq 0
         connector.start_session socket
-        connection_tracker.known_ip_count.should == 1
+        expect(connection_tracker.known_ip_count).to eq 1
         connector.end_session
-        connection_tracker.known_ip_count.should == 0
+        expect(connection_tracker.known_ip_count).to eq 0
       end
 
     end

@@ -1,5 +1,5 @@
 Then /^the server returns a "(.*?)" reply$/ do |reply|
-  @reply.should == reply + "\n"
+  expect(@reply).to eq reply + "\n"
 end
 
 Then /^the server returns a not necessary reply$/ do

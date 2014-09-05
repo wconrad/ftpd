@@ -60,13 +60,13 @@ module Ftpd
 
       context '(within tree)' do
         specify do
-          disk_file_system.accessible?('file').should be_truthy
+          expect(disk_file_system.accessible?('file')).to be_truthy
         end
       end
 
       context '(outside tree)' do
         specify do
-          disk_file_system.accessible?('../outside').should be_falsey
+          expect(disk_file_system.accessible?('../outside')).to be_falsey
         end
       end
 
@@ -76,13 +76,13 @@ module Ftpd
 
       context '(exists)' do
         specify do
-          disk_file_system.exists?('file').should be_truthy
+          expect(disk_file_system.exists?('file')).to be_truthy
         end
       end
 
       context '(does not exist)' do
         specify do
-          disk_file_system.exists?('missing').should be_falsey
+          expect(disk_file_system.exists?('missing')).to be_falsey
         end
       end
 
@@ -92,13 +92,13 @@ module Ftpd
 
       context '(directory)' do
         specify do
-          disk_file_system.directory?('file').should be_falsey
+          expect(disk_file_system.directory?('file')).to be_falsey
         end
       end
 
       context '(file)' do
         specify do
-          disk_file_system.directory?('dir').should be_truthy
+          expect(disk_file_system.directory?('dir')).to be_truthy
         end
       end
 
@@ -109,7 +109,7 @@ module Ftpd
       context '(success)' do
         specify do
           disk_file_system.delete('file')
-          exists?('file').should be_falsey
+          expect(exists?('file')).to be_falsey
         end
       end
 
@@ -129,8 +129,8 @@ module Ftpd
         let(:path) {'file'}
         specify do
           disk_file_system.read(path) do |file|
-            file.should be_a(IO)
-            file.read.should == canned_contents(path)
+            expect(file).to be_a(IO)
+            expect(file.read).to eq canned_contents(path)
           end
         end
       end
@@ -154,7 +154,7 @@ module Ftpd
         let(:path) {'file_path'}
         specify do
           disk_file_system.write(path, stream)
-          read_file(path).should == contents
+          expect(read_file(path)).to eq contents
         end
       end
 
@@ -177,7 +177,7 @@ module Ftpd
         let(:path) {'file_path'}
         specify do
           disk_file_system.append(path, stream)
-          read_file(path).should == contents
+          expect(read_file(path)).to eq contents
         end
       end
 
@@ -185,7 +185,7 @@ module Ftpd
         let(:path) {'file'}
         specify do
           disk_file_system.append(path, stream)
-          read_file(path).should == canned_contents(path) + contents
+          expect(read_file(path)).to eq canned_contents(path) + contents
         end
       end
 
@@ -205,7 +205,7 @@ module Ftpd
         let(:path) {'another_subdir'}
         specify do
           disk_file_system.mkdir(path)
-          directory?(path).should be_truthy
+          expect(directory?(path)).to be_truthy
         end
       end
 
@@ -227,8 +227,8 @@ module Ftpd
       context '(success)' do
         specify do
           disk_file_system.rename(from_path, to_path)
-          exists?(from_path).should be_falsey
-          exists?(to_path).should be_truthy
+          expect(exists?(from_path)).to be_falsey
+          expect(exists?(to_path)).to be_truthy
         end
       end
 
