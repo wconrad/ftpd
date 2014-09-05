@@ -1,7 +1,9 @@
 # Ftpd
-[![Code Climate](https://codeclimate.com/github/wconrad/ftpd.png)](https://codeclimate.com/github/wconrad/ftpd)
-[![Build Status](https://travis-ci.org/wconrad/ftpd.png)](https://travis-ci.org/wconrad/ftpd)
 [![Gem Version](https://badge.fury.io/rb/ftpd.png)](http://badge.fury.io/rb/ftpd)
+[![Dependency Status](https://gemnasium.com/wconrad/ftpd.svg)](https://gemnasium.com/wconrad/ftpd)
+[![Build Status](https://travis-ci.org/wconrad/ftpd.png)](https://travis-ci.org/wconrad/ftpd)
+[![Code Climate](https://codeclimate.com/github/wconrad/ftpd.png)](https://codeclimate.com/github/wconrad/ftpd)
+
 
 ftpd is a pure Ruby FTP server library.  It supports implicit and
 explicit TLS, IPV6, passive and active mode, and is unconditionally
