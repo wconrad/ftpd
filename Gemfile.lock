@@ -55,7 +55,7 @@ GEM
     rake (10.1.0)
     rdoc (4.0.1)
       json (~> 1.4)
-    redcarpet (3.0.0)
+    redcarpet (3.1.2)
     rspec (2.14.1)
       rspec-core (~> 2.14.0)
       rspec-expectations (~> 2.14.0)
@@ -76,7 +76,7 @@ DEPENDENCIES
   jeweler
   memoizer (~> 1.0)
   rake
-  redcarpet
+  redcarpet (~> 3.1.2)
   rspec
   timecop
   yard

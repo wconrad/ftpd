@@ -7,7 +7,7 @@ group :development do
   gem 'double-bag-ftps', '~> 0.1.2'
   gem 'jeweler'
   gem 'rake'
-  gem 'redcarpet'
+  gem 'redcarpet', '~> 3.1.2'
   gem 'rspec'
   gem 'timecop'
   gem 'yard'
