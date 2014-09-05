@@ -43,11 +43,11 @@ module Ftpd
       subject(:protocols) {Protocols.new(connected_socket)}
 
       it 'should support IPV4' do
-        expect(protocols.supports_protocol?(Protocols::IPV4)).to be_true
+        expect(protocols.supports_protocol?(Protocols::IPV4)).to be_truthy
       end
 
       it 'should not support IPV6' do
-        expect(protocols.supports_protocol?(Protocols::IPV6)).to be_false
+        expect(protocols.supports_protocol?(Protocols::IPV6)).to be_falsey
       end
 
       it 'should list the supported protocols' do
@@ -68,11 +68,11 @@ module Ftpd
       subject(:protocols) {Protocols.new(connected_socket)}
 
       it 'should not support IPV4' do
-        expect(protocols.supports_protocol?(Protocols::IPV4)).to be_false
+        expect(protocols.supports_protocol?(Protocols::IPV4)).to be_falsey
       end
 
       it 'should support IPV6' do
-        expect(protocols.supports_protocol?(Protocols::IPV6)).to be_true
+        expect(protocols.supports_protocol?(Protocols::IPV6)).to be_truthy
       end
 
       it 'should list the supported protocols' do
@@ -93,11 +93,11 @@ module Ftpd
       subject(:protocols) {Protocols.new(connected_socket)}
 
       it 'should support IPV4' do
-        expect(protocols.supports_protocol?(Protocols::IPV4)).to be_true
+        expect(protocols.supports_protocol?(Protocols::IPV4)).to be_truthy
       end
 
       it 'should support IPV6' do
-        expect(protocols.supports_protocol?(Protocols::IPV6)).to be_true
+        expect(protocols.supports_protocol?(Protocols::IPV6)).to be_truthy
       end
 
       it 'should list the supported protocols' do
@@ -119,11 +119,11 @@ module Ftpd
       subject(:protocols) {Protocols.new(connected_socket)}
 
       it 'should support IPV4' do
-        expect(protocols.supports_protocol?(Protocols::IPV4)).to be_true
+        expect(protocols.supports_protocol?(Protocols::IPV4)).to be_truthy
       end
 
       it 'should support IPV6' do
-        expect(protocols.supports_protocol?(Protocols::IPV6)).to be_true
+        expect(protocols.supports_protocol?(Protocols::IPV6)).to be_truthy
       end
 
       it 'should list the supported protocols' do

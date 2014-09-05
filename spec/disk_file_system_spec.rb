@@ -60,13 +60,13 @@ module Ftpd
 
       context '(within tree)' do
         specify do
-          disk_file_system.accessible?('file').should be_true
+          disk_file_system.accessible?('file').should be_truthy
         end
       end
 
       context '(outside tree)' do
         specify do
-          disk_file_system.accessible?('../outside').should be_false
+          disk_file_system.accessible?('../outside').should be_falsey
         end
       end
 
@@ -76,13 +76,13 @@ module Ftpd
 
       context '(exists)' do
         specify do
-          disk_file_system.exists?('file').should be_true
+          disk_file_system.exists?('file').should be_truthy
         end
       end
 
       context '(does not exist)' do
         specify do
-          disk_file_system.exists?('missing').should be_false
+          disk_file_system.exists?('missing').should be_falsey
         end
       end
 
@@ -92,13 +92,13 @@ module Ftpd
 
       context '(directory)' do
         specify do
-          disk_file_system.directory?('file').should be_false
+          disk_file_system.directory?('file').should be_falsey
         end
       end
 
       context '(file)' do
         specify do
-          disk_file_system.directory?('dir').should be_true
+          disk_file_system.directory?('dir').should be_truthy
         end
       end
 
@@ -109,7 +109,7 @@ module Ftpd
       context '(success)' do
         specify do
           disk_file_system.delete('file')
-          exists?('file').should be_false
+          exists?('file').should be_falsey
         end
       end
 
@@ -205,7 +205,7 @@ module Ftpd
         let(:path) {'another_subdir'}
         specify do
           disk_file_system.mkdir(path)
-          directory?(path).should be_true
+          directory?(path).should be_truthy
         end
       end
 
@@ -227,8 +227,8 @@ module Ftpd
       context '(success)' do
         specify do
           disk_file_system.rename(from_path, to_path)
-          exists?(from_path).should be_false
-          exists?(to_path).should be_true
+          exists?(from_path).should be_falsey
+          exists?(to_path).should be_truthy
         end
       end
 

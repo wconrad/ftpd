@@ -29,12 +29,12 @@ module Ftpd
 
       context '(file)' do
         let(:ftype) {'file'}
-        its(:file?) {should be_true}
+        its(:file?) {should be_truthy}
       end
 
       context '(directory)' do
         let(:ftype) {'directory'}
-        its(:file?) {should be_false}
+        its(:file?) {should be_falsey}
       end
 
     end
@@ -45,12 +45,12 @@ module Ftpd
 
       context '(file)' do
         let(:ftype) {'file'}
-        its(:directory?) {should be_false}
+        its(:directory?) {should be_falsey}
       end
 
       context '(directory)' do
         let(:ftype) {'directory'}
-        its(:directory?) {should be_true}
+        its(:directory?) {should be_truthy}
       end
 
     end

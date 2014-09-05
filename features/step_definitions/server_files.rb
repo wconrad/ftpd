@@ -15,18 +15,18 @@ end
 
 Then /^the server should( not)? have file "(.*?)"$/ do |neg, path|
   matcher = if neg
-              :be_false
+              :be_falsey
             else
-              :be_true
+              :be_truthy
             end
   server.has_file?(path).should send(matcher)
 end
 
 Then /^the server should( not)? have directory "(.*?)"$/ do |neg, path|
   matcher = if neg
-              :be_false
+              :be_falsey
             else
-              :be_true
+              :be_truthy
             end
   server.has_directory?(path).should send(matcher)
 end
@@ -39,7 +39,7 @@ end
 
 Then /^the server should have a file with the contents of "(.*?)"$/ do
 |path|
-  server.has_file_with_contents_of?(path).should be_true
+  server.has_file_with_contents_of?(path).should be_truthy
 end
 
 Then /^the server should have (\d+) files? with "(.*?)" in the name$/ do

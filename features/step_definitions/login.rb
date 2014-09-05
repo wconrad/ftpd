@@ -47,9 +47,9 @@ end
 
 Then /^the client should( not)? be logged in$/ do |neg|
   matcher_method = if neg
-                     :be_false
+                     :be_falsey
                    else
-                     :be_true
+                     :be_truthy
                    end
   logged_in?.should send(matcher_method)
 end

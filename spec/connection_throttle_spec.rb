@@ -37,17 +37,17 @@ module Ftpd
 
         context 'almost at maximum connections' do
           let(:connections) {max_connections - 1}
-          specify {connection_throttle.allow?(socket).should be_true}
+          specify {connection_throttle.allow?(socket).should be_truthy}
         end
 
         context 'at maximum connections' do
           let(:connections) {max_connections}
-          specify {connection_throttle.allow?(socket).should be_false}
+          specify {connection_throttle.allow?(socket).should be_falsey}
         end
 
         context 'above maximum connections' do
           let(:connections) {max_connections + 1}
-          specify {connection_throttle.allow?(socket).should be_false}
+          specify {connection_throttle.allow?(socket).should be_falsey}
         end
 
       end
@@ -63,17 +63,17 @@ module Ftpd
 
         context 'almost at maximum connections for ip' do
           let(:connections_for_socket) {max_connections_per_ip - 1}
-          specify {connection_throttle.allow?(socket).should be_true}
+          specify {connection_throttle.allow?(socket).should be_truthy}
         end
 
         context 'at maximum connections for ip' do
           let(:connections_for_socket) {max_connections_per_ip}
-          specify {connection_throttle.allow?(socket).should be_false}
+          specify {connection_throttle.allow?(socket).should be_falsey}
         end
 
         context 'above maximum connections for ip' do
           let(:connections_for_socket) {max_connections_per_ip + 1}
-          specify {connection_throttle.allow?(socket).should be_false}
+          specify {connection_throttle.allow?(socket).should be_falsey}
         end
 
       end

@@ -8,7 +8,8 @@ group :development do
   gem 'jeweler', '~> 2.0.1'
   gem 'rake', '~> 10.3.2'
   gem 'redcarpet', '~> 3.1.2'
-  gem 'rspec'
+  gem 'rspec', '2.99'
+  gem 'rspec-its', '~> 1.0.1'
   gem 'timecop', '~> 0.7.1'
   gem 'yard', '~> 0.8.7.4'
 end
