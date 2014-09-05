@@ -27,12 +27,6 @@ probability that it contains critical flaws (or even security
 vulnarabilities) that have not been discovered in its use as a test
 harness.
 
-In this 0.X.X release, the API is changing at least a little with
-almost every release.  If you need to keep those changes from
-impacting you (or at least want to let many of them build up before
-you have to deal with them), then lock your Gemfile down to a minor
-release (e.g. :version => '~> 0.5.0').
-
 ## Hello World
 
 This is examples/hello_world.rb, a bare minimum FTP server.  It allows
