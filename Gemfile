@@ -6,7 +6,7 @@ group :development do
   gem 'cucumber', '~> 1.3.16'
   gem 'double-bag-ftps', '~> 0.1.2'
   gem 'jeweler'
-  gem 'rake'
+  gem 'rake', '~> 10.3.2'
   gem 'redcarpet', '~> 3.1.2'
   gem 'rspec'
   gem 'timecop', '~> 0.7.1'
