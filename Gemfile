@@ -10,5 +10,5 @@ group :development do
   gem 'redcarpet', '~> 3.1.2'
   gem 'rspec'
   gem 'timecop', '~> 0.7.1'
-  gem 'yard'
+  gem 'yard', '~> 0.8.7.4'
 end
