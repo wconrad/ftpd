@@ -37,6 +37,13 @@ module Ftpd
       @server_socket.addr[1]
     end
 
+    # The calling thread will suspend execution until the server is
+    # stopped.
+
+    def join
+      @server_thread.join
+    end
+
     # Start the server.  This creates the server socket, and the
     # thread to service it.
 
