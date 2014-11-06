@@ -7,13 +7,13 @@ module Ftpd
     describe '#join' do
       it 'calls server_thread#join' do
         expect_any_instance_of(Thread).to receive(:join)
-        server = Ftpd::Server.new
+        server = Server.new
         server.start
         server.join
       end
       context 'when server is not started' do
         it 'raises an error' do
-          server = Ftpd::FtpServer.new(nil)
+          server = Server.new
           expect { server.join }.to raise_error('Server is not started!')
         end
       end
