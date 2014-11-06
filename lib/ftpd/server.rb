@@ -41,6 +41,7 @@ module Ftpd
     # stopped.
 
     def join
+      raise 'Server is not started!' if @server_thread.nil?
       @server_thread.join
     end
 
