@@ -7,7 +7,7 @@ module Ftpd
     describe '#join' do
       it 'calls server_thread#join' do
         expect_any_instance_of(Thread).to receive(:join)
-        server = Ftpd::FtpServer.new(nil)
+        server = Ftpd::Server.new
         server.start
         server.join
       end
