@@ -127,6 +127,20 @@ module Ftpd
 
     attr_accessor :session_timeout
 
+    # The exception handler. When there is an unknown exception,
+    # server replies 451 and calls exception_handler. If nil,
+    # then it's ignored.
+    #
+    # @return [Proc]
+
+    attr_accessor :exception_handler
+
+    # Defines the exception_handler.
+
+    def on_exception(&block)
+      self.exception_handler = block
+    end
+
     # Create a new FTP server.  The server won't start until the
     # #start method is called.
     #
@@ -183,6 +197,7 @@ module Ftpd
       config.server_version = @server_version
       config.session_timeout = @session_timeout
       config.tls = @tls
+      config.exception_handler = exception_handler
       session = Session.new(config, socket)
       session.run
     end
