@@ -5,13 +5,13 @@
 # stub: ftpd 1.0.1 ruby lib
 
 Gem::Specification.new do |s|
-  s.name = "ftpd"
+  s.name = "investtools-ftpd"
   s.version = "1.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["Wayne Conrad"]
-  s.date = "2014-09-05"
+  s.date = "2014-11-12"
   s.description = "ftpd is a pure Ruby FTP server library.  It supports implicit and explicit TLS, IPV6, passive and active mode, and is unconditionally compliant per RFC-1123.  It can be used as part of a test fixture or embedded in a program."
   s.email = "wconrad@yagni.com"
   s.extra_rdoc_files = [
@@ -197,6 +197,7 @@ Gem::Specification.new do |s|
     "lib/ftpd/file_info.rb",
     "lib/ftpd/file_system_helper.rb",
     "lib/ftpd/ftp_server.rb",
+    "lib/ftpd/gets_peer_address.rb",
     "lib/ftpd/insecure_certificate.rb",
     "lib/ftpd/list_format/eplf.rb",
     "lib/ftpd/list_format/ls.rb",
