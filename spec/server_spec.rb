@@ -4,6 +4,21 @@ module Ftpd
 
   describe Server do
 
+    describe '#join' do
+      it 'calls server_thread#join' do
+        expect_any_instance_of(Thread).to receive(:join)
+        server = Server.new
+        server.start
+        server.join
+      end
+      context 'when server is not started' do
+        it 'raises an error' do
+          server = Server.new
+          expect { server.join }.to raise_error('Server is not started!')
+        end
+      end
+    end
+
     describe 'reuse explicit port (github #23)' do
 
       # The bug being tested involves a race condition.  Monkey patch
