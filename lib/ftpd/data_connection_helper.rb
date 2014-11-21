@@ -59,7 +59,10 @@ module Ftpd
     end
 
     def open_active_data_connection
-      data_socket = TCPSocket.new(data_hostname, data_port)
+      data_socket = nil
+      handle_active_connection_failed do
+        data_socket = TCPSocket.new(data_hostname, data_port)
+      end
       begin
         yield(data_socket)
       ensure
@@ -74,6 +77,12 @@ module Ftpd
       ensure
         data_socket.close
       end
+    end
+
+    def handle_active_connection_failed
+      return yield
+    rescue Errno::ETIMEDOUT, Errno::ECONNRESET, Errno::EPIPE
+      reply "425 Can't open data connection"
     end
 
     def handle_data_disconnect
