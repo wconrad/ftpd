@@ -4,6 +4,7 @@ before 0.8.0.
 
 ### development
 
+* Added Server#exception_handler= (thanks akelmanson)
 * Added Server#join (thanks akelmanson)	
 
 ### 1.0.1

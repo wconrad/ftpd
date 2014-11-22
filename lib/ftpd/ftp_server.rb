@@ -131,6 +131,8 @@ module Ftpd
     # server replies 451 and calls exception_handler. If nil,
     # then it's ignored.
     #
+    # Set this before calling #start.
+    #
     # @return [Proc]
 
     attr_accessor :exception_handler

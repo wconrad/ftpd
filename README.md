@@ -177,6 +177,7 @@ You can set any of these attributes before starting the server:
 
 * {Ftpd::FtpServer#allow_low_data_ports}
 * {Ftpd::FtpServer#auth_level}
+* {Ftpd::FtpServer#exception_handler}
 * {Ftpd::FtpServer#failed_login_delay}
 * {Ftpd::FtpServer#list_formatter}
 * {Ftpd::FtpServer#log}
