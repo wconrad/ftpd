@@ -349,12 +349,12 @@ and granted permission to donate it to the community.
 Among those who have improved ftpd are:
 
 * Alfonso Cora
+* André Aizim Kelmanson
 * Bjoern B. Dorra
 * Joshua Rutherford
 * Larry. W. Cashdollar
 * Michael de Silva
 * Mike Ragalie
-* akelmanson
 * cransom
 
 If I've forgotten to add you, please remind me, or submit a merge
