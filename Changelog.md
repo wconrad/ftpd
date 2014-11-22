@@ -2,7 +2,15 @@ This is the change log for the main branch of ftpd, which supports
 Ruby 1.9 and greater.  For ruby 1.8.7, please use the latest version
 before 0.8.0.
 
-### development
+### 1.1.1 (2014-11-22)
+
+Administration
+
+* Correct Changelog
+
+### 1.1.0 (2014-11-22)
+
+Features
 
 * Added Server#exception_handler= (thanks akelmanson)
 * Added Server#join (thanks akelmanson)	
