@@ -98,6 +98,14 @@ module Ftpd
 
     attr_accessor :tls
 
+    # The exception handler. When there is an unknown exception,
+    # server replies 451 and calls exception_handler. If nil,
+    # then it's ignored.
+    #
+    # @return [Proc]
+
+    attr_accessor :exception_handler
+
   end
 
 end

@@ -27,6 +27,9 @@ module Ftpd
               execute_command command, argument
             rescue FtpServerError => e
               reply e.message_with_code
+            rescue => e
+              reply "451 Requested action aborted. Local error in processing."
+              config.exception_handler.call(e) unless config.exception_handler.nil?
             end
           end
         rescue Errno::ECONNRESET, Errno::EPIPE
