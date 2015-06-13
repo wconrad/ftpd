@@ -20,10 +20,11 @@ class TestClient
 
   def close
     return unless @ftp
-    @ftp.close
+    ftp.close
+    @ftp = nil
   end
 
-  def_delegators :@ftp,
+  def_delegators :ftp,
   :chdir,
   :connect,
   :delete,
@@ -54,33 +55,33 @@ class TestClient
     socket.connect(out_addr)
     decorate_socket socket
     @ftp = make_ftp
-    @ftp.set_socket(socket)
+    ftp.set_socket(socket)
   end
 
   def raw(*command)
-    @ftp.sendcmd command.compact.join(' ')
+    ftp.sendcmd command.compact.join(' ')
   end
 
   def get(mode, remote_path)
     method = "get#{mode}file"
-    @ftp.send method, remote_path, local_path(remote_path)
+    ftp.send method, remote_path, local_path(remote_path)
   end
 
   def put(mode, remote_path)
     method = "put#{mode}file"
-    @ftp.send method, local_path(remote_path), remote_path
+    ftp.send method, local_path(remote_path), remote_path
   end
 
   def get_size(mode, remote_path)
     raise unless ['binary', 'text'].include?(mode)
-    @ftp.binary = mode == 'binary'
+    ftp.binary = mode == 'binary'
     override_with_binary do
-      @ftp.size(remote_path)
+      ftp.size(remote_path)
     end
   end
 
   def get_mtime(remote_path)
-    @ftp.mtime(remote_path)
+    ftp.mtime(remote_path)
   end
 
   def add_file(path)
@@ -100,34 +101,34 @@ class TestClient
   end
 
   def xpwd
-    response = @ftp.sendcmd('XPWD')
+    response = ftp.sendcmd('XPWD')
     response[/"(.+)"/, 1]
   end
 
   def store_unique(local_path, remote_path)
     command = ['STOU', remote_path].compact.join(' ')
     File.open(temp_path(local_path), 'rb') do |file|
-      @ftp.storbinary command, file, Net::FTP::DEFAULT_BLOCKSIZE
+      ftp.storbinary command, file, Net::FTP::DEFAULT_BLOCKSIZE
     end
   end
 
   def append_binary(local_path, remote_path)
     command = ['APPE', remote_path].compact.join(' ')
     File.open(temp_path(local_path), 'rb') do |file|
-      @ftp.storbinary command, file, Net::FTP::DEFAULT_BLOCKSIZE
+      ftp.storbinary command, file, Net::FTP::DEFAULT_BLOCKSIZE
     end
   end
 
   def append_text(local_path, remote_path)
     command = ['APPE', remote_path].compact.join(' ')
     File.open(temp_path(local_path), 'rb') do |file|
-      @ftp.storlines command, file
+      ftp.storlines command, file
     end
   end
 
   def connected?
     begin
-      @ftp.noop
+      ftp.noop
       true
     rescue Net::FTPTempError => e
       !!e.to_s =~ /^421/
@@ -137,12 +138,17 @@ class TestClient
   end
 
   def set_option(option)
-    @ftp.sendcmd "OPTS #{option}"
+    ftp.sendcmd "OPTS #{option}"
   end
 
   private
-
+  
   RAW_METHOD_REGEX = /^send_(.*)$/
+
+  def ftp
+    raise "Not started" unless @ftp
+    @ftp
+  end
 
   def local_path(remote_path)
     temp_path(File.basename(remote_path))
@@ -207,12 +213,12 @@ class TestClient
   end
 
   def override_with_binary
-    orig = @ftp.override_with_binary
+    orig = ftp.override_with_binary
     begin
-      @ftp.override_with_binary = true
+      ftp.override_with_binary = true
       yield
     ensure
-      @ftp.override_with_binary = orig
+      ftp.override_with_binary = orig
     end
   end
 
