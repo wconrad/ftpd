@@ -20,5 +20,6 @@ end
 
 def client(client_name = nil)
   client_name ||= 'client'
+  client_name = client_name.strip
   Clients.instance[client_name]
 end
