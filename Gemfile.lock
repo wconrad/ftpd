@@ -95,6 +95,3 @@ DEPENDENCIES
   rspec-its (~> 1.0)
   timecop (~> 0.7)
   yard (~> 0.8.7)
-
-BUNDLED WITH
-   1.10.3
