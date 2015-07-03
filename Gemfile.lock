@@ -40,7 +40,7 @@ GEM
       nokogiri (>= 1.5.10)
       rake
       rdoc
-    jwt (1.5.0)
+    jwt (1.5.1)
     memoizer (1.0.1)
     mini_portile (0.6.2)
     multi_json (1.11.1)
@@ -58,7 +58,7 @@ GEM
     rack (1.6.4)
     rake (10.4.2)
     rdoc (4.2.0)
-    redcarpet (3.3.1)
+    redcarpet (3.3.2)
     rspec (3.3.0)
       rspec-core (~> 3.3.0)
       rspec-expectations (~> 3.3.0)
