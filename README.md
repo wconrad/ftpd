@@ -284,6 +284,12 @@ that branch, use this line in your Gemfile:
 Does it work for you?  Is it busted?  Please report your experience
 [here](https://github.com/wconrad/ftpd/issues/3).
 
+## Versioning
+
+This library uses [Semantic Versioning](http://semver.org/).  Ftpd
+promises not to make breaking changes to its API without bumping the
+major version.
+
 ## Development
 
 ### Tests
