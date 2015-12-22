@@ -3,8 +3,28 @@ require File.expand_path('spec_helper', File.dirname(__FILE__))
 module Ftpd
   describe Protocols do
 
-    # A fake server that returns a connected server-side socket.
+    def self.ipv6_supported?
+      begin
+        server = TCPServer.new("::1", 0)
+        server.close
+        true
+      rescue Errno::EADDRNOTAVAIL
+        false
+      end
+    end
 
+    def self.if_stack_supports_ipv6
+      if ipv6_supported?
+        return yield
+      else
+        if !@ipv6_warning_issued
+          warn "Stack does not support IPV6; skipping some tests"
+          @ipv6_warning_issued = true
+        end
+      end
+    end
+
+    # A fake server that returns a connected server-side socket.
     class TestServer
 
       # The socket upon which the server is listening
@@ -58,29 +78,31 @@ module Ftpd
 
     end
 
-    context 'IPV6 server, IPV6 connection' do
+    if_stack_supports_ipv6 do
+      context 'IPV6 server, IPV6 connection' do
 
-      let(:bind_address) {'::1'}
-      let(:connect_address) {'::1'}
-      let(:connected_socket) do
-        TestServer.new(bind_address, connect_address).connected_socket
+        let(:bind_address) {'::1'}
+        let(:connect_address) {'::1'}
+        let(:connected_socket) do
+          TestServer.new(bind_address, connect_address).connected_socket
+        end
+        subject(:protocols) {Protocols.new(connected_socket)}
+
+        it 'should not support IPV4' do
+          expect(protocols.supports_protocol?(Protocols::IPV4)).to be_falsey
+        end
+
+        it 'should support IPV6' do
+          expect(protocols.supports_protocol?(Protocols::IPV6)).to be_truthy
+        end
+
+        it 'should list the supported protocols' do
+          expect(protocols.protocol_codes).to eq [
+                                                Protocols::IPV6,
+                                              ]
+        end
+
       end
-      subject(:protocols) {Protocols.new(connected_socket)}
-
-      it 'should not support IPV4' do
-        expect(protocols.supports_protocol?(Protocols::IPV4)).to be_falsey
-      end
-
-      it 'should support IPV6' do
-        expect(protocols.supports_protocol?(Protocols::IPV6)).to be_truthy
-      end
-
-      it 'should list the supported protocols' do
-        expect(protocols.protocol_codes).to eq [
-          Protocols::IPV6,
-        ]
-      end
-
     end
 
     context 'wildcard server, IPV4 connection' do
@@ -109,30 +131,32 @@ module Ftpd
 
     end
 
-    context 'wildcard server, IPV6 connection' do
+    if_stack_supports_ipv6 do
+      context 'wildcard server, IPV6 connection' do
 
-      let(:bind_address) {'::'}
-      let(:connect_address) {'::1'}
-      let(:connected_socket) do
-        TestServer.new(bind_address, connect_address).connected_socket
+        let(:bind_address) {'::'}
+        let(:connect_address) {'::1'}
+        let(:connected_socket) do
+          TestServer.new(bind_address, connect_address).connected_socket
+        end
+        subject(:protocols) {Protocols.new(connected_socket)}
+
+        it 'should support IPV4' do
+          expect(protocols.supports_protocol?(Protocols::IPV4)).to be_truthy
+        end
+
+        it 'should support IPV6' do
+          expect(protocols.supports_protocol?(Protocols::IPV6)).to be_truthy
+        end
+
+        it 'should list the supported protocols' do
+          expect(protocols.protocol_codes).to eq [
+                                                Protocols::IPV4,
+                                                Protocols::IPV6,
+                                              ]
+        end
+
       end
-      subject(:protocols) {Protocols.new(connected_socket)}
-
-      it 'should support IPV4' do
-        expect(protocols.supports_protocol?(Protocols::IPV4)).to be_truthy
-      end
-
-      it 'should support IPV6' do
-        expect(protocols.supports_protocol?(Protocols::IPV6)).to be_truthy
-      end
-
-      it 'should list the supported protocols' do
-        expect(protocols.protocol_codes).to eq [
-          Protocols::IPV4,
-          Protocols::IPV6,
-        ]
-      end
-
     end
 
   end
