@@ -1,17 +1,11 @@
 require File.expand_path('spec_helper', File.dirname(__FILE__))
 
+require_relative "../testlib/network"
+
 module Ftpd
   describe Protocols do
 
-    def self.ipv6_supported?
-      begin
-        server = TCPServer.new("::1", 0)
-        server.close
-        true
-      rescue Errno::EADDRNOTAVAIL
-        false
-      end
-    end
+    extend TestLib::Network
 
     def self.if_stack_supports_ipv6
       if ipv6_supported?

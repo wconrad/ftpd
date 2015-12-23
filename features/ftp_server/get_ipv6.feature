@@ -4,6 +4,9 @@ Feature: Get IPV6
   I want to get a file
   So that I have it on my computer
 
+  Background:
+    Given the stack supports ipv6
+
   Scenario: Active
     Given the test server is bound to "::1"
     And the test server is started

@@ -5,6 +5,7 @@ Feature: EPRT
   So that I can correct problems
 
   Background:
+    Given the stack supports ipv6
     Given the test server is bound to "::"
     Given the test server is started
 
