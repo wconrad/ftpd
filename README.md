@@ -4,9 +4,6 @@
 [![Build Status](https://travis-ci.org/wconrad/ftpd.png)](https://travis-ci.org/wconrad/ftpd)
 [![Code Climate](https://codeclimate.com/github/wconrad/ftpd.png)](https://codeclimate.com/github/wconrad/ftpd)
 
-**NOTE**: The "build failing" notice above is a false positive: The
-tests are passing, except on Travis CI
-
 ftpd is a pure Ruby FTP server library.  It supports implicit and
 explicit TLS, IPV6, passive and active mode, and is unconditionally
 compliant per [RFC-1123][1].  It can be used as part of a test fixture
