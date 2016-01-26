@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 def logged_in?
   step "the client lists the directory"
   @error.nil?

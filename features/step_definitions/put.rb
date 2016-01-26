@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 When /^the client successfully puts (text|binary) "(.*?)"$/ do
 |mode, local_path|
   client.put mode, local_path

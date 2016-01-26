@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 When /^the client successfully requests features$/ do
   @feature_reply = client.raw "FEAT"
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Ftpd
 
   # This class limits the number of connections

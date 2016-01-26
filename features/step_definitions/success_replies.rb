@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Then /^the server returns a "(.*?)" reply$/ do |reply|
   expect(@reply).to eq reply + "\n"
 end

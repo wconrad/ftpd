@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Ftpd
 
   # A disk file system that does not allow any modification (writes,

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 When /^the client removes directory "(.*?)"$/ do |path|
   capture_error do
     step %Q(the client successfully removes directory "#{path}")

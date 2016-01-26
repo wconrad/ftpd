@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'date'
 
 When /^the client successfully gets mtime of "(.*?)"$/ \

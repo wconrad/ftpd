@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'date'
 
 Given /^the server has directory "(.*?)"$/ do |remote_path|

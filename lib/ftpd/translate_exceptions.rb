@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Ftpd
 
   # This module translates exceptions to FileSystemError exceptions.

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 When /^the client appends (.*)$/ do |args|
   capture_error do
     step "the client successfully appends #{args}"

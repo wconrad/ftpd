@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Some commands are supposed to occur in sequence.  For example, USER
 # must be immediately followed by PASS.  This class keeps track of
 # when a specific command either must arrive or must not arrive, and

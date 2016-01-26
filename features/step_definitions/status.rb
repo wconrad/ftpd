@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 When /^the client successfully requests status$/ do
   @response = client.status
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 When /^the client renames "(.*?)" to "(.*?)"$/ do
 |from_path, to_path|
   capture_error do

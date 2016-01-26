@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Ftpd
 
   # This mixin provides an insecure SSL certificate.  This certificate

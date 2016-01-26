@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 unless $:.include?(File.dirname(__FILE__) + '/../lib')
   $:.unshift(File.dirname(__FILE__) + '/../lib')
 end

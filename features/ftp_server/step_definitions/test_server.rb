@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 def server
   @server ||= TestServer.new
 end

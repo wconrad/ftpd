@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative "gets_peer_address"
 
 module Ftpd

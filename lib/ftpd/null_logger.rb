@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Ftpd
 
   # A logger that does not log.

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 When /^the( \w+)? client successfully does nothing( with a parameter)?$/ do
 |client_name, with_param|
   if with_param

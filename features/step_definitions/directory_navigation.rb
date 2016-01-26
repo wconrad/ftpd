@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 When /^the client cd's to "(.*?)"$/ do |path|
   capture_error do
     step %Q(the client successfully cd's to "#{path}")

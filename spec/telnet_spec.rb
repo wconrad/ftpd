@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # -*- ruby encoding: us-ascii -*-
 
 require File.expand_path('spec_helper', File.dirname(__FILE__))

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 When /^the client successfully gets size of (text|binary) "(.*?)"$/ \
 do |mode, remote_path|
   @size = client.get_size mode, remote_path

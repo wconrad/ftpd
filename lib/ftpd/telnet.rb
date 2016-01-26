@@ -1,4 +1,5 @@
 # -*- ruby encoding: us-ascii -*-
+# frozen_string_literal: true
 
 module Ftpd
 
@@ -97,8 +98,8 @@ module Ftpd
     # Parse the the command.  Sets @plain and @reply
 
     def parse_command(command)
-      @plain = ''
-      @reply = ''
+      @plain = ''.dup
+      @reply = ''.dup
       scanner = StringScanner.new(command)
       while !scanner.eos?
         SEQUENCES.each do |regexp, method|

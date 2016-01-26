@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 When /^the client successfully queries system ID$/ do
   @reply = client.system
   # Prior to ruby-2.3.0, the #system call returned a string ending in

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'data_connection_helper'
 require_relative 'error'
 require_relative 'file_system_helper'

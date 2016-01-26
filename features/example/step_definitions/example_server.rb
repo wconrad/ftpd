@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 def example_args
   @example_args ||= []
 end

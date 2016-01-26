@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 When /^the client successfully sets file structure "(.*?)"$/ do
 |file_structure|
   client.raw 'STRU', file_structure

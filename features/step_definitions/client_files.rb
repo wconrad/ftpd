@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Given /^the client has file "(.*?)"$/ do |local_path|
   client.add_file local_path
 end

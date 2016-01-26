@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Ftpd
 
   # Functions for manipulating LIST and NLST arguments

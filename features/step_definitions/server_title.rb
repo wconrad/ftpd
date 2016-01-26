@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Then /^the server returns its title$/ do
   step 'the server returns its name'
   step 'the server returns its version'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 When /^the client successfully gets (text|binary) "(.*?)"$/ \
 do |mode, remote_path|
   client.get mode, remote_path

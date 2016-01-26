@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 When /^the client deletes "(.*?)"$/ do |path|
   capture_error do
     step %Q(the client successfully deletes "#{path}")

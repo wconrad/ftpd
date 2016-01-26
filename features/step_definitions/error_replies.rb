@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 def capture_error
   yield
   @error = nil

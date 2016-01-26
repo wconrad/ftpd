@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'double_bag_ftps'
 require 'net/ftp'
 

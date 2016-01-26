@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Ftpd
 
   # Information about a file object (file, directory, symlink, etc.)

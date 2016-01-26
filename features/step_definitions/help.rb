@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 When /^the client successfully asks for help(?: for "(.*?)")?$/ do
 |command|
   @help_reply = client.help(command)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 def unix_line_endings(exactly, s)
   return s if exactly
   s.gsub(/\r\n/, "\n")

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Ftpd
 
   # All FTP commands which the server supports are dispatched by this

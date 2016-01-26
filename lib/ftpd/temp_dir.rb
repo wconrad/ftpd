@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Ftpd
 
   # Create temporary directories that will be removed when the program

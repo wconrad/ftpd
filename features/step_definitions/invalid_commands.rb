@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 When /^the client sends an empty command$/ do
   capture_error do
     client.raw ''

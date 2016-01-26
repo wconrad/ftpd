@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 When /^the client successfully sets option "(.*?)"$/ do |option|
   client.set_option option
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 When /^the client successfully quits$/ do
   client.quit
 end

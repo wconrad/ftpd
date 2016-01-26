@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Ftpd
 
   # With the commands EPORT and EPSV, the client sends a protocol code

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Then /^the server should have written( no)? log output$/ do |neg|
   verb = if neg
            :to

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Ftpd
 
   # Authorization levels for FtpServer#auth_level

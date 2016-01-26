@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 When /^the client successfully sets type "(.*?)"$/ do |type|
   client.raw 'TYPE', type
 end

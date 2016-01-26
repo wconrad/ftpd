@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'fileutils'
 require 'forwardable'
 require File.expand_path('test_server_files',
@@ -50,7 +52,7 @@ class ExampleServer
   private
 
   def read_output
-    output = ''
+    output = ''.dup
     loop do
       line = @io.gets
       break if line.nil?

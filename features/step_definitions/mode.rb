@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 When /^the client successfully sets mode "(.*?)"$/ do |mode|
   client.raw 'MODE', mode
 end

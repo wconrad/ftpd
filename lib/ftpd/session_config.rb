@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Ftpd
 
   # All of the configuration needed by a session
