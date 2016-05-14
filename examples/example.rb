@@ -19,6 +19,7 @@ module Example
     attr_reader :debug
     attr_reader :eplf
     attr_reader :interface
+    attr_reader :nat_ip
     attr_reader :password
     attr_reader :port
     attr_reader :read_only
@@ -36,6 +37,7 @@ module Example
       @account = ''
       @session_timeout = default_session_timeout
       @log = nil
+      @nat_ip = nil
       op = option_parser
       op.parse!(argv)
     rescue OptionParser::ParseError => e
@@ -87,6 +89,9 @@ module Example
         end
         op.on('-d', '--debug', 'Write server debug log to stdout') do |t|
           @debug = t
+        end
+        op.on('--nat-ip IP', 'Set advertised passive mode IP') do |t|
+          @nat_ip = t
         end
       end
     end
@@ -188,6 +193,7 @@ module Example
       @server.auth_level = auth_level
       @server.session_timeout = @args.session_timeout
       @server.log = make_log
+      @server.nat_ip = @args.nat_ip
     end
 
     def auth_level

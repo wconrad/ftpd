@@ -65,3 +65,7 @@ end
 Given /^the test server has a failed login delay of (\S+) seconds$/ do |s|
   server.failed_login_delay = s.to_f
 end
+
+Given /^the test server has a NAT IP of (\S+)$/ do |s|
+  server.nat_ip = s
+end

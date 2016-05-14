@@ -25,8 +25,8 @@ module Ftpd
 
     attr_accessor :auth_level
 
-    # @return driver A driver for the server's dynamic behavior such
-    #   as authentication and file system access.
+    # A driver for the server's dynamic behavior such as
+    # authentication and file system access.
     #
     # The driver should expose these public methods:
     # * {Example::Driver#authenticate authenticate}
@@ -67,6 +67,19 @@ module Ftpd
     # @return [Numeric]
 
     attr_accessor :response_delay
+
+    # The advertised public IP for passive mode connections.  This is
+    # the IP that the client must use to make a connection back to the
+    # server.  If nil, the IP of the bound interface is used.  When
+    # the FTP server is behind a firewall, set this to firewall's
+    # public IP and add the appropriate rule to the firewall to
+    # forward that IP to the machine that ftpd is running on.
+    #
+    # Set this before calling #start.
+    #
+    # @return [nil, String]
+
+    attr_accessor :nat_ip
 
     # The server's name, sent in a STAT reply.  Defaults to
     # {Ftpd::FtpServer::DEFAULT_SERVER_NAME}.

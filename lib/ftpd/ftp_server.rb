@@ -90,6 +90,18 @@ module Ftpd
     def_delegator :@connection_throttle, :'max_connections_per_ip'
     def_delegator :@connection_throttle, :'max_connections_per_ip='
 
+    # The advertised public IP for passive mode connections.  This is
+    # the IP that the client must use to make a connection back to the
+    # server.  If nil, the IP of the bound interface is used.  When
+    # the FTP server is behind a firewall, set this to firewall's
+    # public IP and add the appropriate rule to the firewall to
+    # forward that IP to the machine that ftpd is running on.
+    #
+    # Set this before calling #start.
+    #
+    # @return [nil, String]
+    attr_accessor :nat_ip
+
     # The number of seconds to delay before replying.  This is for
     # testing, when you need to test, for example, client timeouts.
     # Defaults to 0 (no delay).
@@ -166,6 +178,7 @@ module Ftpd
       @server_version = read_version_file
       @allow_low_data_ports = false
       @failed_login_delay = 0
+      @nat_ip = nil
       self.log = nil
       @connection_tracker = ConnectionTracker.new
       @connection_throttle = ConnectionThrottle.new(@connection_tracker)
@@ -196,6 +209,7 @@ module Ftpd
       config.list_formatter = @list_formatter
       config.log = @log
       config.max_failed_logins = @max_failed_logins
+      config.nat_ip = @nat_ip
       config.response_delay = response_delay
       config.server_name = @server_name
       config.server_version = @server_version

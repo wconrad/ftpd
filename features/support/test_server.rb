@@ -211,24 +211,22 @@ class TestServer
     @temp_dir = Ftpd::TempDir.make
     @log_device = StringIO.new
     @driver = TestServerDriver.new(@temp_dir)
-    @server = Ftpd::FtpServer.new(@driver)
-    @server.certfile_path = insecure_certfile_path
     @templates = TestFileTemplates.new
-    self.tls = :off
   end
 
-  def_delegator :@server, :'allow_low_data_ports='
-  def_delegator :@server, :'auth_level'
-  def_delegator :@server, :'auth_level='
-  def_delegator :@server, :'failed_login_delay='
-  def_delegator :@server, :'interface='
-  def_delegator :@server, :'max_connections='
-  def_delegator :@server, :'max_connections_per_ip='
-  def_delegator :@server, :'max_failed_logins='
-  def_delegator :@server, :'server_name'
-  def_delegator :@server, :'server_name='
-  def_delegator :@server, :'session_timeout='
-  def_delegator :@server, :'tls='
+  def_delegator :server, :'allow_low_data_ports='
+  def_delegator :server, :'auth_level'
+  def_delegator :server, :'auth_level='
+  def_delegator :server, :'failed_login_delay='
+  def_delegator :server, :'interface='
+  def_delegator :server, :'max_connections='
+  def_delegator :server, :'max_connections_per_ip='
+  def_delegator :server, :'max_failed_logins='
+  def_delegator :server, :'nat_ip='
+  def_delegator :server, :'server_name'
+  def_delegator :server, :'server_name='
+  def_delegator :server, :'session_timeout='
+  def_delegator :server, :'tls='
 
   def_delegator :@driver, :'append='
   def_delegator :@driver, :'delete='
@@ -244,16 +242,16 @@ class TestServer
   end
 
   def start
-    @server.log = make_log
-    @server.start
+    server.log = make_log
+    server.start
   end
 
   def stop
-    @server.stop
+    server.stop
   end
 
   def host
-    @server.interface
+    server.interface
   end
 
   def user
@@ -269,7 +267,7 @@ class TestServer
   end
 
   def port
-    @server.bound_port
+    server.bound_port
   end
 
   def template(path)
@@ -277,6 +275,17 @@ class TestServer
   end
 
   private
+
+  def server
+    @server ||= make_server
+  end
+
+  def make_server
+    s = Ftpd::FtpServer.new(@driver)
+    s.certfile_path = insecure_certfile_path
+    s.tls = :off
+    s
+  end
 
   def temp_dir
     @temp_dir
