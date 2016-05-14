@@ -57,6 +57,7 @@ module Ftpd
     :data_port,
     :data_server,
     :data_server=,
+    :data_server_factory,
     :data_type,
     :data_type=,
     :ensure_logged_in,

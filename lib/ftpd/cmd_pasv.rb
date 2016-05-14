@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'command_handler'
+require_relative 'data_server_factory'
 
 module Ftpd
 
@@ -12,8 +13,7 @@ module Ftpd
       if data_server
         reply "200 Already in passive mode"
       else
-        interface = socket.addr[3]
-        self.data_server = TCPServer.new(interface, 0)
+        self.data_server = data_server_factory.make_tcp_server
         ip = data_server.addr[3]
         port = data_server.addr[1]
         quads = [

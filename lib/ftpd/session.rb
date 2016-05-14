@@ -9,6 +9,7 @@ module Ftpd
     attr_accessor :command_sequence_checker
     attr_accessor :data_channel_protection_level
     attr_accessor :data_server
+    attr_accessor :data_server_factory
     attr_accessor :data_type
     attr_accessor :logged_in
     attr_accessor :name_prefix
@@ -36,6 +37,7 @@ module Ftpd
       @protocols = Protocols.new(@socket)
       @command_handlers = CommandHandlers.new
       @command_loop = CommandLoop.new(self)
+      @data_server_factory = DataServerFactory.new(@socket)
       register_commands
       initialize_session
     end

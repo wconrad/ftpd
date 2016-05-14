@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'command_handler'
+require_relative 'data_server_factory'
 
 module Ftpd
 
@@ -19,8 +20,7 @@ module Ftpd
           if protocol_code
             ensure_protocol_supported protocol_code
           end
-          interface = socket.addr[3]
-          self.data_server = TCPServer.new(interface, 0)
+          self.data_server = data_server_factory.make_tcp_server
           port = data_server.addr[1]
           reply "229 Entering extended passive mode (|||#{port}|)"
         end
