@@ -20,6 +20,7 @@ module Example
     attr_reader :eplf
     attr_reader :interface
     attr_reader :nat_ip
+    attr_reader :passive_ports
     attr_reader :password
     attr_reader :port
     attr_reader :read_only
@@ -38,6 +39,7 @@ module Example
       @session_timeout = default_session_timeout
       @log = nil
       @nat_ip = nil
+      @passive_ports = nil
       op = option_parser
       op.parse!(argv)
     rescue OptionParser::ParseError => e
@@ -92,6 +94,9 @@ module Example
         end
         op.on('--nat-ip IP', 'Set advertised passive mode IP') do |t|
           @nat_ip = t
+        end
+        op.on('--ports MIN..MAX', 'Port numbers for passive mode sockets') do |v|
+          @passive_ports = Range.new(*v.split(/\.\./).map(&:to_i))
         end
       end
     end
@@ -186,6 +191,7 @@ module Example
       @server.interface = @args.interface
       @server.port = @args.port
       @server.tls = @args.tls
+      @server.passive_ports = @args.passive_ports
       @server.certfile_path = insecure_certfile_path
       if @args.eplf
         @server.list_formatter = Ftpd::ListFormat::Eplf
