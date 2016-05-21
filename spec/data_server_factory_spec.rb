@@ -49,6 +49,15 @@ module Ftpd
         port
       end
 
+      def use_port(port)
+        server = TCPServer.new(interface, port)
+        begin
+          yield
+        ensure
+          server.close
+        end
+      end
+
       it "creates a socket bound to an ephemeral port" do
         ports = (1..10).map { get_unused_port }
         factory = DataServerFactory.make(interface, ports)
@@ -65,9 +74,8 @@ module Ftpd
 
       it "skips a port that is already in use" do
         ports = (1..2).map { get_unused_port }
-        server = TCPServer.new(interface, ports[0])
-        factory = DataServerFactory.make(interface, ports)
-        begin
+        use_port(ports[0]) do
+          factory = DataServerFactory.make(interface, ports)
           10.times do
             tcp_server = factory.make_tcp_server
             begin
@@ -77,18 +85,17 @@ module Ftpd
               tcp_server.close
             end
           end
-        ensure
-          server.close
         end
       end
 
       it "uses a random ephemeral port when all configured ports are in use" do
         ports = [ get_unused_port ]
-        server = TCPServer.new(interface, ports[0])
-        factory = DataServerFactory.make(interface, ports)
-        tcp_server = factory.make_tcp_server
-        port = tcp_server.addr[1]
-        expect(port).to_not eq ports[0]
+        use_port(ports[0]) do
+          factory = DataServerFactory.make(interface, ports)
+          tcp_server = factory.make_tcp_server
+          port = tcp_server.addr[1]
+          expect(port).to_not eq ports[0]
+        end
       end
 
     end
