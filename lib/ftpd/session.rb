@@ -37,7 +37,10 @@ module Ftpd
       @protocols = Protocols.new(@socket)
       @command_handlers = CommandHandlers.new
       @command_loop = CommandLoop.new(self)
-      @data_server_factory = DataServerFactory.new(@socket.addr[3])
+      @data_server_factory = DataServerFactory.make(
+        @socket.addr[3],
+        config.passive_ports,
+      )
       register_commands
       initialize_session
     end

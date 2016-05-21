@@ -102,6 +102,15 @@ module Ftpd
     # @return [nil, String]
     attr_accessor :nat_ip
 
+    # The range of ports for passive mode connections.  If nil, then a
+    # random etherial port is used.  Otherwise, a random port from
+    # this range is used.
+    #
+    # Set this before calling #start.
+    #
+    # @return [nil, Range]
+    attr_accessor :passive_ports
+
     # The number of seconds to delay before replying.  This is for
     # testing, when you need to test, for example, client timeouts.
     # Defaults to 0 (no delay).
@@ -179,6 +188,7 @@ module Ftpd
       @allow_low_data_ports = false
       @failed_login_delay = 0
       @nat_ip = nil
+      @passive_ports = nil
       self.log = nil
       @connection_tracker = ConnectionTracker.new
       @connection_throttle = ConnectionThrottle.new(@connection_tracker)
@@ -210,6 +220,7 @@ module Ftpd
       config.log = @log
       config.max_failed_logins = @max_failed_logins
       config.nat_ip = @nat_ip
+      config.passive_ports = @passive_ports
       config.response_delay = response_delay
       config.server_name = @server_name
       config.server_version = @server_version

@@ -81,6 +81,15 @@ module Ftpd
 
     attr_accessor :nat_ip
 
+    # The range of ports for passive mode connections.  If nil, then a
+    # random etherial port is used.  Otherwise, a random port from
+    # this range is used.
+    #
+    # Set this before calling #start.
+    #
+    # @return [nil, Range]
+    attr_accessor :passive_ports
+
     # The server's name, sent in a STAT reply.  Defaults to
     # {Ftpd::FtpServer::DEFAULT_SERVER_NAME}.
     #
