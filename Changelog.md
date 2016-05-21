@@ -9,6 +9,14 @@ Breaking changes:
 * Freeze strings by default.  This is an unlikely but potential
   breaking change for users of Ruby >= 2.3.
 
+Non-breaking changes
+
+* Added option #nat_ip to configure the advertised IP for passive mode
+  connections.
+
+* Added option #passive_ports to configure the port range for passive
+  mode server sockets.
+
 ### 1.1.1 (2014-11-22)
 
 Administration
