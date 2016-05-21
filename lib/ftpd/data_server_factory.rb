@@ -9,13 +9,15 @@ module Ftpd
 
     attr_reader :tcp_server
 
-    def initialize(socket)
-      @socket = socket
+    # @param interface [String] The IP address of the interface to
+    # bind to (e.g. "127.0.0.1")
+    def initialize(interface)
+      @interface = interface
     end
 
+    # @return [TCPServer]
     def make_tcp_server
-      interface = @socket.addr[3]
-      TCPServer.new(interface, 0)
+      TCPServer.new(@interface, 0)
     end
 
   end
