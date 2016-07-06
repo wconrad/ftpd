@@ -27,6 +27,7 @@ module FTPDrb
     attr_reader :path
     attr_reader :read_only
     attr_reader :session_timeout
+    attr_reader :servername
     attr_reader :tls
     attr_reader :user
 
@@ -40,6 +41,7 @@ module FTPDrb
       @account         = ''
       @path            = nil
       @session_timeout = default_session_timeout
+      @servername      = 'FTPd - Pure Ruby FTP server'
       @log             = nil
       @nat_ip          = nil
       @passive_ports   = nil
@@ -63,6 +65,10 @@ module FTPDrb
         end
         op.on('-i', '--interface IP', 'Bind to a specific interface. (Use "0.0.0.0" for all interfaces)') do |t|
           @interface = t
+        end
+        op.on('-s', '--servername SERVERNAME', 'Set servername for FTP server)',
+              "\tdefault = FTPd - Pure Ruby FTP server") do |t|
+          @servername = t
         end
         op.on('--tls [TYPE]', [:off, :explicit, :implicit],
               'Select TLS support (off, explicit, implicit)',
@@ -211,18 +217,19 @@ module FTPDrb
     
     private
     def configure_server
-      @server.interface = @args.interface
-      @server.port = @args.port
-      @server.tls = @args.tls
+      @server.server_name   = @args.servername 
+      @server.interface     = @args.interface
+      @server.port          = @args.port
+      @server.tls           = @args.tls
       @server.passive_ports = @args.passive_ports
       @server.certfile_path = insecure_certfile_path
       if @args.eplf
         @server.list_formatter = Ftpd::ListFormat::Eplf
       end
-      @server.auth_level = auth_level
+      @server.auth_level      = auth_level
       @server.session_timeout = @args.session_timeout
-      @server.log = make_log
-      @server.nat_ip = @args.nat_ip
+      @server.log             = make_log
+      @server.nat_ip          = @args.nat_ip
     end
 
     def auth_level
@@ -246,6 +253,7 @@ module FTPDrb
     
     def connection_info
       {
+        "Servername"=> @server.server_name,
         "Interface" => @server.interface,
         "Port"      => @server.bound_port,
         "User"      => user,
