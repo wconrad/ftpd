@@ -55,7 +55,7 @@ module FTPDrb
     
     def option_parser
       opts = OptionParser.new do |op|
-        op.banner = "Usage: rubyfu [OPTIONS]"
+        op.banner = "Usage: #{__FILE__} [OPTIONS]"
         
         op.separator "Help menu:"
         op.on('-p', '--port N', Integer, 'Bind to a specific port') do |t|
@@ -111,8 +111,8 @@ module FTPDrb
         end
         op.on("-h","--help","Show the full help screen.") do
           puts opts
-          puts "\nExamples:"
-          puts "    ruby #{__FILE__} -i 0.0.0.0 -p 21 -U ftp -P ftp --path /tmp/\n\n"
+          puts "\nExample:"
+          puts "    #{__FILE__} -i 0.0.0.0 -p 21 -U ftp -P ftp --path /tmp/\n\n"
           exit 0
         end
       end
