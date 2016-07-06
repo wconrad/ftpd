@@ -90,11 +90,11 @@ module FTPDrb
               "\tdefaults to current user") do |t|
           @user = t
         end
-        op.on('-P', '--password PW', 'Password for authentication',
+        op.on('-P', '--password PASS', 'Password for authentication',
               "\tdefaults to empty string") do |t|
           @password = t
         end
-        op.on('-A', '--account PW', 'Account for authentication',
+        op.on('-A', '--account PASS', 'Account for authentication',
               "\tdefaults to empty string") do |t|
           @account = t
         end
