@@ -57,7 +57,7 @@ module FTPDrb
     
     def option_parser
       opts = OptionParser.new do |op|
-        op.banner = "Usage: #{__FILE__} [OPTIONS]"
+        op.banner = "ftpdrb - Pure Ruby FTP Server. (ftpd ruby gem)\n\nUsage: #{__FILE__} [OPTIONS]"
         
         op.separator "Help menu:"
         op.on('-p', '--port N', Integer, 'Bind to a specific port') do |t|
@@ -94,7 +94,7 @@ module FTPDrb
               "\tdefaults to empty string") do |t|
           @password = t
         end
-        op.on('-A', '--account PASS', 'Account for authentication',
+        op.on('-A', '--account P', 'Account for authentication',
               "\tdefaults to empty string") do |t|
           @account = t
         end
