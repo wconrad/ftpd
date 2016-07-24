@@ -240,7 +240,8 @@ Gem::Specification.new do |s|
     "spec/spec_helper.rb",
     "spec/telnet_spec.rb",
     "spec/translate_exceptions_spec.rb",
-    "testlib/network.rb"
+    "testlib/network.rb",
+    "bin/ftpdrb"
   ]
   s.homepage = "http://github.com/wconrad/ftpd"
   s.licenses = ["MIT"]
