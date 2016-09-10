@@ -4,7 +4,7 @@ gem 'memoizer', '~> 1.0'
 
 group :development do
   gem 'cucumber', '~> 2.0'
-  gem 'double-bag-ftps', '~> 0.1'
+  gem 'double-bag-ftps', '~> 0.1', '>= 0.1.3'
   gem 'jeweler', '~> 2.0'
   gem 'rake', '~> 11.1'
   gem 'redcarpet', '~> 3.1'
