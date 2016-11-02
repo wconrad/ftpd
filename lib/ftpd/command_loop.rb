@@ -54,7 +54,7 @@ module Ftpd
       s = gets_with_timeout(socket)
       throw :done if s.nil?
       s = s.chomp
-      config.log.debug s
+      config.log.debug s.sub(/^PASS .*/, 'PASS **FILTERED**') # Filter real password
       s
     end
     
