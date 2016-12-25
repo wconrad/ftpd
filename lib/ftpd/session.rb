@@ -49,44 +49,35 @@ module Ftpd
       @command_loop.read_and_execute_commands
     end
 
-    private
-
-    def register_commands
-      handlers = CommandHandlerFactory.standard_command_handlers
-      handlers.each do |klass|
-        @command_handlers << klass.new(self)
-      end
-    end
-
     def valid_command?(command)
       @command_handlers.has?(command)
     end
-
+    
     def execute_command command, argument
       @command_handlers.execute command, argument
     end
-
+    
     def ensure_logged_in
       return if @logged_in
       error "Not logged in", 530
     end
-
+    
     def ensure_tls_supported
       unless tls_enabled?
         error "TLS not enabled", 534
       end
     end
-
+    
     def ensure_not_epsv_all
       if @epsv_all
         error "Not allowed after EPSV ALL", 501
       end
     end
-
+    
     def tls_enabled?
       @config.tls != :off
     end
-
+    
     def ensure_protocol_supported(protocol_code)
       unless @protocols.supports_protocol?(protocol_code)
         protocol_list = @protocols.protocol_codes.join(',')
@@ -94,15 +85,15 @@ module Ftpd
               "use (#{protocol_list})", 522)
       end
     end
-
+    
     def supported_commands
       @command_handlers.commands.map(&:upcase)
     end
-
+    
     def pwd(status_code)
       reply %Q(#{status_code} "#{@name_prefix}" is current directory)
     end
-
+    
     FORMAT_TYPES = {
       'N'=>['Non-print', true],
       'T'=>['Telnet format effectors', true],
@@ -120,20 +111,16 @@ module Ftpd
       @command_sequence_checker.expect command
     end
 
-    def set_file_system(file_system)
-      @file_system = file_system
-    end
-
     def command_not_needed
       reply '202 Command not needed at this site'
     end
-
+    
     def close_data_server_socket
       return unless @data_server
       @data_server.close
       @data_server = nil
     end
-
+    
     def reply(s)
       if @config.response_delay.to_i != 0
         @config.log.warn "#{@config.response_delay} second delay before replying"
@@ -141,21 +128,6 @@ module Ftpd
       end
       @config.log.debug s
       @socket.write s + "\r\n"
-    end
-
-    def init_command_sequence_checker
-      checker = CommandSequenceChecker.new
-      checker.must_expect 'acct'
-      checker.must_expect 'pass'
-      checker.must_expect 'rnto'
-      checker
-    end
-
-    def authenticate(*args)
-      while args.size < @config.driver.method(:authenticate).arity
-        args << nil
-      end
-      @config.driver.authenticate(*args)
     end
 
     def login(*auth_tokens)
@@ -170,6 +142,46 @@ module Ftpd
       reset_failed_auths
     end
 
+    def set_active_mode_address(address, port)
+      if port > 0xffff || port < 1024 && !@config.allow_low_data_ports
+        error "Command not implemented for that parameter", 504
+      end
+      @data_hostname = address
+      @data_port = port
+    end
+
+    def server_name_and_version
+      "#{@config.server_name} #{@config.server_version}"
+    end
+
+    private
+
+    def register_commands
+      handlers = CommandHandlerFactory.standard_command_handlers
+      handlers.each do |klass|
+        @command_handlers << klass.new(self)
+      end
+    end
+    
+    def set_file_system(file_system)
+      @file_system = file_system
+    end
+    
+    def init_command_sequence_checker
+      checker = CommandSequenceChecker.new
+      checker.must_expect 'acct'
+      checker.must_expect 'pass'
+      checker.must_expect 'rnto'
+      checker
+    end
+
+    def authenticate(*args)
+      while args.size < @config.driver.method(:authenticate).arity
+        args << nil
+      end
+      @config.driver.authenticate(*args)
+    end
+    
     def set_socket_options
       disable_nagle @socket
       receive_oob_data_inline @socket
@@ -195,15 +207,7 @@ module Ftpd
         throw :done
       end
     end
-
-    def set_active_mode_address(address, port)
-      if port > 0xffff || port < 1024 && !@config.allow_low_data_ports
-        error "Command not implemented for that parameter", 504
-      end
-      @data_hostname = address
-      @data_port = port
-    end
-
+    
     def initialize_session
       @logged_in = false
       @data_type = 'A'
@@ -218,10 +222,6 @@ module Ftpd
       close_data_server_socket
       reset_failed_auths
     end
-
-    def server_name_and_version
-      "#{@config.server_name} #{@config.server_version}"
-    end
-
+    
   end
 end
