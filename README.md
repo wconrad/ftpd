@@ -293,6 +293,18 @@ major version.
 
 ## Development
 
+### Bundler tricks for older Rubies
+
+The development gems only work in Ruby 2.3 or later.  When developing
+ftpd for older Rubies, exclude the development gems:
+
+    bundle install --without development
+
+With the current version of bundler (1.13.1), this has the unfortunate
+effect of remembering--forever--that you do not want development gems.
+So before you install gems for Ruby 2.3 or later, remove
+.bundle/config from the project's directory.
+
 ### Tests
 
 To run the cucumber (functional) tests:
