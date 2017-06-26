@@ -199,23 +199,25 @@ module FTPDrb
                            @data_dir, @args.read_only)
       @server = Ftpd::FtpServer.new(@driver)
       configure_server
-      @server.start
     end
     
     def run
-      puts "FTP server started. (Press CRL+C to stop it)"
-      connection_info.each do |key, value|
-        puts "#{key}: #{value}"
-      end
-      $stdout.flush
-      begin
-        loop{}
-      rescue Interrupt
-        puts "\nClosing FTP server..."
-      end
+      @server.start
+      wait_until_stopped
     end
     
+    def wait_until_stopped
+      puts "FTP server started.  Press ENTER or c-C to stop it"
+      $stdout.flush
+      begin
+        gets
+      rescue Interrupt
+        puts "Interrupt"
+      end
+    end
+
     private
+    
     def configure_server
       @server.server_name   = @args.servername 
       @server.interface     = @args.interface

@@ -2,6 +2,10 @@ This is the change log for the main branch of ftpd, which supports
 Ruby 1.9 and greater.  For ruby 1.8.7, please use the latest version
 before 0.8.0.
 
+### Development
+
+* Fix high CPU use by bin/ftpdrb (#47)
+
 ### 2.0.1 2016-11-02
 
 * Redact password in log (thanks ukolovda)
