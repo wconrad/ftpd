@@ -5,6 +5,7 @@ before 0.8.0.
 ### Development
 
 * Fix high CPU use by bin/ftpdrb (#47)
+* ftpdrb now runs from installed gem
 
 ### 2.0.1 2016-11-02
 

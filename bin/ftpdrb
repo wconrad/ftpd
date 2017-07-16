@@ -2,8 +2,12 @@
 #
 # Ftpd is a pure Ruby FTP server library. CLI version
 #
-unless $:.include?(File.dirname(__FILE__) + '/../lib')
-  $:.unshift(File.dirname(__FILE__) + '/../lib')
+
+dev_lib_path = File.dirname(__FILE__) + '/../lib'
+if File.directory?(dev_lib_path)
+  unless $:.include?(dev_lib_path)
+    $:.unshift(dev_lib_path)
+  end
 end
 
 require 'ftpd'
@@ -287,5 +291,4 @@ module FTPDrb
   end
 end
 
-FTPDrb::Server.new(ARGV).run if $0 == __FILE__
- 
+FTPDrb::Server.new(ARGV).run
