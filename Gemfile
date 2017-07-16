@@ -3,7 +3,7 @@ source 'http://rubygems.org'
 gem 'memoizer', '~> 1.0'
 
 group :test, :development do
-  gem 'rake', '~> 12.0'
+  gem 'rake', '~> 11.1'
 end
 
 group :test do
