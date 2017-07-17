@@ -44,7 +44,7 @@ end
 
 Gem::Specification.new do |s|
   s.name = "ftpd"
-  s.version = "2.0.1"
+  s.version = "2.0.2"
   s.required_rubygems_version = Gem::Requirement.new(">= 0")
   s.require_paths = ["lib"]
   s.authors = ["Wayne Conrad"]
