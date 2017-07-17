@@ -29,7 +29,7 @@ class Readme
       \([^)]+\)
     )
   }x
-    description = description.gsub(regex, "\1")
+    description = description.gsub(regex, '\1')
   end
 
   def remove_badges(description)
