@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ftpd (2.0.1)
+    ftpd (2.0.3)
       memoizer (~> 1.0)
 
 GEM
