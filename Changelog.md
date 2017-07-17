@@ -2,6 +2,10 @@ This is the change log for the main branch of ftpd, which supports
 Ruby 1.9 and greater.  For ruby 1.8.7, please use the latest version
 before 0.8.0.
 
+### Development
+
+* Fix erroneous gem release date in gemspec
+
 ### 2.0.2 2017-07-17
 
 * Fix high CPU use by bin/ftpdrb (#47)

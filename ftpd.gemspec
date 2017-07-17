@@ -48,7 +48,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0")
   s.require_paths = ["lib"]
   s.authors = ["Wayne Conrad"]
-  s.date = "2016-11-02"
+  s.date = "2017-07-17"
   s.description = Readme.new.description
   s.email = "kf7qga@gmail.com"
   s.executables = ["ftpdrb"]
