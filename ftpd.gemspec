@@ -79,7 +79,7 @@ Gem::Specification.new do |s|
   s.summary = "Pure Ruby FTP server library"
   s.add_runtime_dependency("memoizer", "~> 1.0")
   s.add_development_dependency("cucumber", "~> 2.0")
-  s.add_development_dependency("double-bag-ftps", ">= 0.1.3", "~> 0.1")
+  s.add_development_dependency("double-bag-ftps", ">= 0.1.4", "~> 0.1")
   s.add_development_dependency("rake", "~> 11.1")
   s.add_development_dependency("redcarpet", "~> 3.1")
   s.add_development_dependency("rspec", "~> 3.1")

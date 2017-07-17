@@ -6,6 +6,7 @@ before 0.8.0.
 
 * Fix high CPU use by bin/ftpdrb (#47)
 * ftpdrb now runs from installed gem
+* Fix tests hanging in ruby 2.1.7 through 2.1.10	
 
 ### 2.0.1 2016-11-02
 
