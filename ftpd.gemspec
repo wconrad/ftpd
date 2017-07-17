@@ -42,9 +42,22 @@ class Readme
 
 end
 
+class Version
+
+  def to_s
+    File.read(VERSION_PATH).strip
+  end
+
+  private
+
+  VERSION_PATH = File.expand_path("VERSION", File.dirname(__FILE__))
+  private_constant :VERSION_PATH
+  
+end
+
 Gem::Specification.new do |s|
   s.name = "ftpd"
-  s.version = "2.0.2"
+  s.version = Version.new.to_s
   s.required_rubygems_version = Gem::Requirement.new(">= 0")
   s.require_paths = ["lib"]
   s.authors = ["Wayne Conrad"]
