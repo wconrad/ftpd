@@ -5,3 +5,6 @@ rvm:
 - 2.1
 - 2.2
 - 2.3
+sudo: false
+script: rake test
+dist: trusty
