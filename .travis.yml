@@ -7,4 +7,4 @@ rvm:
 - 2.3
 sudo: false
 script: rake test
-dist: trusty
+dist: precise
