@@ -33,7 +33,9 @@ module Example
       @tls = :explicit
       @port = 0
       @auth_level = 'password'
-      @user = ENV['LOGNAME']
+      # When running on travisci, the LOGNAME environment variable is
+      # not set, but we require it to be set.
+      @user = ENV['LOGNAME'] || "test"
       @password = ''
       @account = ''
       @session_timeout = default_session_timeout
