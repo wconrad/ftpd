@@ -54,6 +54,7 @@ module Ftpd
         @connections[ip] += 1
         @socket_ips[socket.object_id] = ip
       end
+    rescue Errno::ENOTCONN
     end
 
     # Stop tracking a connection
@@ -61,6 +62,7 @@ module Ftpd
     def stop_track(socket)
       @mutex.synchronize do
         ip = @socket_ips.delete(socket.object_id)
+        break unless ip
         if (@connections[ip] -= 1) == 0
           @connections.delete(ip)
         end
