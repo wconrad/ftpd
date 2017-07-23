@@ -5,6 +5,7 @@ before 0.8.0.
 ### Development
 
 * Fix DOS caused by fast socket disconnects (thanks iblue)
+* Tests pass in Ruby 2.4
 
 ### 2.0.4 2016-07-17
 

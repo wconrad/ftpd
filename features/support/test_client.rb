@@ -5,6 +5,8 @@ require 'net/ftp'
 
 class TestClient
 
+  CannotTestTls = Class.new(StandardError)
+
   extend Forwardable
   include FileUtils
 
@@ -177,6 +179,7 @@ class TestClient
   end
 
   def make_tls_ftp(ftps_mode)
+    ensure_can_test_tls
     ftp = DoubleBagFTPS.new
     context_opts = {
       :verify_mode => OpenSSL::SSL::VERIFY_NONE
@@ -186,6 +189,19 @@ class TestClient
     ftp
   end
 
+  def ensure_can_test_tls
+   return if can_test_tls?
+   raise CannotTestTls, "Cannot test TLS with this Ruby version"
+  end
+
+  def can_test_tls?
+    !double_bag_ftps_busted?
+  end
+
+  def double_bag_ftps_busted?
+    Gem::Dependency.new('', '~> 2.4.0').match?('', RUBY_VERSION)
+  end
+     
   def make_non_tls_ftp
     Net::FTP.new
   end

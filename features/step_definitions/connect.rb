@@ -4,11 +4,16 @@ require 'double_bag_ftps'
 require 'net/ftp'
 
 When /^the( \w+)? client connects(?: with (\w+) TLS)?$/ do
-|client_name, tls_mode|
-  tls_mode ||= 'off'
-  client(client_name).tls_mode = tls_mode.to_sym
-  client(client_name).start
-  client(client_name).connect(server.host, server.port)
+  |client_name, tls_mode|
+  begin
+    tls_mode ||= 'off'
+    c = client(client_name)
+    c.tls_mode = tls_mode.to_sym
+    c.start
+    c.connect(server.host, server.port)
+  rescue TestClient::CannotTestTls => e
+    pending(e.message)
+  end
 end
 
 When /^the (\d+)rd client tries to connect$/ do |client_name|
