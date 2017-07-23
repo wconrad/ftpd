@@ -2,6 +2,10 @@ This is the change log for the main branch of ftpd, which supports
 Ruby 1.9 and greater.  For ruby 1.8.7, please use the latest version
 before 0.8.0.
 
+### Development
+
+* Introduced Release::VERSION and Release::DATE constants.
+
 ### 2.0.5 2017-07-23
 
 * Fix DOS caused by fast socket disconnects (thanks iblue)

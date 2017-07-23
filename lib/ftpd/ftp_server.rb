@@ -130,8 +130,8 @@ module Ftpd
 
     attr_accessor :server_name
 
-    # The server's version, sent in a STAT reply.  Defaults to the
-    # contents of the VERSION file.
+    # The server's version, sent in a STAT reply.  Defaults to
+    # Release::VERSION.
     #
     # Set this before calling #start.
     #
@@ -184,7 +184,7 @@ module Ftpd
       @auth_level = AUTH_PASSWORD
       @session_timeout = 300
       @server_name = DEFAULT_SERVER_NAME
-      @server_version = read_version_file
+      @server_version = Release::VERSION
       @allow_low_data_ports = false
       @failed_login_delay = 0
       @nat_ip = nil
@@ -229,14 +229,6 @@ module Ftpd
       config.exception_handler = exception_handler
       session = Session.new(config, socket)
       session.run
-    end
-
-    def read_version_file
-      File.open(version_file_path, 'r', &:read).strip
-    end
-
-    def version_file_path
-      File.expand_path('../../VERSION', File.dirname(__FILE__))
     end
 
   end

@@ -1,4 +1,7 @@
 # -*- encoding: utf-8 -*-
+# frozen_string_literal: true
+
+require File.join(File.dirname(__FILE__), "lib/ftpd/release")
 
 class Readme
 
@@ -42,26 +45,13 @@ class Readme
 
 end
 
-class Version
-
-  def to_s
-    File.read(VERSION_PATH).strip
-  end
-
-  private
-
-  VERSION_PATH = File.expand_path("VERSION", File.dirname(__FILE__))
-  private_constant :VERSION_PATH
-  
-end
-
 Gem::Specification.new do |s|
   s.name = "ftpd"
-  s.version = Version.new.to_s
+  s.version = Ftpd::Release::VERSION
   s.required_rubygems_version = Gem::Requirement.new(">= 0")
   s.require_paths = ["lib"]
   s.authors = ["Wayne Conrad"]
-  s.date = "2017-07-23"
+  s.date = Ftpd::Release::DATE
   s.description = Readme.new.description
   s.email = "kf7qga@gmail.com"
   s.executables = ["ftpdrb"]
@@ -77,7 +67,6 @@ Gem::Specification.new do |s|
     "LICENSE.md",
     "README.md",
     "Rakefile",
-    "VERSION",
     "bin/ftpdrb",
     "ftpd.gemspec",
     "insecure-test-cert.pem",
