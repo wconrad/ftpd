@@ -5,3 +5,4 @@ pkg/
 doc-api/
 .yardoc/
 .bundle/
+spec/examples.txt
