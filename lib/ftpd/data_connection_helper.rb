@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'command_handler'
-
 module Ftpd
 
   module DataConnectionHelper

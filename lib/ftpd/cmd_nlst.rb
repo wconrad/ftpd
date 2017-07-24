@@ -18,8 +18,8 @@ module Ftpd
 
     private
 
-    def name_list(path)
-      path_list(path).map do |path|
+    def name_list(target_path)
+      path_list(target_path).map do |path|
         File.basename(path) + "\n"
       end.join
     end

@@ -8,9 +8,7 @@ module Ftpd
 
     def cmd_type(argument)
       ensure_logged_in
-      syntax_error unless argument =~ /^(\S)(?: (\S+))?$/
-      type_code = $1
-      format_code = $2
+      syntax_error unless argument =~ /^\S(?: \S+)?$/
       unless argument =~ /^([AEI]( [NTC])?|L .*)$/
         error 'Invalid type code', 504
       end

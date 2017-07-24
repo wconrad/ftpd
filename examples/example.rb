@@ -52,7 +52,7 @@ module Example
     private
 
     def option_parser
-      op = OptionParser.new do |op|
+      OptionParser.new do |op|
         op.on('-p', '--port N', Integer, 'Bind to a specific port') do |t|
           @port = t
         end

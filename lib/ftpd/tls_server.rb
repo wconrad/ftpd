@@ -85,7 +85,6 @@ module Ftpd
     # make life a little easier.
 
     def add_tls_methods_to_socket(socket)
-      context = @ssl_context
       class << socket
 
         def ssl_context

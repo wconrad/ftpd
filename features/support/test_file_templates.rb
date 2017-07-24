@@ -13,7 +13,7 @@ class TestFileTemplates
   private
 
   def have_template?(filename)
-    File.exists?(template_path(filename))
+    File.exist?(template_path(filename))
   end
 
   def read_template(filename)

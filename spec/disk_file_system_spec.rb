@@ -36,7 +36,7 @@ module Ftpd
     end
 
     def exists?(path)
-      File.exists?(data_path(path))
+      File.exist?(data_path(path))
     end
 
     def canned_contents(path)
@@ -117,7 +117,7 @@ module Ftpd
         specify do
           expect {
             disk_file_system.delete(missing_path)
-          }.to raise_error *missing_file_error
+          }.to raise_error(*missing_file_error)
         end
       end
 
@@ -139,7 +139,7 @@ module Ftpd
         specify do
           expect {
             disk_file_system.read(missing_path) {}
-          }.to raise_error *missing_file_error
+          }.to raise_error(*missing_file_error)
         end
       end
 
@@ -162,7 +162,7 @@ module Ftpd
         specify do
           expect {
             disk_file_system.write('dir', stream)
-          }.to raise_error *is_a_directory_error
+          }.to raise_error(*is_a_directory_error)
         end
       end
 
@@ -193,7 +193,7 @@ module Ftpd
         specify do
           expect {
             disk_file_system.append('dir', stream)
-          }.to raise_error *is_a_directory_error
+          }.to raise_error(*is_a_directory_error)
         end
       end
 
@@ -236,7 +236,7 @@ module Ftpd
         specify do
           expect {
             disk_file_system.rename(missing_path, to_path)
-          }.to raise_error *missing_file_error
+          }.to raise_error(*missing_file_error)
         end
       end
 

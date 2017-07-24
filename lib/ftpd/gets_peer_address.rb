@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "gets_peer_address"
-
 module Ftpd
 
   module GetsPeerAddress
@@ -29,7 +27,7 @@ module Ftpd
       if socket.respond_to?(:getpeername)
         # Non SSL
         sockaddr = socket.getpeername
-        port, host = Socket.unpack_sockaddr_in(sockaddr)
+        _port, host = Socket.unpack_sockaddr_in(sockaddr)
         host
       else
         # SSL

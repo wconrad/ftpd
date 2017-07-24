@@ -22,7 +22,7 @@ module TestServerFiles
 
   def has_file?(path)
     full_path = temp_path(path)
-    File.exists?(full_path)
+    File.exist?(full_path)
   end
 
   def has_file_with_contents_of?(path)

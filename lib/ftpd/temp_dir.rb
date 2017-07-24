@@ -14,7 +14,7 @@ module Ftpd
       Dir.mktmpdir.tap do |path|
         at_exit do
           FileUtils.rm_rf path
-          Dir.rmdir path if File.exists?(path)
+          Dir.rmdir(path) if File.exist?(path)
         end
       end
     end

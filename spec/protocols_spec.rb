@@ -41,7 +41,7 @@ module Ftpd
         Thread.new do
           queue.enq @listening_socket.accept
         end
-        client_socket = TCPSocket.new(connect_address, port)
+        _client_socket = TCPSocket.new(connect_address, port)
         @connected_socket = queue.deq
       end
 

@@ -28,6 +28,7 @@ module Ftpd
       @interface = '127.0.0.1'
       @port = 0
       @stopping = false
+      @server_thread = nil
     end
 
     # The port the server is bound to.  Must not be called until after
@@ -117,7 +118,7 @@ module Ftpd
       Thread.new do
         begin
           session socket
-        rescue OpenSSL::SSL::SSLError => e
+        rescue OpenSSL::SSL::SSLError
         ensure
           close_socket socket
         end

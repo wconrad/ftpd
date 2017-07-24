@@ -57,7 +57,7 @@ module Ftpd
       # @return [Boolean]
 
       def exists?(ftp_path)
-        File.exists?(expand_ftp_path(ftp_path))
+        File.exist?(expand_ftp_path(ftp_path))
       end
 
       # Return true if the path exists and is a directory.
