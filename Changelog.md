@@ -5,6 +5,7 @@ before 0.8.0.
 ### Development
 
 * Introduced Release::VERSION and Release::DATE constants.
+* Fixed all known warnings in tests and example
 
 ### 2.0.5 2017-07-23
 
