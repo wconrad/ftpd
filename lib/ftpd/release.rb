@@ -6,7 +6,7 @@ module Ftpd
   # gemspec.
   module Release
 
-    VERSION = "2.0.5"
+    VERSION = "2.1.0"
     DATE = "2017-07-23"
 
   end

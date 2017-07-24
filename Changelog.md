@@ -2,9 +2,9 @@ This is the change log for the main branch of ftpd, which supports
 Ruby 1.9 and greater.  For ruby 1.8.7, please use the latest version
 before 0.8.0.
 
-### Development
+### 2.1.0 2017-07-23
 
-* Introduced Release::VERSION and Release::DATE constants.
+* Introduced Release::VERSION and Release::DATE constants
 * Fixed all known warnings in tests and example
 
 ### 2.0.5 2017-07-23
