@@ -26,6 +26,8 @@ module Ftpd
                 error "Syntax error, command unrecognized: #{s.chomp}", 500
               end
               command_sequence_checker.check command
+              # remove empty arguments caused by trailing space, e.g. "QUIT "
+              argument = nil if argument.to_s.empty?
               execute_command command, argument
             rescue FtpServerError => e
               reply e.message_with_code

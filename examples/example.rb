@@ -36,7 +36,7 @@ module Example
       # When running on travisci, the LOGNAME environment variable is
       # not set, but we require it to be set.
       @user = ENV['LOGNAME'] || "test"
-      @password = ''
+      @password = 'test'
       @account = ''
       @session_timeout = default_session_timeout
       @log = nil
