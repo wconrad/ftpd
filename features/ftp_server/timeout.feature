@@ -5,14 +5,14 @@ Feature: Port
   So that I can claim RFC compliance
 
   Scenario: Session idle too long
-    Given the test server has session timeout set to 0.5 seconds
+    Given the test server has session timeout set to 1 seconds
     And the test server is started
     And a successful login
-    When the client is idle for 0.6 seconds
+    When the client is idle for 1.1 seconds
     Then the client should not be connected
 
   Scenario: Session not idle too long
-    Given the test server has session timeout set to 0.5 seconds
+    Given the test server has session timeout set to 1 seconds
     And the test server is started
     And a successful login
     When the client is idle for 0 seconds

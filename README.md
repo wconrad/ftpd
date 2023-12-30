@@ -256,20 +256,19 @@ See [RFC Compliance](doc/rfc-compliance.md) for details
 
 The tests pass with these Rubies:
 
-* ruby-1.9.3
-* ruby-2.0
-* ruby-2.1
-* ruby-2.2
-* ruby-2.3
-* ruby-2.4 (but see below)
+* ruby-2.7 (EOL: 2023-03-31)
+* ruby-3.0 (EOL: 2024-03-31)
+* ruby-3.1
+* ruby-3.2
+* ruby-3.3
 
 For Ruby 1.8, use an ftpd version before 0.8.  In your Gemfile:
 
     gem 'ftpd', '<0.8'
 
-This gem runs fine in Ruby 2.4, but the tests that use TLS are skipped
-in Ruby 2.4.  That is because the double_bag_ftps gem that the tests
-use for TLS does not work in Ruby 2.4.
+For Ruby 2.6, use ftpd version 2.1.0. In your Gemfile:
+
+    gem 'ftpd', '2.1.0'
 
 ## OS compatability
 

@@ -21,7 +21,7 @@ class Readme
 
   README_PATH = File.expand_path("README.md", File.dirname(__FILE__))
   private_constant :README_PATH
-  
+
   def remove_markdown_link(description)
     regex = %r{
     \[
@@ -76,16 +76,16 @@ Gem::Specification.new do |s|
   s.files += Dir["lib/**/*.rb"]
   s.homepage = "http://github.com/wconrad/ftpd"
   s.licenses = ["MIT"]
-  s.required_ruby_version = ">= 1.9.3"
+  s.required_ruby_version = ">= 2.7.8"
   s.rubygems_version = "2.5.1"
   s.summary = "Pure Ruby FTP server library"
   s.add_runtime_dependency("memoizer", "~> 1.0")
-  s.add_development_dependency("cucumber", "~> 2.0")
-  s.add_development_dependency("double-bag-ftps", "~> 0.1", ">= 0.1.4")
-  s.add_development_dependency("rake", "~> 11.1")
-  s.add_development_dependency("redcarpet", "~> 3.1")
+  s.add_development_dependency("net-ftp", "~> 0.3")
+  s.add_development_dependency("cucumber", "~> 9.1")
+  s.add_development_dependency("rake", "~> 13.1")
+  s.add_development_dependency("redcarpet", "~> 3.6")
   s.add_development_dependency("rspec", "~> 3.1")
   s.add_development_dependency("rspec-its", "~> 1.0")
-  s.add_development_dependency("timecop", "~> 0.7")
-  s.add_development_dependency("yard", "~> 0.8.7")
+  s.add_development_dependency("timecop", "~> 0.9")
+  s.add_development_dependency("yard", "~> 0.9")
 end
