@@ -278,7 +278,7 @@ use for TLS does not work in Ruby 2.4.
 Ftpd runs on:
 
 * Linux
-* OSX
+* MacOS
 
 ## Windows
 
@@ -301,6 +301,12 @@ major version.
 ## Development
 
 ### Tests
+
+On MacOS, you need to add a loopback alias for 127.0.0.2 (used in specs):
+
+```bash
+sudo ifconfig lo0 alias 127.0.0.2 up
+```
 
 To run the cucumber (functional) tests:
 
