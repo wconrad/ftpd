@@ -2,6 +2,14 @@
 
 require 'net/ftp'
 
+if defined? Net::FTP::BufferedSSLSocket
+  class Net::FTP::BufferedSSLSocket
+    def shutdown(*args)
+      @io.__send__(:stop)
+    end
+  end
+end
+
 class TestClient
 
   CannotTestTls = Class.new(StandardError)
