@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'command_handler'
+require 'stringio'
 
 module Ftpd
 

@@ -57,8 +57,9 @@ module Ftpd
       config.log.debug s.sub(/^PASS .*/, 'PASS **FILTERED**') # Filter real password
       s
     end
-    
+
     def gets_with_timeout(socket)
+      socket = socket.to_io if @session.tls_enabled? && !socket.encrypted?
       ready = IO.select([socket], nil, nil, config.session_timeout)
       timeout if ready.nil?
       ready[0].first.gets

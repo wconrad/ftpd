@@ -41,8 +41,17 @@ module Ftpd
         Thread.new do
           queue.enq @listening_socket.accept
         end
+
         _client_socket = TCPSocket.new(connect_address, port)
         @connected_socket = queue.deq
+      end
+
+      def ipv6_dual_stack?
+        @connected_socket.local_address.ipv6? &&
+        !@connected_socket.getsockopt(
+          Socket::IPPROTO_IPV6,
+          Socket::IPV6_V6ONLY
+        ).bool
       end
 
     end
@@ -77,13 +86,12 @@ module Ftpd
 
         let(:bind_address) {'::1'}
         let(:connect_address) {'::1'}
-        let(:connected_socket) do
-          TestServer.new(bind_address, connect_address).connected_socket
-        end
+        let(:test_server) {TestServer.new(bind_address, connect_address)}
+        let(:connected_socket) {test_server.connected_socket}
         subject(:protocols) {Protocols.new(connected_socket)}
 
         it 'should not support IPV4' do
-          expect(protocols.supports_protocol?(Protocols::IPV4)).to be_falsey
+          expect(protocols.supports_protocol?(Protocols::IPV4)).to be(test_server.ipv6_dual_stack?)
         end
 
         it 'should support IPV6' do
@@ -92,8 +100,9 @@ module Ftpd
 
         it 'should list the supported protocols' do
           expect(protocols.protocol_codes).to eq [
-                                                Protocols::IPV6,
-                                              ]
+                                                (Protocols::IPV4 if test_server.ipv6_dual_stack?),
+                                                Protocols::IPV6
+                                              ].compact
         end
 
       end

@@ -1,7 +1,14 @@
 # frozen_string_literal: true
 
-require 'double_bag_ftps'
 require 'net/ftp'
+
+if defined? Net::FTP::BufferedSSLSocket
+  class Net::FTP::BufferedSSLSocket
+    def shutdown(*args)
+      @io.__send__(:stop)
+    end
+  end
+end
 
 class TestClient
 
@@ -135,8 +142,8 @@ class TestClient
       ftp.noop
       true
     rescue Net::FTPTempError => e
-      !!e.to_s =~ /^421/
-    rescue EOFError
+      e.message !~ /^421/
+    rescue EOFError, Net::FTPConnectionError
       false
     end
   end
@@ -146,7 +153,7 @@ class TestClient
   end
 
   private
-  
+
   RAW_METHOD_REGEX = /^send_(.*)$/
 
   def ftp
@@ -180,28 +187,20 @@ class TestClient
 
   def make_tls_ftp(ftps_mode)
     ensure_can_test_tls
-    ftp = DoubleBagFTPS.new
-    context_opts = {
-      :verify_mode => OpenSSL::SSL::VERIFY_NONE
+    opts = {
+      :ssl => {
+        :verify_mode => OpenSSL::SSL::VERIFY_NONE,
+      },
+      :implicit_ftps => ftps_mode==:implicit
     }
-    ftp.ssl_context = DoubleBagFTPS.create_ssl_context(context_opts)
-    ftp.ftps_mode = ftps_mode
-    ftp
+    Net::FTP.new nil, opts
   end
 
   def ensure_can_test_tls
-   return if can_test_tls?
+   return if defined?(OpenSSL::SSL)
    raise CannotTestTls, "Cannot test TLS with this Ruby version"
   end
 
-  def can_test_tls?
-    !double_bag_ftps_busted?
-  end
-
-  def double_bag_ftps_busted?
-    Gem::Dependency.new('', '~> 2.4.0').match?('', RUBY_VERSION)
-  end
-     
   def make_non_tls_ftp
     Net::FTP.new
   end
