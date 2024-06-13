@@ -15,6 +15,9 @@ module Ftpd
       # data_dir should be an absolute path.
 
       def set_data_dir(data_dir)
+        # ensure that the path always has a trailing '/' character to deal with
+        # issue 42.
+        data_dir << '/' unless data_dir.end_with?('/')
         @data_dir = data_dir
       end
 
