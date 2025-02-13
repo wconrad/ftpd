@@ -2,7 +2,7 @@
 
 require 'net/ftp'
 
-if defined? Net::FTP::BufferedSSLSocket
+if Gem::Version.new(Net::FTP::VERSION) <= Gem::Version.new("0.3.8") && defined? Net::FTP::BufferedSSLSocket
   class Net::FTP::BufferedSSLSocket
     def shutdown(*args)
       @io.__send__(:stop)
