@@ -27,12 +27,14 @@ Feature: Features
 
   Scenario: IPV6 Extensions
     Given the test server is started
+    And the client connects
     When the client successfully requests features
     Then the response should include feature "EPRT"
     And the response should include feature "EPSV"
 
   Scenario: RFC 3659 Extensions
     Given the test server is started
+    And the client connects
     When the client successfully requests features
     Then the response should include feature "SIZE"
     Then the response should include feature "MDTM"

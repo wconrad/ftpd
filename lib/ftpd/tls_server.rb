@@ -99,6 +99,22 @@ module Ftpd
           accept
         end
 
+        def readline
+          if session
+            super
+          else
+            to_io.readline
+          end
+        end
+
+        def write(data)
+          if session
+            super(data)
+          else
+            to_io.write(data)
+          end
+        end
+
       end
     end
 

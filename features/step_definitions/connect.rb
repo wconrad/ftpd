@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'double_bag_ftps'
 require 'net/ftp'
 
 When /^the( \w+)? client connects(?: with (\w+) TLS)?$/ do
@@ -17,9 +16,9 @@ When /^the( \w+)? client connects(?: with (\w+) TLS)?$/ do
 end
 
 When /^the (\d+)rd client tries to connect$/ do |client_name|
-  client(client_name).start
+  client(client_name.to_s).start
   capture_error do
-    client(client_name).connect(server.host, server.port)
+    client(client_name.to_s).connect(server.host, server.port)
   end
 end
 
