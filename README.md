@@ -357,7 +357,7 @@ community.
 
 ## Whoami
 
-Wayne Conrad <wconrad@yagni.com>
+Wayne Conrad <kf7qga@gmail.com>
 
 ## Credits
 
