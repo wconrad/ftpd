@@ -258,9 +258,10 @@ The tests pass with these Rubies:
 
 * ruby-2.7 (EOL: 2023-03-31)
 * ruby-3.0 (EOL: 2024-03-31)
-* ruby-3.1
+* ruby-3.1 (EOL: 2025-03-31)
 * ruby-3.2
 * ruby-3.3
+* ruby-3.4
 
 For Ruby 1.8, use an ftpd version before 0.8.  In your Gemfile:
 
