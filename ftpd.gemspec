@@ -79,6 +79,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = ">= 2.7.8"
   s.rubygems_version = "2.5.1"
   s.summary = "Pure Ruby FTP server library"
+  s.add_runtime_dependency("logger", "~> 1.6")
   s.add_runtime_dependency("memoizer", "~> 1.0")
   s.add_development_dependency("net-ftp", "~> 0.3")
   s.add_development_dependency("cucumber", "~> 9.1")
